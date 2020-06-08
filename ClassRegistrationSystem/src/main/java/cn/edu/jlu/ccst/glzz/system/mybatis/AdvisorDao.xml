@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.jlu.ccst.glzz.system.DAO.AdvisorDao">
+    <resultMap id="baseResultMap" type="cn.edu.jlu.ccst.glzz.system.Model.Advisor">
+            <result column="s_ID" property="s_ID" jdbcType="VARCHAR" />
+            <result column="i_ID" property="i_ID" jdbcType="VARCHAR" />
+            </resultMap>
+    
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+    	                	 t.`s_ID`
+			                	, t.`i_ID`
+			            </sql>
+    
+    <!-- 表字段 -->
+    <sql id="baseColumnsList">
+    	                	        	        		<choose>
+        			<when test="query.distinct">DISTINCT(t.`s_ID`)</when>
+        			<otherwise>t.`s_ID`</otherwise>
+        		</choose>
+        	                	,        	        	t.`i_ID`
+        	            </sql>
+    
+	<!-- 根据条件查询记录 -->
+    <select id="list" parameterType="com.gitee.fastmybatis.core.query.Query"
+		resultMap="baseResultMap">
+		SELECT 
+			<include refid="baseColumnsList" />
+		FROM `advisor` t
+		<include refid="common.join" />
+		<where>
+		    <include refid="common.condition" />
+		    		</where>
+		<include refid="common.orderBy" />
+		<include refid="common.limit" />
+	</select>
+	
+	<!-- 查询map -->
+	<select id="listMap" resultType="map">
+        SELECT 
+            <foreach collection="columns" item="column" separator=",">
+                ${column}
+            </foreach>
+        FROM `advisor` t
+        <include refid="common.join" />
+        <where>
+            <include refid="common.condition" />
+                    </where>
+        <include refid="common.orderBy" />
+        <include refid="common.limit" />
+    </select>
+	
+	<!-- 根据条件查询记录数 -->
+    <select id="getCount" parameterType="com.gitee.fastmybatis.core.query.Query"
+		resultType="long">
+		SELECT count(*) FROM `advisor` t
+		<include refid="common.join" />
+        <where>
+            <include refid="common.condition" />
+                    </where>
+    </select>
+
+	<!-- 根据主键获取单条记录 -->
+    <select id="getById" resultMap="baseResultMap" parameterType="String">
+		SELECT 
+        	<include refid="baseColumns" />
+		FROM `advisor` t
+		WHERE t.`s_ID` = #{value}
+				LIMIT 1
+	</select>
+    
+    <!-- 根据条件获取单条记录 -->
+    <select id="getByQuery" resultMap="baseResultMap" parameterType="com.gitee.fastmybatis.core.query.Query">
+		SELECT
+			<include refid="baseColumns" />			
+		FROM `advisor` t
+		<include refid="common.join" />
+        <where>
+            <include refid="common.condition" />
+                    </where>
+		<include refid="common.orderBy" />
+		LIMIT 1
+	</select>
+	
+	<!-- 根据属性获取单条记录 -->
+	<select id="getByColumn" resultMap="baseResultMap">
+		SELECT
+			<include refid="baseColumns" />
+		FROM `advisor` t
+		WHERE t.`${column}` = #{value}
+				LIMIT 1
+	</select>
+	
+	<!-- 根据属性获取多条记录 -->
+	<select id="listByColumn" resultMap="baseResultMap">
+		SELECT
+			<include refid="baseColumns" />
+		FROM `advisor` t
+		WHERE t.`${column}`= #{value}
+			</select>
+	
+
+	<!-- 保存,保存全部字段 -->
+    <insert id="save" parameterType="cn.edu.jlu.ccst.glzz.system.Model.Advisor"
+    >
+	INSERT INTO `advisor`
+         (
+                              `s_ID`
+                                        , `i_ID`
+                              )
+	VALUES (
+                              #{s_ID}
+                                        , #{i_ID}
+                     
+        )
+	</insert>
+    
+    <!-- 保存,保存不为NULL的字段 -->
+    <insert id="saveIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.Model.Advisor"
+            >
+                INSERT INTO `advisor`
+    
+        <trim prefix="(" suffix=")" suffixOverrides=",">	 
+
+                                                                        <if test="s_ID != null">
+                       `s_ID`,
+                        </if>
+                                                                                                            <if test="i_ID != null">
+                       `i_ID`,
+                        </if>
+                                                        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">            
+                                                                        <if test="s_ID != null" >
+                        #{s_ID},                    
+                        </if>
+                                                                                                            <if test="i_ID != null" >
+                        #{i_ID},                    
+                        </if>
+                                                        </trim>
+    </insert>
+
+	<!-- 批量保存,保存全部字段 -->
+    <insert id="saveBatch">
+		INSERT INTO `advisor` 
+		(
+                              `s_ID`
+                                        , `i_ID`
+                              )
+		VALUES 
+		<foreach collection="entitys" item="entity"  separator=",">
+        (                              	 #{s_ID}
+         	                                         	, #{i_ID}
+         	                            )
+		</foreach>
+	</insert>
+
+
+	<!-- 批量保存(兼容),保存全部字段 -->
+    <insert id="saveMulti">
+		INSERT INTO `advisor` 
+		(
+                              `s_ID`
+                                        , `i_ID`
+                              )
+		<foreach collection="entitys" item="entity"  separator="UNION ALL">
+        SELECT                               	 #{s_ID}
+         	                                         	, #{i_ID}
+         	                    		</foreach>
+	</insert>
+
+	<!-- 批量保存(兼容),保存全部字段,忽略重复行 -->
+    <insert id="saveMultiSet">
+		INSERT INTO `advisor`
+		(
+                              `s_ID`
+                                        , `i_ID`
+                              )
+		<foreach collection="entitys" item="entity"  separator="UNION">
+        SELECT                               	 #{s_ID}
+         	                                         	, #{i_ID}
+         	                    		</foreach>
+	</insert>
+
+	<!-- 更新,更新全部字段 -->
+    <update id="update" parameterType="cn.edu.jlu.ccst.glzz.system.Model.Advisor">
+    UPDATE `advisor`
+     <set>		
+                                     `i_ID`=#{i_ID},
+                   </set>	
+    WHERE `s_ID` = #{s_ID}
+        </update>
+    
+    <!-- 更新不为NULL的字段 -->
+    <update id="updateIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.Model.Advisor">
+    UPDATE `advisor`
+    <set>
+    	                                                                    <if test="i_ID != null" >
+                    `i_ID`=#{i_ID},
+                    </if>
+                                        </set>
+    WHERE `s_ID` = #{s_ID}
+        </update>
+    
+    <!-- 根据指定条件更新 -->
+    <update id="updateByQuery">
+        UPDATE `advisor`
+        <set>
+                                                                                                    <if test="entity.i_ID != null or query.forceUpdate" >
+                        `i_ID`=${column.mybatisUpdateValuePrefix},
+                        </if>
+                                                        </set>
+        <include refid="common.updateWhere" />
+            </update>
+    
+    <!-- 根据指定条件更新 -->
+    <update id="updateByMap">
+        UPDATE `advisor`
+        <set>
+            <foreach collection="entity.keys" item="key" separator=",">  
+                ${key} = #{entity[${key}]}
+            </foreach> 
+        </set>
+        <include refid="common.updateWhere" />
+    </update>
+    
+	<!-- 根据主键删除 -->
+    <delete id="deleteById" parameterType="String">
+                    DELETE FROM advisor
+            WHERE s_ID = #{value}
+            </delete>
+    
+    <!-- 根据条件删除记录 -->
+    <delete id="deleteByQuery" parameterType="com.gitee.fastmybatis.core.query.Query">
+		DELETE FROM `advisor`
+		<include refid="common.where" />
+	</delete>
+
+	<!--_ext_mapper_-->
+	
+	<!--_global_vm_-->
+
+</mapper>

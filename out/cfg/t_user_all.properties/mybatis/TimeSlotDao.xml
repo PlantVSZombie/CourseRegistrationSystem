@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.jlu.ccst.glzz.system.DAO.TimeSlotDao">
+    <resultMap id="baseResultMap" type="cn.edu.jlu.ccst.glzz.system.Model.TimeSlot">
+            <result column="time_slot_id" property="timeSlotId" jdbcType="VARCHAR" />
+            <result column="day" property="day" jdbcType="VARCHAR" />
+            <result column="start_hr" property="startHr" jdbcType="DECIMAL" />
+            <result column="start_min" property="startMin" jdbcType="DECIMAL" />
+            <result column="end_hr" property="endHr" jdbcType="DECIMAL" />
+            <result column="end_min" property="endMin" jdbcType="DECIMAL" />
+            </resultMap>
+    
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+    	                	 t.`time_slot_id`
+			                	, t.`day`
+			                	, t.`start_hr`
+			                	, t.`start_min`
+			                	, t.`end_hr`
+			                	, t.`end_min`
+			            </sql>
+    
+    <!-- 表字段 -->
+    <sql id="baseColumnsList">
+    	                	        	        		<choose>
+        			<when test="query.distinct">DISTINCT(t.`time_slot_id`)</when>
+        			<otherwise>t.`time_slot_id`</otherwise>
+        		</choose>
+        	                	,        	        		<choose>
+        			<when test="query.distinct">DISTINCT(t.`day`)</when>
+        			<otherwise>t.`day`</otherwise>
+        		</choose>
+        	                	,        	        		<choose>
+        			<when test="query.distinct">DISTINCT(t.`start_hr`)</when>
+        			<otherwise>t.`start_hr`</otherwise>
+        		</choose>
+        	                	,        	        		<choose>
+        			<when test="query.distinct">DISTINCT(t.`start_min`)</when>
+        			<otherwise>t.`start_min`</otherwise>
+        		</choose>
+        	                	,        	        	t.`end_hr`
+        	                	,        	        	t.`end_min`
+        	            </sql>
+    
+	<!-- 根据条件查询记录 -->
+    <select id="list" parameterType="com.gitee.fastmybatis.core.query.Query"
+		resultMap="baseResultMap">
+		SELECT 
+			<include refid="baseColumnsList" />
+		FROM `time_slot` t
+		<include refid="common.join" />
+		<where>
+		    <include refid="common.condition" />
+		    		</where>
+		<include refid="common.orderBy" />
+		<include refid="common.limit" />
+	</select>
+	
+	<!-- 查询map -->
+	<select id="listMap" resultType="map">
+        SELECT 
+            <foreach collection="columns" item="column" separator=",">
+                ${column}
+            </foreach>
+        FROM `time_slot` t
+        <include refid="common.join" />
+        <where>
+            <include refid="common.condition" />
+                    </where>
+        <include refid="common.orderBy" />
+        <include refid="common.limit" />
+    </select>
+	
+	<!-- 根据条件查询记录数 -->
+    <select id="getCount" parameterType="com.gitee.fastmybatis.core.query.Query"
+		resultType="long">
+		SELECT count(*) FROM `time_slot` t
+		<include refid="common.join" />
+        <where>
+            <include refid="common.condition" />
+                    </where>
+    </select>
+
+	<!-- 根据主键获取单条记录 -->
+    <select id="getById" resultMap="baseResultMap" parameterType="String">
+		SELECT 
+        	<include refid="baseColumns" />
+		FROM `time_slot` t
+		WHERE t.`time_slot_id` = #{value}
+				LIMIT 1
+	</select>
+    
+    <!-- 根据条件获取单条记录 -->
+    <select id="getByQuery" resultMap="baseResultMap" parameterType="com.gitee.fastmybatis.core.query.Query">
+		SELECT
+			<include refid="baseColumns" />			
+		FROM `time_slot` t
+		<include refid="common.join" />
+        <where>
+            <include refid="common.condition" />
+                    </where>
+		<include refid="common.orderBy" />
+		LIMIT 1
+	</select>
+	
+	<!-- 根据属性获取单条记录 -->
+	<select id="getByColumn" resultMap="baseResultMap">
+		SELECT
+			<include refid="baseColumns" />
+		FROM `time_slot` t
+		WHERE t.`${column}` = #{value}
+				LIMIT 1
+	</select>
+	
+	<!-- 根据属性获取多条记录 -->
+	<select id="listByColumn" resultMap="baseResultMap">
+		SELECT
+			<include refid="baseColumns" />
+		FROM `time_slot` t
+		WHERE t.`${column}`= #{value}
+			</select>
+	
+
+	<!-- 保存,保存全部字段 -->
+    <insert id="save" parameterType="cn.edu.jlu.ccst.glzz.system.Model.TimeSlot"
+    >
+	INSERT INTO `time_slot`
+         (
+                              `time_slot_id`
+                                        , `day`
+                                        , `start_hr`
+                                        , `start_min`
+                                        , `end_hr`
+                                        , `end_min`
+                              )
+	VALUES (
+                              #{timeSlotId}
+                                        , #{day}
+                                        , #{startHr}
+                                        , #{startMin}
+                                        , #{endHr}
+                                        , #{endMin}
+                     
+        )
+	</insert>
+    
+    <!-- 保存,保存不为NULL的字段 -->
+    <insert id="saveIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.Model.TimeSlot"
+            >
+                INSERT INTO `time_slot`
+    
+        <trim prefix="(" suffix=")" suffixOverrides=",">	 
+
+                                                                        <if test="timeSlotId != null">
+                       `time_slot_id`,
+                        </if>
+                                                                                                            <if test="day != null">
+                       `day`,
+                        </if>
+                                                                                                            <if test="startHr != null">
+                       `start_hr`,
+                        </if>
+                                                                                                            <if test="startMin != null">
+                       `start_min`,
+                        </if>
+                                                                                                            <if test="endHr != null">
+                       `end_hr`,
+                        </if>
+                                                                                                            <if test="endMin != null">
+                       `end_min`,
+                        </if>
+                                                        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">            
+                                                                        <if test="timeSlotId != null" >
+                        #{timeSlotId},                    
+                        </if>
+                                                                                                            <if test="day != null" >
+                        #{day},                    
+                        </if>
+                                                                                                            <if test="startHr != null" >
+                        #{startHr},                    
+                        </if>
+                                                                                                            <if test="startMin != null" >
+                        #{startMin},                    
+                        </if>
+                                                                                                            <if test="endHr != null" >
+                        #{endHr},                    
+                        </if>
+                                                                                                            <if test="endMin != null" >
+                        #{endMin},                    
+                        </if>
+                                                        </trim>
+    </insert>
+
+	<!-- 批量保存,保存全部字段 -->
+    <insert id="saveBatch">
+		INSERT INTO `time_slot` 
+		(
+                              `time_slot_id`
+                                        , `day`
+                                        , `start_hr`
+                                        , `start_min`
+                                        , `end_hr`
+                                        , `end_min`
+                              )
+		VALUES 
+		<foreach collection="entitys" item="entity"  separator=",">
+        (                              	 #{timeSlotId}
+         	                                         	, #{day}
+         	                                         	, #{startHr}
+         	                                         	, #{startMin}
+         	                                         	, #{endHr}
+         	                                         	, #{endMin}
+         	                            )
+		</foreach>
+	</insert>
+
+
+	<!-- 批量保存(兼容),保存全部字段 -->
+    <insert id="saveMulti">
+		INSERT INTO `time_slot` 
+		(
+                              `time_slot_id`
+                                        , `day`
+                                        , `start_hr`
+                                        , `start_min`
+                                        , `end_hr`
+                                        , `end_min`
+                              )
+		<foreach collection="entitys" item="entity"  separator="UNION ALL">
+        SELECT                               	 #{timeSlotId}
+         	                                         	, #{day}
+         	                                         	, #{startHr}
+         	                                         	, #{startMin}
+         	                                         	, #{endHr}
+         	                                         	, #{endMin}
+         	                    		</foreach>
+	</insert>
+
+	<!-- 批量保存(兼容),保存全部字段,忽略重复行 -->
+    <insert id="saveMultiSet">
+		INSERT INTO `time_slot`
+		(
+                              `time_slot_id`
+                                        , `day`
+                                        , `start_hr`
+                                        , `start_min`
+                                        , `end_hr`
+                                        , `end_min`
+                              )
+		<foreach collection="entitys" item="entity"  separator="UNION">
+        SELECT                               	 #{timeSlotId}
+         	                                         	, #{day}
+         	                                         	, #{startHr}
+         	                                         	, #{startMin}
+         	                                         	, #{endHr}
+         	                                         	, #{endMin}
+         	                    		</foreach>
+	</insert>
+
+	<!-- 更新,更新全部字段 -->
+    <update id="update" parameterType="cn.edu.jlu.ccst.glzz.system.Model.TimeSlot">
+    UPDATE `time_slot`
+     <set>		
+                                                                               `end_hr`=#{endHr},
+                                `end_min`=#{endMin},
+                   </set>	
+    WHERE `time_slot_id` = #{timeSlotId}
+        </update>
+    
+    <!-- 更新不为NULL的字段 -->
+    <update id="updateIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.Model.TimeSlot">
+    UPDATE `time_slot`
+    <set>
+    	                                                                                                                                <if test="endHr != null" >
+                    `end_hr`=#{endHr},
+                    </if>
+                                                                                    <if test="endMin != null" >
+                    `end_min`=#{endMin},
+                    </if>
+                                        </set>
+    WHERE `time_slot_id` = #{timeSlotId}
+        </update>
+    
+    <!-- 根据指定条件更新 -->
+    <update id="updateByQuery">
+        UPDATE `time_slot`
+        <set>
+                                                                                                                                                                                        <if test="entity.endHr != null or query.forceUpdate" >
+                        `end_hr`=${column.mybatisUpdateValuePrefix},
+                        </if>
+                                                                                                            <if test="entity.endMin != null or query.forceUpdate" >
+                        `end_min`=${column.mybatisUpdateValuePrefix},
+                        </if>
+                                                        </set>
+        <include refid="common.updateWhere" />
+            </update>
+    
+    <!-- 根据指定条件更新 -->
+    <update id="updateByMap">
+        UPDATE `time_slot`
+        <set>
+            <foreach collection="entity.keys" item="key" separator=",">  
+                ${key} = #{entity[${key}]}
+            </foreach> 
+        </set>
+        <include refid="common.updateWhere" />
+    </update>
+    
+	<!-- 根据主键删除 -->
+    <delete id="deleteById" parameterType="String">
+                    DELETE FROM time_slot
+            WHERE time_slot_id = #{value}
+            </delete>
+    
+    <!-- 根据条件删除记录 -->
+    <delete id="deleteByQuery" parameterType="com.gitee.fastmybatis.core.query.Query">
+		DELETE FROM `time_slot`
+		<include refid="common.where" />
+	</delete>
+
+	<!--_ext_mapper_-->
+	
+	<!--_global_vm_-->
+
+</mapper>

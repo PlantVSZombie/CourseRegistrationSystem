@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.jlu.ccst.glzz.system.DAO.TakesDao">
+    <resultMap id="baseResultMap" type="cn.edu.jlu.ccst.glzz.system.Model.Takes">
+            <result column="ID" property="id" jdbcType="VARCHAR" />
+            <result column="course_id" property="courseId" jdbcType="VARCHAR" />
+            <result column="sec_id" property="secId" jdbcType="VARCHAR" />
+            <result column="semester" property="semester" jdbcType="VARCHAR" />
+            <result column="year" property="year" jdbcType="DECIMAL" />
+            <result column="grade" property="grade" jdbcType="VARCHAR" />
+            </resultMap>
+    
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+    	                	 t.`ID`
+			                	, t.`course_id`
+			                	, t.`sec_id`
+			                	, t.`semester`
+			                	, t.`year`
+			                	, t.`grade`
+			            </sql>
+    
+    <!-- 表字段 -->
+    <sql id="baseColumnsList">
+    	                	        	        		<choose>
+        			<when test="query.distinct">DISTINCT(t.`ID`)</when>
+        			<otherwise>t.`ID`</otherwise>
+        		</choose>
+        	                	,        	        		<choose>
+        			<when test="query.distinct">DISTINCT(t.`course_id`)</when>
+        			<otherwise>t.`course_id`</otherwise>
+        		</choose>
+        	                	,        	        		<choose>
+        			<when test="query.distinct">DISTINCT(t.`sec_id`)</when>
+        			<otherwise>t.`sec_id`</otherwise>
+        		</choose>
+        	                	,        	        		<choose>
+        			<when test="query.distinct">DISTINCT(t.`semester`)</when>
+        			<otherwise>t.`semester`</otherwise>
+        		</choose>
+        	                	,        	        		<choose>
+        			<when test="query.distinct">DISTINCT(t.`year`)</when>
+        			<otherwise>t.`year`</otherwise>
+        		</choose>
+        	                	,        	        	t.`grade`
+        	            </sql>
+    
+	<!-- 根据条件查询记录 -->
+    <select id="list" parameterType="com.gitee.fastmybatis.core.query.Query"
+		resultMap="baseResultMap">
+		SELECT 
+			<include refid="baseColumnsList" />
+		FROM `takes` t
+		<include refid="common.join" />
+		<where>
+		    <include refid="common.condition" />
+		    		</where>
+		<include refid="common.orderBy" />
+		<include refid="common.limit" />
+	</select>
+	
+	<!-- 查询map -->
+	<select id="listMap" resultType="map">
+        SELECT 
+            <foreach collection="columns" item="column" separator=",">
+                ${column}
+            </foreach>
+        FROM `takes` t
+        <include refid="common.join" />
+        <where>
+            <include refid="common.condition" />
+                    </where>
+        <include refid="common.orderBy" />
+        <include refid="common.limit" />
+    </select>
+	
+	<!-- 根据条件查询记录数 -->
+    <select id="getCount" parameterType="com.gitee.fastmybatis.core.query.Query"
+		resultType="long">
+		SELECT count(*) FROM `takes` t
+		<include refid="common.join" />
+        <where>
+            <include refid="common.condition" />
+                    </where>
+    </select>
+
+	<!-- 根据主键获取单条记录 -->
+    <select id="getById" resultMap="baseResultMap" parameterType="String">
+		SELECT 
+        	<include refid="baseColumns" />
+		FROM `takes` t
+		WHERE t.`ID` = #{value}
+				LIMIT 1
+	</select>
+    
+    <!-- 根据条件获取单条记录 -->
+    <select id="getByQuery" resultMap="baseResultMap" parameterType="com.gitee.fastmybatis.core.query.Query">
+		SELECT
+			<include refid="baseColumns" />			
+		FROM `takes` t
+		<include refid="common.join" />
+        <where>
+            <include refid="common.condition" />
+                    </where>
+		<include refid="common.orderBy" />
+		LIMIT 1
+	</select>
+	
+	<!-- 根据属性获取单条记录 -->
+	<select id="getByColumn" resultMap="baseResultMap">
+		SELECT
+			<include refid="baseColumns" />
+		FROM `takes` t
+		WHERE t.`${column}` = #{value}
+				LIMIT 1
+	</select>
+	
+	<!-- 根据属性获取多条记录 -->
+	<select id="listByColumn" resultMap="baseResultMap">
+		SELECT
+			<include refid="baseColumns" />
+		FROM `takes` t
+		WHERE t.`${column}`= #{value}
+			</select>
+	
+
+	<!-- 保存,保存全部字段 -->
+    <insert id="save" parameterType="cn.edu.jlu.ccst.glzz.system.Model.Takes"
+    >
+	INSERT INTO `takes`
+         (
+                              `ID`
+                                        , `course_id`
+                                        , `sec_id`
+                                        , `semester`
+                                        , `year`
+                                        , `grade`
+                              )
+	VALUES (
+                              #{id}
+                                        , #{courseId}
+                                        , #{secId}
+                                        , #{semester}
+                                        , #{year}
+                                        , #{grade}
+                     
+        )
+	</insert>
+    
+    <!-- 保存,保存不为NULL的字段 -->
+    <insert id="saveIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.Model.Takes"
+            >
+                INSERT INTO `takes`
+    
+        <trim prefix="(" suffix=")" suffixOverrides=",">	 
+
+                                                                        <if test="id != null">
+                       `ID`,
+                        </if>
+                                                                                                            <if test="courseId != null">
+                       `course_id`,
+                        </if>
+                                                                                                            <if test="secId != null">
+                       `sec_id`,
+                        </if>
+                                                                                                            <if test="semester != null">
+                       `semester`,
+                        </if>
+                                                                                                            <if test="year != null">
+                       `year`,
+                        </if>
+                                                                                                            <if test="grade != null">
+                       `grade`,
+                        </if>
+                                                        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">            
+                                                                        <if test="id != null" >
+                        #{id},                    
+                        </if>
+                                                                                                            <if test="courseId != null" >
+                        #{courseId},                    
+                        </if>
+                                                                                                            <if test="secId != null" >
+                        #{secId},                    
+                        </if>
+                                                                                                            <if test="semester != null" >
+                        #{semester},                    
+                        </if>
+                                                                                                            <if test="year != null" >
+                        #{year},                    
+                        </if>
+                                                                                                            <if test="grade != null" >
+                        #{grade},                    
+                        </if>
+                                                        </trim>
+    </insert>
+
+	<!-- 批量保存,保存全部字段 -->
+    <insert id="saveBatch">
+		INSERT INTO `takes` 
+		(
+                              `ID`
+                                        , `course_id`
+                                        , `sec_id`
+                                        , `semester`
+                                        , `year`
+                                        , `grade`
+                              )
+		VALUES 
+		<foreach collection="entitys" item="entity"  separator=",">
+        (                              	 #{id}
+         	                                         	, #{courseId}
+         	                                         	, #{secId}
+         	                                         	, #{semester}
+         	                                         	, #{year}
+         	                                         	, #{grade}
+         	                            )
+		</foreach>
+	</insert>
+
+
+	<!-- 批量保存(兼容),保存全部字段 -->
+    <insert id="saveMulti">
+		INSERT INTO `takes` 
+		(
+                              `ID`
+                                        , `course_id`
+                                        , `sec_id`
+                                        , `semester`
+                                        , `year`
+                                        , `grade`
+                              )
+		<foreach collection="entitys" item="entity"  separator="UNION ALL">
+        SELECT                               	 #{id}
+         	                                         	, #{courseId}
+         	                                         	, #{secId}
+         	                                         	, #{semester}
+         	                                         	, #{year}
+         	                                         	, #{grade}
+         	                    		</foreach>
+	</insert>
+
+	<!-- 批量保存(兼容),保存全部字段,忽略重复行 -->
+    <insert id="saveMultiSet">
+		INSERT INTO `takes`
+		(
+                              `ID`
+                                        , `course_id`
+                                        , `sec_id`
+                                        , `semester`
+                                        , `year`
+                                        , `grade`
+                              )
+		<foreach collection="entitys" item="entity"  separator="UNION">
+        SELECT                               	 #{id}
+         	                                         	, #{courseId}
+         	                                         	, #{secId}
+         	                                         	, #{semester}
+         	                                         	, #{year}
+         	                                         	, #{grade}
+         	                    		</foreach>
+	</insert>
+
+	<!-- 更新,更新全部字段 -->
+    <update id="update" parameterType="cn.edu.jlu.ccst.glzz.system.Model.Takes">
+    UPDATE `takes`
+     <set>		
+                                                                                             `grade`=#{grade},
+                   </set>	
+    WHERE `ID` = #{id}
+        </update>
+    
+    <!-- 更新不为NULL的字段 -->
+    <update id="updateIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.Model.Takes">
+    UPDATE `takes`
+    <set>
+    	                                                                                                                                                    <if test="grade != null" >
+                    `grade`=#{grade},
+                    </if>
+                                        </set>
+    WHERE `ID` = #{id}
+        </update>
+    
+    <!-- 根据指定条件更新 -->
+    <update id="updateByQuery">
+        UPDATE `takes`
+        <set>
+                                                                                                                                                                                                                    <if test="entity.grade != null or query.forceUpdate" >
+                        `grade`=${column.mybatisUpdateValuePrefix},
+                        </if>
+                                                        </set>
+        <include refid="common.updateWhere" />
+            </update>
+    
+    <!-- 根据指定条件更新 -->
+    <update id="updateByMap">
+        UPDATE `takes`
+        <set>
+            <foreach collection="entity.keys" item="key" separator=",">  
+                ${key} = #{entity[${key}]}
+            </foreach> 
+        </set>
+        <include refid="common.updateWhere" />
+    </update>
+    
+	<!-- 根据主键删除 -->
+    <delete id="deleteById" parameterType="String">
+                    DELETE FROM takes
+            WHERE ID = #{value}
+            </delete>
+    
+    <!-- 根据条件删除记录 -->
+    <delete id="deleteByQuery" parameterType="com.gitee.fastmybatis.core.query.Query">
+		DELETE FROM `takes`
+		<include refid="common.where" />
+	</delete>
+
+	<!--_ext_mapper_-->
+	
+	<!--_global_vm_-->
+
+</mapper>
