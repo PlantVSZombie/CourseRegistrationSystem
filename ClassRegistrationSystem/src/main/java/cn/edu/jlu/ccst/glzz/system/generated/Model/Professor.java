@@ -1,7 +1,5 @@
 package cn.edu.jlu.ccst.glzz.system.generated.Model;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,17 +8,17 @@ import javax.persistence.Table;
 
 
 /**
- * 表名：student
+ * 表名：professor
  *
  * @author glzz
  */
-@Table(name = "student")
-public class Student {
+@Table(name = "professor")
+public class Professor {
     @Id
-    @Column(name = "student_id")
+    @Column(name = "professor_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    /**  数据库字段：student_id */
-    private String studentId;
+    /**  数据库字段：professor_id */
+    private String professorId;
 
     /**  数据库字段：password */
     private String password;
@@ -31,57 +29,44 @@ public class Student {
     /**  数据库字段：dept_name */
     private String deptName;
 
-    /**  数据库字段：tot_cred */
-    private BigDecimal totCred;
-
-    /**  数据库字段：student.student_id */
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
+    /**  数据库字段：professor.professor_id */
+    public void setProfessorId(String professorId) {
+        this.professorId = professorId;
     }
 
-    /**  数据库字段：student.student_id */
-    public String getStudentId() {
-        return this.studentId;
+    /**  数据库字段：professor.professor_id */
+    public String getProfessorId() {
+        return this.professorId;
     }
 
-    /**  数据库字段：student.password */
+    /**  数据库字段：professor.password */
     public void setPassword(String password) {
         this.password = password;
     }
 
-    /**  数据库字段：student.password */
+    /**  数据库字段：professor.password */
     public String getPassword() {
         return this.password;
     }
 
-    /**  数据库字段：student.name */
+    /**  数据库字段：professor.name */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**  数据库字段：student.name */
+    /**  数据库字段：professor.name */
     public String getName() {
         return this.name;
     }
 
-    /**  数据库字段：student.dept_name */
+    /**  数据库字段：professor.dept_name */
     public void setDeptName(String deptName) {
         this.deptName = deptName;
     }
 
-    /**  数据库字段：student.dept_name */
+    /**  数据库字段：professor.dept_name */
     public String getDeptName() {
         return this.deptName;
-    }
-
-    /**  数据库字段：student.tot_cred */
-    public void setTotCred(BigDecimal totCred) {
-        this.totCred = totCred;
-    }
-
-    /**  数据库字段：student.tot_cred */
-    public BigDecimal getTotCred() {
-        return this.totCred;
     }
 
     @Override
@@ -89,7 +74,7 @@ public class Student {
         final int prime = 31;
         int result = 1;
         result = (prime * result) +
-            ((studentId == null) ? 0 : studentId.hashCode());
+            ((professorId == null) ? 0 : professorId.hashCode());
 
         return result;
     }
@@ -108,13 +93,13 @@ public class Student {
             return false;
         }
 
-        Student other = (Student) obj;
+        Professor other = (Professor) obj;
 
-        if (studentId == null) {
-            if (other.studentId != null) {
+        if (professorId == null) {
+            if (other.professorId != null) {
                 return false;
             }
-        } else if (!studentId.equals(other.studentId)) {
+        } else if (!professorId.equals(other.professorId)) {
             return false;
         }
 
@@ -124,16 +109,14 @@ public class Student {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Student [");
-        sb.append("studentId=").append(studentId);
+        sb.append("Professor [");
+        sb.append("professorId=").append(professorId);
         sb.append(", ");
         sb.append("password=").append(password);
         sb.append(", ");
         sb.append("name=").append(name);
         sb.append(", ");
         sb.append("deptName=").append(deptName);
-        sb.append(", ");
-        sb.append("totCred=").append(totCred);
         sb.append("]");
 
         return sb.toString();

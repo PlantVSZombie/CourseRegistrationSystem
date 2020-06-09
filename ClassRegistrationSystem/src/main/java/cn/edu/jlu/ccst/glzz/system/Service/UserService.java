@@ -1,7 +1,9 @@
 package cn.edu.jlu.ccst.glzz.system.Service;
 
-import cn.edu.jlu.ccst.glzz.system.DAO.StudentDao;
-import cn.edu.jlu.ccst.glzz.system.Model.Student;
+
+
+import cn.edu.jlu.ccst.glzz.system.generated.DAO.StudentDao;
+import cn.edu.jlu.ccst.glzz.system.generated.Model.Student;
 import com.gitee.fastmybatis.core.query.Query;
 import org.springframework.stereotype.Service;
 

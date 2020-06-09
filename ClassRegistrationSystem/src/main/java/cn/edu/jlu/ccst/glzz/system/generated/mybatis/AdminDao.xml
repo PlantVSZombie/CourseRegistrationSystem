@@ -1,33 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.edu.jlu.ccst.glzz.system.generated.DAO.StudentDao">
-    <resultMap id="baseResultMap" type="cn.edu.jlu.ccst.glzz.system.generated.Model.Student">
-            <result column="student_id" property="studentId" jdbcType="VARCHAR" />
+<mapper namespace="cn.edu.jlu.ccst.glzz.system.generated.DAO.AdminDao">
+    <resultMap id="baseResultMap" type="cn.edu.jlu.ccst.glzz.system.generated.Model.Admin">
+            <result column="admin_id" property="adminId" jdbcType="VARCHAR" />
             <result column="password" property="password" jdbcType="VARCHAR" />
             <result column="name" property="name" jdbcType="VARCHAR" />
-            <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
-            <result column="tot_cred" property="totCred" jdbcType="DECIMAL" />
             </resultMap>
     
     <!-- 表字段 -->
     <sql id="baseColumns">
-    	                	 t.`student_id`
+    	                	 t.`admin_id`
 			                	, t.`password`
 			                	, t.`name`
-			                	, t.`dept_name`
-			                	, t.`tot_cred`
 			            </sql>
     
     <!-- 表字段 -->
     <sql id="baseColumnsList">
     	                	        	        		<choose>
-        			<when test="query.distinct">DISTINCT(t.`student_id`)</when>
-        			<otherwise>t.`student_id`</otherwise>
+        			<when test="query.distinct">DISTINCT(t.`admin_id`)</when>
+        			<otherwise>t.`admin_id`</otherwise>
         		</choose>
         	                	,        	        	t.`password`
         	                	,        	        	t.`name`
-        	                	,        	        	t.`dept_name`
-        	                	,        	        	t.`tot_cred`
         	            </sql>
     
 	<!-- 根据条件查询记录 -->
@@ -35,7 +29,7 @@
 		resultMap="baseResultMap">
 		SELECT 
 			<include refid="baseColumnsList" />
-		FROM `student` t
+		FROM `admin` t
 		<include refid="common.join" />
 		<where>
 		    <include refid="common.condition" />
@@ -50,7 +44,7 @@
             <foreach collection="columns" item="column" separator=",">
                 ${column}
             </foreach>
-        FROM `student` t
+        FROM `admin` t
         <include refid="common.join" />
         <where>
             <include refid="common.condition" />
@@ -62,7 +56,7 @@
 	<!-- 根据条件查询记录数 -->
     <select id="getCount" parameterType="com.gitee.fastmybatis.core.query.Query"
 		resultType="long">
-		SELECT count(*) FROM `student` t
+		SELECT count(*) FROM `admin` t
 		<include refid="common.join" />
         <where>
             <include refid="common.condition" />
@@ -73,8 +67,8 @@
     <select id="getById" resultMap="baseResultMap" parameterType="String">
 		SELECT 
         	<include refid="baseColumns" />
-		FROM `student` t
-		WHERE t.`student_id` = #{value}
+		FROM `admin` t
+		WHERE t.`admin_id` = #{value}
 				LIMIT 1
 	</select>
     
@@ -82,7 +76,7 @@
     <select id="getByQuery" resultMap="baseResultMap" parameterType="com.gitee.fastmybatis.core.query.Query">
 		SELECT
 			<include refid="baseColumns" />			
-		FROM `student` t
+		FROM `admin` t
 		<include refid="common.join" />
         <where>
             <include refid="common.condition" />
@@ -95,7 +89,7 @@
 	<select id="getByColumn" resultMap="baseResultMap">
 		SELECT
 			<include refid="baseColumns" />
-		FROM `student` t
+		FROM `admin` t
 		WHERE t.`${column}` = #{value}
 				LIMIT 1
 	</select>
@@ -104,41 +98,37 @@
 	<select id="listByColumn" resultMap="baseResultMap">
 		SELECT
 			<include refid="baseColumns" />
-		FROM `student` t
+		FROM `admin` t
 		WHERE t.`${column}`= #{value}
 			</select>
 	
 
 	<!-- 保存,保存全部字段 -->
-    <insert id="save" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.Student"
+    <insert id="save" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.Admin"
     >
-	INSERT INTO `student`
+	INSERT INTO `admin`
          (
-                              `student_id`
+                              `admin_id`
                                         , `password`
                                         , `name`
-                                        , `dept_name`
-                                        , `tot_cred`
                               )
 	VALUES (
-                              #{studentId}
+                              #{adminId}
                                         , #{password}
                                         , #{name}
-                                        , #{deptName}
-                                        , #{totCred}
                      
         )
 	</insert>
     
     <!-- 保存,保存不为NULL的字段 -->
-    <insert id="saveIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.Student"
+    <insert id="saveIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.Admin"
             >
-                INSERT INTO `student`
+                INSERT INTO `admin`
     
         <trim prefix="(" suffix=")" suffixOverrides=",">	 
 
-                                                                        <if test="studentId != null">
-                       `student_id`,
+                                                                        <if test="adminId != null">
+                       `admin_id`,
                         </if>
                                                                                                             <if test="password != null">
                        `password`,
@@ -146,16 +136,10 @@
                                                                                                             <if test="name != null">
                        `name`,
                         </if>
-                                                                                                            <if test="deptName != null">
-                       `dept_name`,
-                        </if>
-                                                                                                            <if test="totCred != null">
-                       `tot_cred`,
-                        </if>
                                                         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">            
-                                                                        <if test="studentId != null" >
-                        #{studentId},                    
+                                                                        <if test="adminId != null" >
+                        #{adminId},                    
                         </if>
                                                                                                             <if test="password != null" >
                         #{password},                    
@@ -163,32 +147,22 @@
                                                                                                             <if test="name != null" >
                         #{name},                    
                         </if>
-                                                                                                            <if test="deptName != null" >
-                        #{deptName},                    
-                        </if>
-                                                                                                            <if test="totCred != null" >
-                        #{totCred},                    
-                        </if>
                                                         </trim>
     </insert>
 
 	<!-- 批量保存,保存全部字段 -->
     <insert id="saveBatch">
-		INSERT INTO `student` 
+		INSERT INTO `admin` 
 		(
-                              `student_id`
+                              `admin_id`
                                         , `password`
                                         , `name`
-                                        , `dept_name`
-                                        , `tot_cred`
                               )
 		VALUES 
 		<foreach collection="entitys" item="entity"  separator=",">
-        (                              	 #{studentId}
+        (                              	 #{adminId}
          	                                         	, #{password}
          	                                         	, #{name}
-         	                                         	, #{deptName}
-         	                                         	, #{totCred}
          	                            )
 		</foreach>
 	</insert>
@@ -196,57 +170,47 @@
 
 	<!-- 批量保存(兼容),保存全部字段 -->
     <insert id="saveMulti">
-		INSERT INTO `student` 
+		INSERT INTO `admin` 
 		(
-                              `student_id`
+                              `admin_id`
                                         , `password`
                                         , `name`
-                                        , `dept_name`
-                                        , `tot_cred`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION ALL">
-        SELECT                               	 #{studentId}
+        SELECT                               	 #{adminId}
          	                                         	, #{password}
          	                                         	, #{name}
-         	                                         	, #{deptName}
-         	                                         	, #{totCred}
          	                    		</foreach>
 	</insert>
 
 	<!-- 批量保存(兼容),保存全部字段,忽略重复行 -->
     <insert id="saveMultiSet">
-		INSERT INTO `student`
+		INSERT INTO `admin`
 		(
-                              `student_id`
+                              `admin_id`
                                         , `password`
                                         , `name`
-                                        , `dept_name`
-                                        , `tot_cred`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION">
-        SELECT                               	 #{studentId}
+        SELECT                               	 #{adminId}
          	                                         	, #{password}
          	                                         	, #{name}
-         	                                         	, #{deptName}
-         	                                         	, #{totCred}
          	                    		</foreach>
 	</insert>
 
 	<!-- 更新,更新全部字段 -->
-    <update id="update" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.Student">
-    UPDATE `student`
+    <update id="update" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.Admin">
+    UPDATE `admin`
      <set>		
                                      `password`=#{password},
                                 `name`=#{name},
-                                `dept_name`=#{deptName},
-                                `tot_cred`=#{totCred},
                    </set>	
-    WHERE `student_id` = #{studentId}
+    WHERE `admin_id` = #{adminId}
         </update>
     
     <!-- 更新不为NULL的字段 -->
-    <update id="updateIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.Student">
-    UPDATE `student`
+    <update id="updateIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.Admin">
+    UPDATE `admin`
     <set>
     	                                                                    <if test="password != null" >
                     `password`=#{password},
@@ -254,19 +218,13 @@
                                                                                     <if test="name != null" >
                     `name`=#{name},
                     </if>
-                                                                                    <if test="deptName != null" >
-                    `dept_name`=#{deptName},
-                    </if>
-                                                                                    <if test="totCred != null" >
-                    `tot_cred`=#{totCred},
-                    </if>
                                         </set>
-    WHERE `student_id` = #{studentId}
+    WHERE `admin_id` = #{adminId}
         </update>
     
     <!-- 根据指定条件更新 -->
     <update id="updateByQuery">
-        UPDATE `student`
+        UPDATE `admin`
         <set>
                                                                                                     <if test="entity.password != null or query.forceUpdate" >
                         `password`=${column.mybatisUpdateValuePrefix},
@@ -274,19 +232,13 @@
                                                                                                             <if test="entity.name != null or query.forceUpdate" >
                         `name`=${column.mybatisUpdateValuePrefix},
                         </if>
-                                                                                                            <if test="entity.deptName != null or query.forceUpdate" >
-                        `dept_name`=${column.mybatisUpdateValuePrefix},
-                        </if>
-                                                                                                            <if test="entity.totCred != null or query.forceUpdate" >
-                        `tot_cred`=${column.mybatisUpdateValuePrefix},
-                        </if>
                                                         </set>
         <include refid="common.updateWhere" />
             </update>
     
     <!-- 根据指定条件更新 -->
     <update id="updateByMap">
-        UPDATE `student`
+        UPDATE `admin`
         <set>
             <foreach collection="entity.keys" item="key" separator=",">  
                 ${key} = #{entity[${key}]}
@@ -297,13 +249,13 @@
     
 	<!-- 根据主键删除 -->
     <delete id="deleteById" parameterType="String">
-                    DELETE FROM student
-            WHERE student_id = #{value}
+                    DELETE FROM admin
+            WHERE admin_id = #{value}
             </delete>
     
     <!-- 根据条件删除记录 -->
     <delete id="deleteByQuery" parameterType="com.gitee.fastmybatis.core.query.Query">
-		DELETE FROM `student`
+		DELETE FROM `admin`
 		<include refid="common.where" />
 	</delete>
 

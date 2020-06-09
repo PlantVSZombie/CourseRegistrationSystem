@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.edu.jlu.ccst.glzz.system.generated.DAO.TeachesDao">
-    <resultMap id="baseResultMap" type="cn.edu.jlu.ccst.glzz.system.generated.Model.Teaches">
-            <result column="professor_id" property="professorId" jdbcType="VARCHAR" />
+<mapper namespace="cn.edu.jlu.ccst.glzz.system.generated.DAO.SecInfoDao">
+    <resultMap id="baseResultMap" type="cn.edu.jlu.ccst.glzz.system.generated.Model.SecInfo">
             <result column="class_id" property="classId" jdbcType="INTEGER" />
+            <result column="time_id" property="timeId" jdbcType="INTEGER" />
+            <result column="classroom_id" property="classroomId" jdbcType="INTEGER" />
             </resultMap>
     
     <!-- 表字段 -->
     <sql id="baseColumns">
-    	                	 t.`professor_id`
-			                	, t.`class_id`
+    	                	 t.`class_id`
+			                	, t.`time_id`
+			                	, t.`classroom_id`
 			            </sql>
     
     <!-- 表字段 -->
     <sql id="baseColumnsList">
     	                	        	        		<choose>
-        			<when test="query.distinct">DISTINCT(t.`professor_id`)</when>
-        			<otherwise>t.`professor_id`</otherwise>
-        		</choose>
-        	                	,        	        		<choose>
         			<when test="query.distinct">DISTINCT(t.`class_id`)</when>
         			<otherwise>t.`class_id`</otherwise>
+        		</choose>
+        	                	,        	        		<choose>
+        			<when test="query.distinct">DISTINCT(t.`time_id`)</when>
+        			<otherwise>t.`time_id`</otherwise>
+        		</choose>
+        	                	,        	        		<choose>
+        			<when test="query.distinct">DISTINCT(t.`classroom_id`)</when>
+        			<otherwise>t.`classroom_id`</otherwise>
         		</choose>
         	            </sql>
     
@@ -29,7 +35,7 @@
 		resultMap="baseResultMap">
 		SELECT 
 			<include refid="baseColumnsList" />
-		FROM `teaches` t
+		FROM `sec_info` t
 		<include refid="common.join" />
 		<where>
 		    <include refid="common.condition" />
@@ -44,7 +50,7 @@
             <foreach collection="columns" item="column" separator=",">
                 ${column}
             </foreach>
-        FROM `teaches` t
+        FROM `sec_info` t
         <include refid="common.join" />
         <where>
             <include refid="common.condition" />
@@ -56,7 +62,7 @@
 	<!-- 根据条件查询记录数 -->
     <select id="getCount" parameterType="com.gitee.fastmybatis.core.query.Query"
 		resultType="long">
-		SELECT count(*) FROM `teaches` t
+		SELECT count(*) FROM `sec_info` t
 		<include refid="common.join" />
         <where>
             <include refid="common.condition" />
@@ -64,11 +70,11 @@
     </select>
 
 	<!-- 根据主键获取单条记录 -->
-    <select id="getById" resultMap="baseResultMap" parameterType="String">
+    <select id="getById" resultMap="baseResultMap" parameterType="Integer">
 		SELECT 
         	<include refid="baseColumns" />
-		FROM `teaches` t
-		WHERE t.`professor_id` = #{value}
+		FROM `sec_info` t
+		WHERE t.`class_id` = #{value}
 				LIMIT 1
 	</select>
     
@@ -76,7 +82,7 @@
     <select id="getByQuery" resultMap="baseResultMap" parameterType="com.gitee.fastmybatis.core.query.Query">
 		SELECT
 			<include refid="baseColumns" />			
-		FROM `teaches` t
+		FROM `sec_info` t
 		<include refid="common.join" />
         <where>
             <include refid="common.condition" />
@@ -89,7 +95,7 @@
 	<select id="getByColumn" resultMap="baseResultMap">
 		SELECT
 			<include refid="baseColumns" />
-		FROM `teaches` t
+		FROM `sec_info` t
 		WHERE t.`${column}` = #{value}
 				LIMIT 1
 	</select>
@@ -98,61 +104,71 @@
 	<select id="listByColumn" resultMap="baseResultMap">
 		SELECT
 			<include refid="baseColumns" />
-		FROM `teaches` t
+		FROM `sec_info` t
 		WHERE t.`${column}`= #{value}
 			</select>
 	
 
 	<!-- 保存,保存全部字段 -->
-    <insert id="save" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.Teaches"
+    <insert id="save" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.SecInfo"
     >
-	INSERT INTO `teaches`
+	INSERT INTO `sec_info`
          (
-                              `professor_id`
-                                        , `class_id`
+                              `class_id`
+                                        , `time_id`
+                                        , `classroom_id`
                               )
 	VALUES (
-                              #{professorId}
-                                        , #{classId}
+                              #{classId}
+                                        , #{timeId}
+                                        , #{classroomId}
                      
         )
 	</insert>
     
     <!-- 保存,保存不为NULL的字段 -->
-    <insert id="saveIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.Teaches"
+    <insert id="saveIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.SecInfo"
             >
-                INSERT INTO `teaches`
+                INSERT INTO `sec_info`
     
         <trim prefix="(" suffix=")" suffixOverrides=",">	 
 
-                                                                        <if test="professorId != null">
-                       `professor_id`,
-                        </if>
-                                                                                                            <if test="classId != null">
+                                                                        <if test="classId != null">
                        `class_id`,
+                        </if>
+                                                                                                            <if test="timeId != null">
+                       `time_id`,
+                        </if>
+                                                                                                            <if test="classroomId != null">
+                       `classroom_id`,
                         </if>
                                                         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">            
-                                                                        <if test="professorId != null" >
-                        #{professorId},                    
-                        </if>
-                                                                                                            <if test="classId != null" >
+                                                                        <if test="classId != null" >
                         #{classId},                    
+                        </if>
+                                                                                                            <if test="timeId != null" >
+                        #{timeId},                    
+                        </if>
+                                                                                                            <if test="classroomId != null" >
+                        #{classroomId},                    
                         </if>
                                                         </trim>
     </insert>
 
 	<!-- 批量保存,保存全部字段 -->
     <insert id="saveBatch">
-		INSERT INTO `teaches` 
+		INSERT INTO `sec_info` 
 		(
-                              `professor_id`
-                                        , `class_id`
+                              `class_id`
+                                        , `time_id`
+                                        , `classroom_id`
                               )
 		VALUES 
 		<foreach collection="entitys" item="entity"  separator=",">
-        (                              	 #{professorId}
-         	                                         	, #{classId}
+        (                              	 #{classId}
+         	                                         	, #{timeId}
+         	                                         	, #{classroomId}
          	                            )
 		</foreach>
 	</insert>
@@ -160,57 +176,61 @@
 
 	<!-- 批量保存(兼容),保存全部字段 -->
     <insert id="saveMulti">
-		INSERT INTO `teaches` 
+		INSERT INTO `sec_info` 
 		(
-                              `professor_id`
-                                        , `class_id`
+                              `class_id`
+                                        , `time_id`
+                                        , `classroom_id`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION ALL">
-        SELECT                               	 #{professorId}
-         	                                         	, #{classId}
+        SELECT                               	 #{classId}
+         	                                         	, #{timeId}
+         	                                         	, #{classroomId}
          	                    		</foreach>
 	</insert>
 
 	<!-- 批量保存(兼容),保存全部字段,忽略重复行 -->
     <insert id="saveMultiSet">
-		INSERT INTO `teaches`
+		INSERT INTO `sec_info`
 		(
-                              `professor_id`
-                                        , `class_id`
+                              `class_id`
+                                        , `time_id`
+                                        , `classroom_id`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION">
-        SELECT                               	 #{professorId}
-         	                                         	, #{classId}
+        SELECT                               	 #{classId}
+         	                                         	, #{timeId}
+         	                                         	, #{classroomId}
          	                    		</foreach>
 	</insert>
 
 	<!-- 更新,更新全部字段 -->
-    <update id="update" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.Teaches">
-    UPDATE `teaches`
+    <update id="update" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.SecInfo">
+    UPDATE `sec_info`
      <set>		
-                                      </set>	
-    WHERE `professor_id` = #{professorId}
+                                                    </set>	
+    WHERE `class_id` = #{classId}
         </update>
     
     <!-- 更新不为NULL的字段 -->
-    <update id="updateIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.Teaches">
-    UPDATE `teaches`
+    <update id="updateIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.SecInfo">
+    UPDATE `sec_info`
     <set>
-    	                                            </set>
-    WHERE `professor_id` = #{professorId}
+    	                                                                </set>
+    WHERE `class_id` = #{classId}
         </update>
     
     <!-- 根据指定条件更新 -->
     <update id="updateByQuery">
-        UPDATE `teaches`
+        UPDATE `sec_info`
         <set>
-                                                                            </set>
+                                                                                                        </set>
         <include refid="common.updateWhere" />
             </update>
     
     <!-- 根据指定条件更新 -->
     <update id="updateByMap">
-        UPDATE `teaches`
+        UPDATE `sec_info`
         <set>
             <foreach collection="entity.keys" item="key" separator=",">  
                 ${key} = #{entity[${key}]}
@@ -220,14 +240,14 @@
     </update>
     
 	<!-- 根据主键删除 -->
-    <delete id="deleteById" parameterType="String">
-                    DELETE FROM teaches
-            WHERE professor_id = #{value}
+    <delete id="deleteById" parameterType="Integer">
+                    DELETE FROM sec_info
+            WHERE class_id = #{value}
             </delete>
     
     <!-- 根据条件删除记录 -->
     <delete id="deleteByQuery" parameterType="com.gitee.fastmybatis.core.query.Query">
-		DELETE FROM `teaches`
+		DELETE FROM `sec_info`
 		<include refid="common.where" />
 	</delete>
 
