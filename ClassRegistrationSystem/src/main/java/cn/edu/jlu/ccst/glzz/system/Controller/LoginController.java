@@ -20,8 +20,27 @@ public class LoginController {
     public String hello(@PathVariable String name){
 //        HashMap<String,Object> hm= new HashMap<>();
 //        hm.put("students",userService.getLine());
+        System.out.println("test");
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("student",userService.getLine());
         return jsonObject.toJSONString();
     }
+
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @ResponseBody
+    public String login(String userid,String password,String usertype){
+        switch (usertype){
+            case "学生":
+                break;
+            case "教授":
+                break;
+            case "管理员":
+                break;
+            default:
+        }
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("resultCode",200);
+        return jsonObject.toJSONString();
+    }
+
 }

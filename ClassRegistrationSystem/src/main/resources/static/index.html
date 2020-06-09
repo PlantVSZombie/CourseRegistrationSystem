@@ -137,7 +137,7 @@
             miniTongji = layui.miniTongji;
 
         var options = {
-            iniUrl: "api/init.json",    // 初始化接口
+            iniUrl: "dynamic/init.json",    // 初始化接口
             clearUrl: "api/clear.json", // 缓存清理接口
             urlHashLocation: true,      // 是否打开hash定位
             bgColorDefault: false,      // 主题默认配置
@@ -149,15 +149,6 @@
         };
         miniAdmin.render(options);
 
-        // 百度统计代码，只统计指定域名
-        miniTongji.render({
-            specific: true,
-            domains: [
-                '99php.cn',
-                'layuimini.99php.cn',
-                'layuimini-onepage.99php.cn',
-            ],
-        });
 
         $('.login-out').on("click", function () {
             layer.msg('退出登录成功', function () {
