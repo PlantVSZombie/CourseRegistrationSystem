@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>后台管理-登陆</title>
+    <title>课程注册系统登陆</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -117,14 +117,15 @@
                 success:function (result) {
                     console.log(result);//打印服务端返回的数据(调试用)
                     if (result.status === 200) {
-                        layer.msg("登录成功", function () {})
-                        window.location = '/index.html';
+                        layer.msg("登录成功", {time:2000},function () {
+                            window.location = '/index.html';
+                        })
                     }else {
-                        layer.msg(result.msg)
+                        layer.msg(result.msg, {time:2000})
                     }
                 },
                 error : function() {
-                    layer.msg("网络异常或服务器出错！",function () {});
+                    layer.msg("网络异常或服务器出错！", {time:2000});
                 }
                 });
             return false;
