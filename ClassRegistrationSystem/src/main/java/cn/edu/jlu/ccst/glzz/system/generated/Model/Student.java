@@ -25,8 +25,8 @@ public class Student {
     /**  数据库字段：password */
     private String password;
 
-    /**  数据库字段：name */
-    private String name;
+    /**  数据库字段：student_name */
+    private String studentName;
 
     /**  数据库字段：dept_name */
     private String deptName;
@@ -54,14 +54,14 @@ public class Student {
         return this.password;
     }
 
-    /**  数据库字段：student.name */
-    public void setName(String name) {
-        this.name = name;
+    /**  数据库字段：student.student_name */
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 
-    /**  数据库字段：student.name */
-    public String getName() {
-        return this.name;
+    /**  数据库字段：student.student_name */
+    public String getStudentName() {
+        return this.studentName;
     }
 
     /**  数据库字段：student.dept_name */
@@ -129,7 +129,7 @@ public class Student {
         sb.append(", ");
         sb.append("password=").append(password);
         sb.append(", ");
-        sb.append("name=").append(name);
+        sb.append("studentName=").append(studentName);
         sb.append(", ");
         sb.append("deptName=").append(deptName);
         sb.append(", ");

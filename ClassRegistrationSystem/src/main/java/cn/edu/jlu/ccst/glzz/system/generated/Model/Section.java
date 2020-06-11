@@ -32,8 +32,8 @@ public class Section {
     /**  数据库字段：year */
     private Integer year;
 
-    /**  数据库字段：capacity */
-    private Integer capacity;
+    /**  数据库字段：sec_capacity */
+    private Integer secCapacity;
 
     /**  数据库字段：section.class_id */
     public void setClassId(Integer classId) {
@@ -85,14 +85,14 @@ public class Section {
         return this.year;
     }
 
-    /**  数据库字段：section.capacity */
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
+    /**  数据库字段：section.sec_capacity */
+    public void setSecCapacity(Integer secCapacity) {
+        this.secCapacity = secCapacity;
     }
 
-    /**  数据库字段：section.capacity */
-    public Integer getCapacity() {
-        return this.capacity;
+    /**  数据库字段：section.sec_capacity */
+    public Integer getSecCapacity() {
+        return this.secCapacity;
     }
 
     @Override
@@ -146,7 +146,7 @@ public class Section {
         sb.append(", ");
         sb.append("year=").append(year);
         sb.append(", ");
-        sb.append("capacity=").append(capacity);
+        sb.append("secCapacity=").append(secCapacity);
         sb.append("]");
 
         return sb.toString();

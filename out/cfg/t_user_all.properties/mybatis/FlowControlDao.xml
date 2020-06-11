@@ -4,7 +4,7 @@
     <resultMap id="baseResultMap" type="cn.edu.jlu.ccst.glzz.system.generated.Model.FlowControl">
             <result column="flow_id" property="flowId" jdbcType="INTEGER" />
             <result column="type" property="type" jdbcType="VARCHAR" />
-            <result column="name" property="name" jdbcType="VARCHAR" />
+            <result column="flow_name" property="flowName" jdbcType="VARCHAR" />
             <result column="start_datetime" property="startDatetime" jdbcType="TIMESTAMP" />
             <result column="end_datetime" property="endDatetime" jdbcType="TIMESTAMP" />
             </resultMap>
@@ -13,7 +13,7 @@
     <sql id="baseColumns">
     	                	 t.`flow_id`
 			                	, t.`type`
-			                	, t.`name`
+			                	, t.`flow_name`
 			                	, t.`start_datetime`
 			                	, t.`end_datetime`
 			            </sql>
@@ -25,7 +25,7 @@
         			<otherwise>t.`flow_id`</otherwise>
         		</choose>
         	                	,        	        	t.`type`
-        	                	,        	        	t.`name`
+        	                	,        	        	t.`flow_name`
         	                	,        	        	t.`start_datetime`
         	                	,        	        	t.`end_datetime`
         	            </sql>
@@ -116,13 +116,13 @@
 	INSERT INTO `flow_control`
          (
                                                   `type`
-                                        , `name`
+                                        , `flow_name`
                                         , `start_datetime`
                                         , `end_datetime`
                               )
 	VALUES (
                                                   #{type}
-                                        , #{name}
+                                        , #{flowName}
                                         , #{startDatetime}
                                         , #{endDatetime}
                      
@@ -140,8 +140,8 @@
                                                                                                     <if test="type != null">
                        `type`,
                         </if>
-                                                                                                            <if test="name != null">
-                       `name`,
+                                                                                                            <if test="flowName != null">
+                       `flow_name`,
                         </if>
                                                                                                             <if test="startDatetime != null">
                        `start_datetime`,
@@ -154,8 +154,8 @@
                                                                                                     <if test="type != null" >
                         #{type},                    
                         </if>
-                                                                                                            <if test="name != null" >
-                        #{name},                    
+                                                                                                            <if test="flowName != null" >
+                        #{flowName},                    
                         </if>
                                                                                                             <if test="startDatetime != null" >
                         #{startDatetime},                    
@@ -171,14 +171,14 @@
 		INSERT INTO `flow_control` 
 		(
                                                   `type`
-                                        , `name`
+                                        , `flow_name`
                                         , `start_datetime`
                                         , `end_datetime`
                               )
 		VALUES 
 		<foreach collection="entitys" item="entity"  separator=",">
         (                                                  	 #{type}
-         	                                         	, #{name}
+         	                                         	, #{flowName}
          	                                         	, #{startDatetime}
          	                                         	, #{endDatetime}
          	                            )
@@ -191,13 +191,13 @@
 		INSERT INTO `flow_control` 
 		(
                                                   `type`
-                                        , `name`
+                                        , `flow_name`
                                         , `start_datetime`
                                         , `end_datetime`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION ALL">
         SELECT                                                   	 #{type}
-         	                                         	, #{name}
+         	                                         	, #{flowName}
          	                                         	, #{startDatetime}
          	                                         	, #{endDatetime}
          	                    		</foreach>
@@ -208,13 +208,13 @@
 		INSERT INTO `flow_control`
 		(
                                                   `type`
-                                        , `name`
+                                        , `flow_name`
                                         , `start_datetime`
                                         , `end_datetime`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION">
         SELECT                                                   	 #{type}
-         	                                         	, #{name}
+         	                                         	, #{flowName}
          	                                         	, #{startDatetime}
          	                                         	, #{endDatetime}
          	                    		</foreach>
@@ -225,7 +225,7 @@
     UPDATE `flow_control`
      <set>		
                                      `type`=#{type},
-                                `name`=#{name},
+                                `flow_name`=#{flowName},
                                 `start_datetime`=#{startDatetime},
                                 `end_datetime`=#{endDatetime},
                    </set>	
@@ -239,8 +239,8 @@
     	                                                                    <if test="type != null" >
                     `type`=#{type},
                     </if>
-                                                                                    <if test="name != null" >
-                    `name`=#{name},
+                                                                                    <if test="flowName != null" >
+                    `flow_name`=#{flowName},
                     </if>
                                                                                     <if test="startDatetime != null" >
                     `start_datetime`=#{startDatetime},
@@ -259,8 +259,8 @@
                                                                                                     <if test="entity.type != null or query.forceUpdate" >
                         `type`=${column.mybatisUpdateValuePrefix},
                         </if>
-                                                                                                            <if test="entity.name != null or query.forceUpdate" >
-                        `name`=${column.mybatisUpdateValuePrefix},
+                                                                                                            <if test="entity.flowName != null or query.forceUpdate" >
+                        `flow_name`=${column.mybatisUpdateValuePrefix},
                         </if>
                                                                                                             <if test="entity.startDatetime != null or query.forceUpdate" >
                         `start_datetime`=${column.mybatisUpdateValuePrefix},

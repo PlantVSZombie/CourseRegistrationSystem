@@ -7,7 +7,7 @@
             <result column="sec_id" property="secId" jdbcType="INTEGER" />
             <result column="semester" property="semester" jdbcType="VARCHAR" />
             <result column="year" property="year" jdbcType="INTEGER" />
-            <result column="capacity" property="capacity" jdbcType="INTEGER" />
+            <result column="sec_capacity" property="secCapacity" jdbcType="INTEGER" />
             </resultMap>
     
     <!-- 表字段 -->
@@ -17,7 +17,7 @@
 			                	, t.`sec_id`
 			                	, t.`semester`
 			                	, t.`year`
-			                	, t.`capacity`
+			                	, t.`sec_capacity`
 			            </sql>
     
     <!-- 表字段 -->
@@ -30,7 +30,7 @@
         	                	,        	        	t.`sec_id`
         	                	,        	        	t.`semester`
         	                	,        	        	t.`year`
-        	                	,        	        	t.`capacity`
+        	                	,        	        	t.`sec_capacity`
         	            </sql>
     
 	<!-- 根据条件查询记录 -->
@@ -122,14 +122,14 @@
                                         , `sec_id`
                                         , `semester`
                                         , `year`
-                                        , `capacity`
+                                        , `sec_capacity`
                               )
 	VALUES (
                                                   #{courseId}
                                         , #{secId}
                                         , #{semester}
                                         , #{year}
-                                        , #{capacity}
+                                        , #{secCapacity}
                      
         )
 	</insert>
@@ -154,8 +154,8 @@
                                                                                                             <if test="year != null">
                        `year`,
                         </if>
-                                                                                                            <if test="capacity != null">
-                       `capacity`,
+                                                                                                            <if test="secCapacity != null">
+                       `sec_capacity`,
                         </if>
                                                         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">            
@@ -171,8 +171,8 @@
                                                                                                             <if test="year != null" >
                         #{year},                    
                         </if>
-                                                                                                            <if test="capacity != null" >
-                        #{capacity},                    
+                                                                                                            <if test="secCapacity != null" >
+                        #{secCapacity},                    
                         </if>
                                                         </trim>
     </insert>
@@ -185,7 +185,7 @@
                                         , `sec_id`
                                         , `semester`
                                         , `year`
-                                        , `capacity`
+                                        , `sec_capacity`
                               )
 		VALUES 
 		<foreach collection="entitys" item="entity"  separator=",">
@@ -193,7 +193,7 @@
          	                                         	, #{secId}
          	                                         	, #{semester}
          	                                         	, #{year}
-         	                                         	, #{capacity}
+         	                                         	, #{secCapacity}
          	                            )
 		</foreach>
 	</insert>
@@ -207,14 +207,14 @@
                                         , `sec_id`
                                         , `semester`
                                         , `year`
-                                        , `capacity`
+                                        , `sec_capacity`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION ALL">
         SELECT                                                   	 #{courseId}
          	                                         	, #{secId}
          	                                         	, #{semester}
          	                                         	, #{year}
-         	                                         	, #{capacity}
+         	                                         	, #{secCapacity}
          	                    		</foreach>
 	</insert>
 
@@ -226,14 +226,14 @@
                                         , `sec_id`
                                         , `semester`
                                         , `year`
-                                        , `capacity`
+                                        , `sec_capacity`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION">
         SELECT                                                   	 #{courseId}
          	                                         	, #{secId}
          	                                         	, #{semester}
          	                                         	, #{year}
-         	                                         	, #{capacity}
+         	                                         	, #{secCapacity}
          	                    		</foreach>
 	</insert>
 
@@ -245,7 +245,7 @@
                                 `sec_id`=#{secId},
                                 `semester`=#{semester},
                                 `year`=#{year},
-                                `capacity`=#{capacity},
+                                `sec_capacity`=#{secCapacity},
                    </set>	
     WHERE `class_id` = #{classId}
         </update>
@@ -266,8 +266,8 @@
                                                                                     <if test="year != null" >
                     `year`=#{year},
                     </if>
-                                                                                    <if test="capacity != null" >
-                    `capacity`=#{capacity},
+                                                                                    <if test="secCapacity != null" >
+                    `sec_capacity`=#{secCapacity},
                     </if>
                                         </set>
     WHERE `class_id` = #{classId}
@@ -289,8 +289,8 @@
                                                                                                             <if test="entity.year != null or query.forceUpdate" >
                         `year`=${column.mybatisUpdateValuePrefix},
                         </if>
-                                                                                                            <if test="entity.capacity != null or query.forceUpdate" >
-                        `capacity`=${column.mybatisUpdateValuePrefix},
+                                                                                                            <if test="entity.secCapacity != null or query.forceUpdate" >
+                        `sec_capacity`=${column.mybatisUpdateValuePrefix},
                         </if>
                                                         </set>
         <include refid="common.updateWhere" />

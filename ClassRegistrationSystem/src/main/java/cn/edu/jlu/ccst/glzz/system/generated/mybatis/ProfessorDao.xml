@@ -4,7 +4,7 @@
     <resultMap id="baseResultMap" type="cn.edu.jlu.ccst.glzz.system.generated.Model.Professor">
             <result column="professor_id" property="professorId" jdbcType="VARCHAR" />
             <result column="password" property="password" jdbcType="VARCHAR" />
-            <result column="name" property="name" jdbcType="VARCHAR" />
+            <result column="professor_name" property="professorName" jdbcType="VARCHAR" />
             <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
             </resultMap>
     
@@ -12,7 +12,7 @@
     <sql id="baseColumns">
     	                	 t.`professor_id`
 			                	, t.`password`
-			                	, t.`name`
+			                	, t.`professor_name`
 			                	, t.`dept_name`
 			            </sql>
     
@@ -23,7 +23,7 @@
         			<otherwise>t.`professor_id`</otherwise>
         		</choose>
         	                	,        	        	t.`password`
-        	                	,        	        	t.`name`
+        	                	,        	        	t.`professor_name`
         	                	,        	        	t.`dept_name`
         	            </sql>
     
@@ -113,13 +113,13 @@
          (
                               `professor_id`
                                         , `password`
-                                        , `name`
+                                        , `professor_name`
                                         , `dept_name`
                               )
 	VALUES (
                               #{professorId}
                                         , #{password}
-                                        , #{name}
+                                        , #{professorName}
                                         , #{deptName}
                      
         )
@@ -138,8 +138,8 @@
                                                                                                             <if test="password != null">
                        `password`,
                         </if>
-                                                                                                            <if test="name != null">
-                       `name`,
+                                                                                                            <if test="professorName != null">
+                       `professor_name`,
                         </if>
                                                                                                             <if test="deptName != null">
                        `dept_name`,
@@ -152,8 +152,8 @@
                                                                                                             <if test="password != null" >
                         #{password},                    
                         </if>
-                                                                                                            <if test="name != null" >
-                        #{name},                    
+                                                                                                            <if test="professorName != null" >
+                        #{professorName},                    
                         </if>
                                                                                                             <if test="deptName != null" >
                         #{deptName},                    
@@ -167,14 +167,14 @@
 		(
                               `professor_id`
                                         , `password`
-                                        , `name`
+                                        , `professor_name`
                                         , `dept_name`
                               )
 		VALUES 
 		<foreach collection="entitys" item="entity"  separator=",">
         (                              	 #{professorId}
          	                                         	, #{password}
-         	                                         	, #{name}
+         	                                         	, #{professorName}
          	                                         	, #{deptName}
          	                            )
 		</foreach>
@@ -187,13 +187,13 @@
 		(
                               `professor_id`
                                         , `password`
-                                        , `name`
+                                        , `professor_name`
                                         , `dept_name`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION ALL">
         SELECT                               	 #{professorId}
          	                                         	, #{password}
-         	                                         	, #{name}
+         	                                         	, #{professorName}
          	                                         	, #{deptName}
          	                    		</foreach>
 	</insert>
@@ -204,13 +204,13 @@
 		(
                               `professor_id`
                                         , `password`
-                                        , `name`
+                                        , `professor_name`
                                         , `dept_name`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION">
         SELECT                               	 #{professorId}
          	                                         	, #{password}
-         	                                         	, #{name}
+         	                                         	, #{professorName}
          	                                         	, #{deptName}
          	                    		</foreach>
 	</insert>
@@ -220,7 +220,7 @@
     UPDATE `professor`
      <set>		
                                      `password`=#{password},
-                                `name`=#{name},
+                                `professor_name`=#{professorName},
                                 `dept_name`=#{deptName},
                    </set>	
     WHERE `professor_id` = #{professorId}
@@ -233,8 +233,8 @@
     	                                                                    <if test="password != null" >
                     `password`=#{password},
                     </if>
-                                                                                    <if test="name != null" >
-                    `name`=#{name},
+                                                                                    <if test="professorName != null" >
+                    `professor_name`=#{professorName},
                     </if>
                                                                                     <if test="deptName != null" >
                     `dept_name`=#{deptName},
@@ -250,8 +250,8 @@
                                                                                                     <if test="entity.password != null or query.forceUpdate" >
                         `password`=${column.mybatisUpdateValuePrefix},
                         </if>
-                                                                                                            <if test="entity.name != null or query.forceUpdate" >
-                        `name`=${column.mybatisUpdateValuePrefix},
+                                                                                                            <if test="entity.professorName != null or query.forceUpdate" >
+                        `professor_name`=${column.mybatisUpdateValuePrefix},
                         </if>
                                                                                                             <if test="entity.deptName != null or query.forceUpdate" >
                         `dept_name`=${column.mybatisUpdateValuePrefix},

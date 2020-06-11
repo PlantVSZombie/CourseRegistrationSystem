@@ -25,8 +25,8 @@ public class FlowControl {
     /**  数据库字段：type */
     private String type;
 
-    /**  数据库字段：name */
-    private String name;
+    /**  数据库字段：flow_name */
+    private String flowName;
 
     /**  数据库字段：start_datetime */
     private Date startDatetime;
@@ -54,14 +54,14 @@ public class FlowControl {
         return this.type;
     }
 
-    /**  数据库字段：flow_control.name */
-    public void setName(String name) {
-        this.name = name;
+    /**  数据库字段：flow_control.flow_name */
+    public void setFlowName(String flowName) {
+        this.flowName = flowName;
     }
 
-    /**  数据库字段：flow_control.name */
-    public String getName() {
-        return this.name;
+    /**  数据库字段：flow_control.flow_name */
+    public String getFlowName() {
+        return this.flowName;
     }
 
     /**  数据库字段：flow_control.start_datetime */
@@ -128,7 +128,7 @@ public class FlowControl {
         sb.append(", ");
         sb.append("type=").append(type);
         sb.append(", ");
-        sb.append("name=").append(name);
+        sb.append("flowName=").append(flowName);
         sb.append(", ");
         sb.append("startDatetime=").append(startDatetime);
         sb.append(", ");

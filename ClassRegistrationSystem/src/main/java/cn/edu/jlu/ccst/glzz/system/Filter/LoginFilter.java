@@ -34,11 +34,6 @@ public class LoginFilter implements Filter {
         HttpServletResponse response=(HttpServletResponse) servletResponse;
         User loginedUser= (User) request.getSession().getAttribute("user");
         if (loginedUser!=null){
-            if (url.indexOf("login.html")>=0){
-                System.out.println("已登录，页面重定向");
-                response.sendRedirect("/index.html");
-                return;
-            }
             filterChain.doFilter(servletRequest,servletResponse);
         }else {
             if (url.indexOf("login")>=0){

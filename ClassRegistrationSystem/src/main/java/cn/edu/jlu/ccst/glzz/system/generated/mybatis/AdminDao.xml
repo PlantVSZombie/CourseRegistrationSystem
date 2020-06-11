@@ -4,14 +4,14 @@
     <resultMap id="baseResultMap" type="cn.edu.jlu.ccst.glzz.system.generated.Model.Admin">
             <result column="admin_id" property="adminId" jdbcType="VARCHAR" />
             <result column="password" property="password" jdbcType="VARCHAR" />
-            <result column="name" property="name" jdbcType="VARCHAR" />
+            <result column="admin_name" property="adminName" jdbcType="VARCHAR" />
             </resultMap>
     
     <!-- 表字段 -->
     <sql id="baseColumns">
     	                	 t.`admin_id`
 			                	, t.`password`
-			                	, t.`name`
+			                	, t.`admin_name`
 			            </sql>
     
     <!-- 表字段 -->
@@ -21,7 +21,7 @@
         			<otherwise>t.`admin_id`</otherwise>
         		</choose>
         	                	,        	        	t.`password`
-        	                	,        	        	t.`name`
+        	                	,        	        	t.`admin_name`
         	            </sql>
     
 	<!-- 根据条件查询记录 -->
@@ -110,12 +110,12 @@
          (
                               `admin_id`
                                         , `password`
-                                        , `name`
+                                        , `admin_name`
                               )
 	VALUES (
                               #{adminId}
                                         , #{password}
-                                        , #{name}
+                                        , #{adminName}
                      
         )
 	</insert>
@@ -133,8 +133,8 @@
                                                                                                             <if test="password != null">
                        `password`,
                         </if>
-                                                                                                            <if test="name != null">
-                       `name`,
+                                                                                                            <if test="adminName != null">
+                       `admin_name`,
                         </if>
                                                         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">            
@@ -144,8 +144,8 @@
                                                                                                             <if test="password != null" >
                         #{password},                    
                         </if>
-                                                                                                            <if test="name != null" >
-                        #{name},                    
+                                                                                                            <if test="adminName != null" >
+                        #{adminName},                    
                         </if>
                                                         </trim>
     </insert>
@@ -156,13 +156,13 @@
 		(
                               `admin_id`
                                         , `password`
-                                        , `name`
+                                        , `admin_name`
                               )
 		VALUES 
 		<foreach collection="entitys" item="entity"  separator=",">
         (                              	 #{adminId}
          	                                         	, #{password}
-         	                                         	, #{name}
+         	                                         	, #{adminName}
          	                            )
 		</foreach>
 	</insert>
@@ -174,12 +174,12 @@
 		(
                               `admin_id`
                                         , `password`
-                                        , `name`
+                                        , `admin_name`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION ALL">
         SELECT                               	 #{adminId}
          	                                         	, #{password}
-         	                                         	, #{name}
+         	                                         	, #{adminName}
          	                    		</foreach>
 	</insert>
 
@@ -189,12 +189,12 @@
 		(
                               `admin_id`
                                         , `password`
-                                        , `name`
+                                        , `admin_name`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION">
         SELECT                               	 #{adminId}
          	                                         	, #{password}
-         	                                         	, #{name}
+         	                                         	, #{adminName}
          	                    		</foreach>
 	</insert>
 
@@ -203,7 +203,7 @@
     UPDATE `admin`
      <set>		
                                      `password`=#{password},
-                                `name`=#{name},
+                                `admin_name`=#{adminName},
                    </set>	
     WHERE `admin_id` = #{adminId}
         </update>
@@ -215,8 +215,8 @@
     	                                                                    <if test="password != null" >
                     `password`=#{password},
                     </if>
-                                                                                    <if test="name != null" >
-                    `name`=#{name},
+                                                                                    <if test="adminName != null" >
+                    `admin_name`=#{adminName},
                     </if>
                                         </set>
     WHERE `admin_id` = #{adminId}
@@ -229,8 +229,8 @@
                                                                                                     <if test="entity.password != null or query.forceUpdate" >
                         `password`=${column.mybatisUpdateValuePrefix},
                         </if>
-                                                                                                            <if test="entity.name != null or query.forceUpdate" >
-                        `name`=${column.mybatisUpdateValuePrefix},
+                                                                                                            <if test="entity.adminName != null or query.forceUpdate" >
+                        `admin_name`=${column.mybatisUpdateValuePrefix},
                         </if>
                                                         </set>
         <include refid="common.updateWhere" />

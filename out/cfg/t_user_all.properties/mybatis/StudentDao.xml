@@ -4,7 +4,7 @@
     <resultMap id="baseResultMap" type="cn.edu.jlu.ccst.glzz.system.generated.Model.Student">
             <result column="student_id" property="studentId" jdbcType="VARCHAR" />
             <result column="password" property="password" jdbcType="VARCHAR" />
-            <result column="name" property="name" jdbcType="VARCHAR" />
+            <result column="student_name" property="studentName" jdbcType="VARCHAR" />
             <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
             <result column="tot_cred" property="totCred" jdbcType="DECIMAL" />
             </resultMap>
@@ -13,7 +13,7 @@
     <sql id="baseColumns">
     	                	 t.`student_id`
 			                	, t.`password`
-			                	, t.`name`
+			                	, t.`student_name`
 			                	, t.`dept_name`
 			                	, t.`tot_cred`
 			            </sql>
@@ -25,7 +25,7 @@
         			<otherwise>t.`student_id`</otherwise>
         		</choose>
         	                	,        	        	t.`password`
-        	                	,        	        	t.`name`
+        	                	,        	        	t.`student_name`
         	                	,        	        	t.`dept_name`
         	                	,        	        	t.`tot_cred`
         	            </sql>
@@ -116,14 +116,14 @@
          (
                               `student_id`
                                         , `password`
-                                        , `name`
+                                        , `student_name`
                                         , `dept_name`
                                         , `tot_cred`
                               )
 	VALUES (
                               #{studentId}
                                         , #{password}
-                                        , #{name}
+                                        , #{studentName}
                                         , #{deptName}
                                         , #{totCred}
                      
@@ -143,8 +143,8 @@
                                                                                                             <if test="password != null">
                        `password`,
                         </if>
-                                                                                                            <if test="name != null">
-                       `name`,
+                                                                                                            <if test="studentName != null">
+                       `student_name`,
                         </if>
                                                                                                             <if test="deptName != null">
                        `dept_name`,
@@ -160,8 +160,8 @@
                                                                                                             <if test="password != null" >
                         #{password},                    
                         </if>
-                                                                                                            <if test="name != null" >
-                        #{name},                    
+                                                                                                            <if test="studentName != null" >
+                        #{studentName},                    
                         </if>
                                                                                                             <if test="deptName != null" >
                         #{deptName},                    
@@ -178,7 +178,7 @@
 		(
                               `student_id`
                                         , `password`
-                                        , `name`
+                                        , `student_name`
                                         , `dept_name`
                                         , `tot_cred`
                               )
@@ -186,7 +186,7 @@
 		<foreach collection="entitys" item="entity"  separator=",">
         (                              	 #{studentId}
          	                                         	, #{password}
-         	                                         	, #{name}
+         	                                         	, #{studentName}
          	                                         	, #{deptName}
          	                                         	, #{totCred}
          	                            )
@@ -200,14 +200,14 @@
 		(
                               `student_id`
                                         , `password`
-                                        , `name`
+                                        , `student_name`
                                         , `dept_name`
                                         , `tot_cred`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION ALL">
         SELECT                               	 #{studentId}
          	                                         	, #{password}
-         	                                         	, #{name}
+         	                                         	, #{studentName}
          	                                         	, #{deptName}
          	                                         	, #{totCred}
          	                    		</foreach>
@@ -219,14 +219,14 @@
 		(
                               `student_id`
                                         , `password`
-                                        , `name`
+                                        , `student_name`
                                         , `dept_name`
                                         , `tot_cred`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION">
         SELECT                               	 #{studentId}
          	                                         	, #{password}
-         	                                         	, #{name}
+         	                                         	, #{studentName}
          	                                         	, #{deptName}
          	                                         	, #{totCred}
          	                    		</foreach>
@@ -237,7 +237,7 @@
     UPDATE `student`
      <set>		
                                      `password`=#{password},
-                                `name`=#{name},
+                                `student_name`=#{studentName},
                                 `dept_name`=#{deptName},
                                 `tot_cred`=#{totCred},
                    </set>	
@@ -251,8 +251,8 @@
     	                                                                    <if test="password != null" >
                     `password`=#{password},
                     </if>
-                                                                                    <if test="name != null" >
-                    `name`=#{name},
+                                                                                    <if test="studentName != null" >
+                    `student_name`=#{studentName},
                     </if>
                                                                                     <if test="deptName != null" >
                     `dept_name`=#{deptName},
@@ -271,8 +271,8 @@
                                                                                                     <if test="entity.password != null or query.forceUpdate" >
                         `password`=${column.mybatisUpdateValuePrefix},
                         </if>
-                                                                                                            <if test="entity.name != null or query.forceUpdate" >
-                        `name`=${column.mybatisUpdateValuePrefix},
+                                                                                                            <if test="entity.studentName != null or query.forceUpdate" >
+                        `student_name`=${column.mybatisUpdateValuePrefix},
                         </if>
                                                                                                             <if test="entity.deptName != null or query.forceUpdate" >
                         `dept_name`=${column.mybatisUpdateValuePrefix},

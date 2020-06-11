@@ -5,7 +5,7 @@
             <result column="classroom_id" property="classroomId" jdbcType="INTEGER" />
             <result column="building" property="building" jdbcType="VARCHAR" />
             <result column="room_number" property="roomNumber" jdbcType="VARCHAR" />
-            <result column="capacity" property="capacity" jdbcType="DECIMAL" />
+            <result column="room_capacity" property="roomCapacity" jdbcType="DECIMAL" />
             </resultMap>
     
     <!-- 表字段 -->
@@ -13,7 +13,7 @@
     	                	 t.`classroom_id`
 			                	, t.`building`
 			                	, t.`room_number`
-			                	, t.`capacity`
+			                	, t.`room_capacity`
 			            </sql>
     
     <!-- 表字段 -->
@@ -24,7 +24,7 @@
         		</choose>
         	                	,        	        	t.`building`
         	                	,        	        	t.`room_number`
-        	                	,        	        	t.`capacity`
+        	                	,        	        	t.`room_capacity`
         	            </sql>
     
 	<!-- 根据条件查询记录 -->
@@ -114,13 +114,13 @@
                               `classroom_id`
                                         , `building`
                                         , `room_number`
-                                        , `capacity`
+                                        , `room_capacity`
                               )
 	VALUES (
                               #{classroomId}
                                         , #{building}
                                         , #{roomNumber}
-                                        , #{capacity}
+                                        , #{roomCapacity}
                      
         )
 	</insert>
@@ -141,8 +141,8 @@
                                                                                                             <if test="roomNumber != null">
                        `room_number`,
                         </if>
-                                                                                                            <if test="capacity != null">
-                       `capacity`,
+                                                                                                            <if test="roomCapacity != null">
+                       `room_capacity`,
                         </if>
                                                         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">            
@@ -155,8 +155,8 @@
                                                                                                             <if test="roomNumber != null" >
                         #{roomNumber},                    
                         </if>
-                                                                                                            <if test="capacity != null" >
-                        #{capacity},                    
+                                                                                                            <if test="roomCapacity != null" >
+                        #{roomCapacity},                    
                         </if>
                                                         </trim>
     </insert>
@@ -168,14 +168,14 @@
                               `classroom_id`
                                         , `building`
                                         , `room_number`
-                                        , `capacity`
+                                        , `room_capacity`
                               )
 		VALUES 
 		<foreach collection="entitys" item="entity"  separator=",">
         (                              	 #{classroomId}
          	                                         	, #{building}
          	                                         	, #{roomNumber}
-         	                                         	, #{capacity}
+         	                                         	, #{roomCapacity}
          	                            )
 		</foreach>
 	</insert>
@@ -188,13 +188,13 @@
                               `classroom_id`
                                         , `building`
                                         , `room_number`
-                                        , `capacity`
+                                        , `room_capacity`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION ALL">
         SELECT                               	 #{classroomId}
          	                                         	, #{building}
          	                                         	, #{roomNumber}
-         	                                         	, #{capacity}
+         	                                         	, #{roomCapacity}
          	                    		</foreach>
 	</insert>
 
@@ -205,13 +205,13 @@
                               `classroom_id`
                                         , `building`
                                         , `room_number`
-                                        , `capacity`
+                                        , `room_capacity`
                               )
 		<foreach collection="entitys" item="entity"  separator="UNION">
         SELECT                               	 #{classroomId}
          	                                         	, #{building}
          	                                         	, #{roomNumber}
-         	                                         	, #{capacity}
+         	                                         	, #{roomCapacity}
          	                    		</foreach>
 	</insert>
 
@@ -221,7 +221,7 @@
      <set>		
                                      `building`=#{building},
                                 `room_number`=#{roomNumber},
-                                `capacity`=#{capacity},
+                                `room_capacity`=#{roomCapacity},
                    </set>	
     WHERE `classroom_id` = #{classroomId}
         </update>
@@ -236,8 +236,8 @@
                                                                                     <if test="roomNumber != null" >
                     `room_number`=#{roomNumber},
                     </if>
-                                                                                    <if test="capacity != null" >
-                    `capacity`=#{capacity},
+                                                                                    <if test="roomCapacity != null" >
+                    `room_capacity`=#{roomCapacity},
                     </if>
                                         </set>
     WHERE `classroom_id` = #{classroomId}
@@ -253,8 +253,8 @@
                                                                                                             <if test="entity.roomNumber != null or query.forceUpdate" >
                         `room_number`=${column.mybatisUpdateValuePrefix},
                         </if>
-                                                                                                            <if test="entity.capacity != null or query.forceUpdate" >
-                        `capacity`=${column.mybatisUpdateValuePrefix},
+                                                                                                            <if test="entity.roomCapacity != null or query.forceUpdate" >
+                        `room_capacity`=${column.mybatisUpdateValuePrefix},
                         </if>
                                                         </set>
         <include refid="common.updateWhere" />

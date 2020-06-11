@@ -28,8 +28,8 @@ public class Classroom {
     /**  数据库字段：room_number */
     private String roomNumber;
 
-    /**  数据库字段：capacity */
-    private BigDecimal capacity;
+    /**  数据库字段：room_capacity */
+    private BigDecimal roomCapacity;
 
     /**  数据库字段：classroom.classroom_id */
     public void setClassroomId(Integer classroomId) {
@@ -61,14 +61,14 @@ public class Classroom {
         return this.roomNumber;
     }
 
-    /**  数据库字段：classroom.capacity */
-    public void setCapacity(BigDecimal capacity) {
-        this.capacity = capacity;
+    /**  数据库字段：classroom.room_capacity */
+    public void setRoomCapacity(BigDecimal roomCapacity) {
+        this.roomCapacity = roomCapacity;
     }
 
-    /**  数据库字段：classroom.capacity */
-    public BigDecimal getCapacity() {
-        return this.capacity;
+    /**  数据库字段：classroom.room_capacity */
+    public BigDecimal getRoomCapacity() {
+        return this.roomCapacity;
     }
 
     @Override
@@ -118,7 +118,7 @@ public class Classroom {
         sb.append(", ");
         sb.append("roomNumber=").append(roomNumber);
         sb.append(", ");
-        sb.append("capacity=").append(capacity);
+        sb.append("roomCapacity=").append(roomCapacity);
         sb.append("]");
 
         return sb.toString();

@@ -23,8 +23,8 @@ public class Professor {
     /**  数据库字段：password */
     private String password;
 
-    /**  数据库字段：name */
-    private String name;
+    /**  数据库字段：professor_name */
+    private String professorName;
 
     /**  数据库字段：dept_name */
     private String deptName;
@@ -49,14 +49,14 @@ public class Professor {
         return this.password;
     }
 
-    /**  数据库字段：professor.name */
-    public void setName(String name) {
-        this.name = name;
+    /**  数据库字段：professor.professor_name */
+    public void setProfessorName(String professorName) {
+        this.professorName = professorName;
     }
 
-    /**  数据库字段：professor.name */
-    public String getName() {
-        return this.name;
+    /**  数据库字段：professor.professor_name */
+    public String getProfessorName() {
+        return this.professorName;
     }
 
     /**  数据库字段：professor.dept_name */
@@ -114,7 +114,7 @@ public class Professor {
         sb.append(", ");
         sb.append("password=").append(password);
         sb.append(", ");
-        sb.append("name=").append(name);
+        sb.append("professorName=").append(professorName);
         sb.append(", ");
         sb.append("deptName=").append(deptName);
         sb.append("]");

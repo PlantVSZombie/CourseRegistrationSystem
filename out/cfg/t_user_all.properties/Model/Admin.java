@@ -23,8 +23,8 @@ public class Admin {
     /**  数据库字段：password */
     private String password;
 
-    /**  数据库字段：name */
-    private String name;
+    /**  数据库字段：admin_name */
+    private String adminName;
 
     /**  数据库字段：admin.admin_id */
     public void setAdminId(String adminId) {
@@ -46,14 +46,14 @@ public class Admin {
         return this.password;
     }
 
-    /**  数据库字段：admin.name */
-    public void setName(String name) {
-        this.name = name;
+    /**  数据库字段：admin.admin_name */
+    public void setAdminName(String adminName) {
+        this.adminName = adminName;
     }
 
-    /**  数据库字段：admin.name */
-    public String getName() {
-        return this.name;
+    /**  数据库字段：admin.admin_name */
+    public String getAdminName() {
+        return this.adminName;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class Admin {
         sb.append(", ");
         sb.append("password=").append(password);
         sb.append(", ");
-        sb.append("name=").append(name);
+        sb.append("adminName=").append(adminName);
         sb.append("]");
 
         return sb.toString();

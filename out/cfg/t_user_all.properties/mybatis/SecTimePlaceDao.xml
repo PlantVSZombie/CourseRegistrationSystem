@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.edu.jlu.ccst.glzz.system.generated.DAO.SecInfoDao">
-    <resultMap id="baseResultMap" type="cn.edu.jlu.ccst.glzz.system.generated.Model.SecInfo">
+<mapper namespace="cn.edu.jlu.ccst.glzz.system.generated.DAO.SecTimePlaceDao">
+    <resultMap id="baseResultMap" type="cn.edu.jlu.ccst.glzz.system.generated.Model.SecTimePlace">
             <result column="class_id" property="classId" jdbcType="INTEGER" />
             <result column="time_id" property="timeId" jdbcType="INTEGER" />
             <result column="classroom_id" property="classroomId" jdbcType="INTEGER" />
@@ -35,7 +35,7 @@
 		resultMap="baseResultMap">
 		SELECT 
 			<include refid="baseColumnsList" />
-		FROM `sec_info` t
+		FROM `sec_time_place` t
 		<include refid="common.join" />
 		<where>
 		    <include refid="common.condition" />
@@ -50,7 +50,7 @@
             <foreach collection="columns" item="column" separator=",">
                 ${column}
             </foreach>
-        FROM `sec_info` t
+        FROM `sec_time_place` t
         <include refid="common.join" />
         <where>
             <include refid="common.condition" />
@@ -62,7 +62,7 @@
 	<!-- 根据条件查询记录数 -->
     <select id="getCount" parameterType="com.gitee.fastmybatis.core.query.Query"
 		resultType="long">
-		SELECT count(*) FROM `sec_info` t
+		SELECT count(*) FROM `sec_time_place` t
 		<include refid="common.join" />
         <where>
             <include refid="common.condition" />
@@ -73,7 +73,7 @@
     <select id="getById" resultMap="baseResultMap" parameterType="Integer">
 		SELECT 
         	<include refid="baseColumns" />
-		FROM `sec_info` t
+		FROM `sec_time_place` t
 		WHERE t.`class_id` = #{value}
 				LIMIT 1
 	</select>
@@ -82,7 +82,7 @@
     <select id="getByQuery" resultMap="baseResultMap" parameterType="com.gitee.fastmybatis.core.query.Query">
 		SELECT
 			<include refid="baseColumns" />			
-		FROM `sec_info` t
+		FROM `sec_time_place` t
 		<include refid="common.join" />
         <where>
             <include refid="common.condition" />
@@ -95,7 +95,7 @@
 	<select id="getByColumn" resultMap="baseResultMap">
 		SELECT
 			<include refid="baseColumns" />
-		FROM `sec_info` t
+		FROM `sec_time_place` t
 		WHERE t.`${column}` = #{value}
 				LIMIT 1
 	</select>
@@ -104,15 +104,15 @@
 	<select id="listByColumn" resultMap="baseResultMap">
 		SELECT
 			<include refid="baseColumns" />
-		FROM `sec_info` t
+		FROM `sec_time_place` t
 		WHERE t.`${column}`= #{value}
 			</select>
 	
 
 	<!-- 保存,保存全部字段 -->
-    <insert id="save" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.SecInfo"
+    <insert id="save" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.SecTimePlace"
     >
-	INSERT INTO `sec_info`
+	INSERT INTO `sec_time_place`
          (
                               `class_id`
                                         , `time_id`
@@ -127,9 +127,9 @@
 	</insert>
     
     <!-- 保存,保存不为NULL的字段 -->
-    <insert id="saveIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.SecInfo"
+    <insert id="saveIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.SecTimePlace"
             >
-                INSERT INTO `sec_info`
+                INSERT INTO `sec_time_place`
     
         <trim prefix="(" suffix=")" suffixOverrides=",">	 
 
@@ -158,7 +158,7 @@
 
 	<!-- 批量保存,保存全部字段 -->
     <insert id="saveBatch">
-		INSERT INTO `sec_info` 
+		INSERT INTO `sec_time_place` 
 		(
                               `class_id`
                                         , `time_id`
@@ -176,7 +176,7 @@
 
 	<!-- 批量保存(兼容),保存全部字段 -->
     <insert id="saveMulti">
-		INSERT INTO `sec_info` 
+		INSERT INTO `sec_time_place` 
 		(
                               `class_id`
                                         , `time_id`
@@ -191,7 +191,7 @@
 
 	<!-- 批量保存(兼容),保存全部字段,忽略重复行 -->
     <insert id="saveMultiSet">
-		INSERT INTO `sec_info`
+		INSERT INTO `sec_time_place`
 		(
                               `class_id`
                                         , `time_id`
@@ -205,16 +205,16 @@
 	</insert>
 
 	<!-- 更新,更新全部字段 -->
-    <update id="update" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.SecInfo">
-    UPDATE `sec_info`
+    <update id="update" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.SecTimePlace">
+    UPDATE `sec_time_place`
      <set>		
                                                     </set>	
     WHERE `class_id` = #{classId}
         </update>
     
     <!-- 更新不为NULL的字段 -->
-    <update id="updateIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.SecInfo">
-    UPDATE `sec_info`
+    <update id="updateIgnoreNull" parameterType="cn.edu.jlu.ccst.glzz.system.generated.Model.SecTimePlace">
+    UPDATE `sec_time_place`
     <set>
     	                                                                </set>
     WHERE `class_id` = #{classId}
@@ -222,7 +222,7 @@
     
     <!-- 根据指定条件更新 -->
     <update id="updateByQuery">
-        UPDATE `sec_info`
+        UPDATE `sec_time_place`
         <set>
                                                                                                         </set>
         <include refid="common.updateWhere" />
@@ -230,7 +230,7 @@
     
     <!-- 根据指定条件更新 -->
     <update id="updateByMap">
-        UPDATE `sec_info`
+        UPDATE `sec_time_place`
         <set>
             <foreach collection="entity.keys" item="key" separator=",">  
                 ${key} = #{entity[${key}]}
@@ -241,13 +241,13 @@
     
 	<!-- 根据主键删除 -->
     <delete id="deleteById" parameterType="Integer">
-                    DELETE FROM sec_info
+                    DELETE FROM sec_time_place
             WHERE class_id = #{value}
             </delete>
     
     <!-- 根据条件删除记录 -->
     <delete id="deleteByQuery" parameterType="com.gitee.fastmybatis.core.query.Query">
-		DELETE FROM `sec_info`
+		DELETE FROM `sec_time_place`
 		<include refid="common.where" />
 	</delete>
 

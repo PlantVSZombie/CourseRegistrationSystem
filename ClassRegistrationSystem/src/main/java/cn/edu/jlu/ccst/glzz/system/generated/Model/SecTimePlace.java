@@ -8,12 +8,12 @@ import javax.persistence.Table;
 
 
 /**
- * 表名：sec_info
+ * 表名：sec_time_place
  *
  * @author glzz
  */
-@Table(name = "sec_info")
-public class SecInfo {
+@Table(name = "sec_time_place")
+public class SecTimePlace {
     @Id
     @Column(name = "class_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,32 +30,32 @@ public class SecInfo {
     /**  数据库字段：classroom_id */
     private Integer classroomId;
 
-    /**  数据库字段：sec_info.class_id */
+    /**  数据库字段：sec_time_place.class_id */
     public void setClassId(Integer classId) {
         this.classId = classId;
     }
 
-    /**  数据库字段：sec_info.class_id */
+    /**  数据库字段：sec_time_place.class_id */
     public Integer getClassId() {
         return this.classId;
     }
 
-    /**  数据库字段：sec_info.time_id */
+    /**  数据库字段：sec_time_place.time_id */
     public void setTimeId(Integer timeId) {
         this.timeId = timeId;
     }
 
-    /**  数据库字段：sec_info.time_id */
+    /**  数据库字段：sec_time_place.time_id */
     public Integer getTimeId() {
         return this.timeId;
     }
 
-    /**  数据库字段：sec_info.classroom_id */
+    /**  数据库字段：sec_time_place.classroom_id */
     public void setClassroomId(Integer classroomId) {
         this.classroomId = classroomId;
     }
 
-    /**  数据库字段：sec_info.classroom_id */
+    /**  数据库字段：sec_time_place.classroom_id */
     public Integer getClassroomId() {
         return this.classroomId;
     }
@@ -84,7 +84,7 @@ public class SecInfo {
             return false;
         }
 
-        SecInfo other = (SecInfo) obj;
+        SecTimePlace other = (SecTimePlace) obj;
 
         if (classId == null) {
             if (other.classId != null) {
@@ -100,7 +100,7 @@ public class SecInfo {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("SecInfo [");
+        sb.append("SecTimePlace [");
         sb.append("classId=").append(classId);
         sb.append(", ");
         sb.append("timeId=").append(timeId);
