@@ -72,8 +72,8 @@
               "target": "_self"
             },
             {
-              "title": "分步表单",
-              "href": "newpage/admin/form-step.html",
+              "title": "学生选课控制",
+              "href": "newpage/admin/course_select_control.html",
               "icon": "fa fa-navicon",
               "target": "_self"
             }

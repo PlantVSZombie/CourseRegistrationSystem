@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+
+
+        <form class="layui-form" action="" id="register_form">
+
+
+            <div class="layui-form-item">
+
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">操作类型:</label>
+                    <div class="layui-input-block">
+                        <select lay-verify="required">
+                            <option value="1" selected>学生选课</option>
+                            <option value="2">教授排课</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">学年</label>
+                    <div class="layui-input-inline">
+                        <input type="number" name="year" lay-verify="required|year" autocomplete="off" placeholder="请输入学年" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">学期:</label>
+                    <div class="layui-input-block">
+                        <select lay-verify="required" name="semester">
+                            <option value="Spring" selected>第一学期</option>
+                            <option value="Fall">第二学期</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">开始日期</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="start_date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">结束日期</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="end_date" id="date1" lay-verify="" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+
+        </form>
+
+
+<script src="/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+
+    layui.use(['form', 'layedit', 'laydate'], function () {
+
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+        var $=layui.jquery
+
+        //日期
+        laydate.render({
+            elem: '#date'
+        });
+        laydate.render({
+            elem: '#date1'
+        });
+
+        //创建一个编辑器
+        var editIndex = layedit.build('LAY_demo_editor');
+
+        //自定义验证规则
+        form.verify({
+            year: function (value) {
+                if (value<0) {
+                    return '学年为大于0的整数';
+                }
+            }
+            , pass: [
+                /^[\S]{6,12}$/
+                , '密码必须6到12位，且不能出现空格'
+            ]
+            , content: function (value) {
+                layedit.sync(editIndex);
+            }
+        });
+
+
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            })
+            console.log(data)
+            // if(data.field.year<=0){
+            //     layer.msg("!!", {time:2000});
+            // }
+            $.ajax({
+                type:"POST",
+                dataType: "json",//预期服务器返回的数据类型
+                url: "/admin/courseControl.json" ,//url
+                data:$(register_form).serialize(),
+                success:function (result) {
+
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.status === 200) {
+                        layer.msg("提交成功", {time:2000},function () {
+                        })
+                    }else {
+                        layer.msg(result.msg, {time:2000})
+                    }
+                },
+                error : function() {
+                    layer.msg("网络异常或服务器出错!!", {time:2000});
+                }
+            });
+            return false;
+        });
+
+
+
+    });
+</script>
+
+</body>
+</html>
