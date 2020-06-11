@@ -32,14 +32,14 @@
               "href": "newpage/student/welcome-2.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
-            },
-            {
-              "title": "主页三",
-              "href": "newpage/student/welcome-3.html",
-              "icon": "fa fa-tachometer",
-              "target": "_self"
             }
           ]
+        },
+        {
+          "title": "查看成绩",
+          "href": "newpage/student/grade_table.html",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
         },
         {
           "title": "菜单管理",
