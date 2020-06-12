@@ -48,6 +48,14 @@ public class AdminFilter implements Filter {
                 }
 
         }
+        if(url.indexOf("/user_info.json")>0){
+            filterChain.doFilter(servletRequest,servletResponse);
+            return;
+        }
+        if(url.indexOf("/user-")>0){
+            filterChain.doFilter(servletRequest,servletResponse);
+            return;
+        }
         System.out.println("权限拦截:"+request.getRequestURL());
         HttpServletResponse response=(HttpServletResponse) servletResponse;
         response.sendRedirect("/newpage/404.html");
