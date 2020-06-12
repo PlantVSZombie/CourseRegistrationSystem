@@ -14,10 +14,10 @@ public class CurrentTime {
     }
     public static String getSemester(){
         String semester=null;
-        if(month>=1 && month<=5){
+        if(month>=1 && month<=6){
             semester="Spring";
         }
-        else if(month>=6 && month<=12)
+        else if(month>=7 && month<=12)
         {
             semester="Autumn";
         }
