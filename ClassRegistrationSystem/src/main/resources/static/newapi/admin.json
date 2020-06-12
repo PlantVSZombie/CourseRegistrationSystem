@@ -42,6 +42,12 @@
           ]
         },
         {
+          "title": "消息站",
+          "href": "newpage/admin/messages.html",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
+        },
+        {
           "title": "菜单管理",
           "href": "newpage/admin/menu.html",
           "icon": "fa fa-window-maximize",

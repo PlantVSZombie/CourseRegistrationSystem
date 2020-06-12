@@ -71,14 +71,15 @@ public class MessageService {
                 query.eq("type","student");
                 break;
             case Admin:
-                Professor professor=(Professor) user.getPerson();
-                query.eq("user_id",professor.getProfessorId());
-                query.eq("type","professor");
-                break;
-            case Professor:
                 Admin admin=(Admin) user.getPerson();
                 query.eq("user_id",admin.getAdminId());
                 query.eq("type","admin");
+                break;
+            case Professor:
+                Professor professor=(Professor) user.getPerson();
+                query.eq("user_id",professor.getProfessorId());
+                query.eq("type","professor");
+
                 break;
         }
         query.eq("message_id",message_id);
@@ -89,7 +90,7 @@ public class MessageService {
     }
 
 
-    public List<Message> getMessages(User user){
+    public List<Message> getMessages(User user,int limit,int page){
         Query query=new Query();
 
         switch (user.getUserType()){
@@ -99,16 +100,19 @@ public class MessageService {
                 query.eq("type","student");
                 break;
             case Admin:
-                Professor professor=(Professor) user.getPerson();
-                query.eq("user_id",professor.getProfessorId());
-                query.eq("type","professor");
-                break;
-            case Professor:
                 Admin admin=(Admin) user.getPerson();
                 query.eq("user_id",admin.getAdminId());
                 query.eq("type","admin");
                 break;
+
+            case Professor:
+                Professor professor=(Professor) user.getPerson();
+                query.eq("user_id",professor.getProfessorId());
+                query.eq("type","professor");
+                break;
+
         }
+        query.page(page,limit);
         return messageDao.list(query);
     }
 }

@@ -48,7 +48,7 @@ public class AdminFilter implements Filter {
                 }
 
         }
-        System.out.println("拦截:"+request.getRequestURL());
+        System.out.println("权限拦截:"+request.getRequestURL());
         HttpServletResponse response=(HttpServletResponse) servletResponse;
         response.sendRedirect("/newpage/404.html");
     }

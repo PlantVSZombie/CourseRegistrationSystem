@@ -31,6 +31,8 @@ class MessageControllerTest {
         given()
                 .log().all()
                 .cookies(responseCookies)
+                .param("limit",15)
+                .param("page",1)
                 .when()
                 .get("/student/messages.json")
                 .then()

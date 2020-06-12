@@ -19,9 +19,9 @@ public class MessageController {
     MessageService messageService;
 
     @RequestMapping(value = {"/student/messages.json","/professor/messages.json","/admin/messages.json"},produces="application/json;charset=UTF-8")
-    public JSONObject getMessages(HttpSession session){
+    public JSONObject getMessages(HttpSession session,int limit,int page){
         User user=(User)session.getAttribute("user");
-        List<Message> messages=messageService.getMessages(user);
+        List<Message> messages=messageService.getMessages(user,limit,page);
 
         JsonUtil jsonUtil=new JsonUtil(200,"");
         jsonUtil.put("count",messages.size());

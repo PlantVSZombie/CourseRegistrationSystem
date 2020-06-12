@@ -42,6 +42,12 @@
           "target": "_self"
         },
         {
+          "title": "消息站",
+          "href": "newpage/student/messages.html",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
+        },
+        {
           "title": "菜单管理",
           "href": "newpage/student/menu.html",
           "icon": "fa fa-window-maximize",
