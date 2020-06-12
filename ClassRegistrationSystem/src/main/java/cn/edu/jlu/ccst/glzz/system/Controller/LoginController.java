@@ -4,17 +4,10 @@ import cn.edu.jlu.ccst.glzz.system.Model.User;
 import cn.edu.jlu.ccst.glzz.system.Service.LoginService;
 import cn.edu.jlu.ccst.glzz.system.Service.UserService;
 import cn.edu.jlu.ccst.glzz.system.Util.Result;
-import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 public class LoginController {
@@ -23,13 +16,6 @@ public class LoginController {
     @Resource
     private LoginService loginService;
 
-    @RequestMapping("/hello/{name}")
-    public String hello(@PathVariable String name){
-        System.out.println("test");
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("student",userService.getLine());
-        return jsonObject.toJSONString();
-    }
 
     @RequestMapping(value = "/login",method = RequestMethod.POST,produces="application/json;charset=UTF-8")
     public Result login(String userid, String password, String usertype, HttpSession session){

@@ -21,22 +21,9 @@ public class GradeController {
     @Resource
     GradeService gradeService;
 
-//    @RequestMapping(value = "/student/grade.json",produces="application/json;charset=UTF-8")
-//    public JSONObject getGrade(int limit,int page,HttpSession session) throws IOException {
-//        User user=(User)session.getAttribute("user");
-//        Student student=(Student)user.getPerson();
-//        List<Map<String,Object>> grades=gradeService.getGrade(student.getStudentId(),limit,page);
-//
-//        JsonUtil jsonUtil=new JsonUtil(200,"");
-//        jsonUtil.put("count",grades.size());
-//        jsonUtil.put("data",grades);
-//        jsonUtil.put("code",0);
-//
-//        return jsonUtil.getJsonObject();
-//    }
 
     @RequestMapping(value = "/student/grade.json",produces="application/json;charset=UTF-8")
-    public JSONObject getGrade(int limit,int page,HttpSession session,String searchParams) throws IOException {
+    public JSONObject getGrade(int limit,int page,HttpSession session,String searchParams)  {
         User user=(User)session.getAttribute("user");
         Student student=(Student)user.getPerson();
         JSONObject jsonObject;
