@@ -12,7 +12,6 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
-
         <fieldset class="table-search-fieldset">
             <legend>搜索信息</legend>
             <div style="margin: 10px 10px 10px 10px">
@@ -52,8 +51,7 @@
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
-                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
+
             </div>
         </script>
 
@@ -64,10 +62,9 @@
 
         <script type="text/html" id="currentTableBar">
             <div class="layui-input-inline">
-                <input type="text" name="grade" autocomplete="off" class="layui-input" lay-size="sm">
+                <input type="text" name="newGrade" autocomplete="off" class="layui-input" lay-size="sm">
             </div>
-                <button type="button" class="layui-btn layui-btn-sm" id="grade-submit-btn" lay-event="ensure">确认</button>
-
+            <button type="button" class="layui-btn layui-btn-sm" id="grade-submit-btn" lay-event="ensure">确认</button>
         </script>
 
 
@@ -94,10 +91,10 @@
                 {field: 'semester',width: 80, title: '学期', sort: true},
                 {field: 'year', width: 80, title: '学年', sort: true},
                 {field: 'credits', width: 80, title: '学分', sort: true},
-                {field: 'student_id', width: 120, title: '学生ID',sort: true},
+                /*{field: 'student_id', width: 120, title: '学生ID',sort: true},
                 {field: 'student_name', width: 120, title: '学生名',sort: true},
                 {field: 'grade', width: 80, title: '成绩',sort: true},
-                {title: '修改/提交成绩', minWidth: 60, toolbar: '#currentTableBar', align: "center"}
+                {title: '修改/提交成绩', minWidth: 60, toolbar: '#currentTableBar', align: "center"}*/
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,
@@ -119,7 +116,8 @@
                 }
                 , where: {
                     searchParams: result
-                }
+                },
+
             }, 'data');
 
             return false;
@@ -133,14 +131,30 @@
             //obj 同上
             console.log(obj.data) //得到当前行数据
             var result = JSON.stringify(obj.data);
-
+            console.log(result)
+            var new_result = result.substr(1,result.length-2);
+            console.log(new_result)
             table.reload('currentTableId', {
                 page: {
                     curr: 1
                 }
                 , where: {
                     searchParams: result
-                }
+                },
+                title:"学生成绩",
+                cols: [[
+                    {type: "checkbox", width: 50},
+                    {field: 'course_id', width: 120, title: '课程ID',sort: true},
+                    {field: 'title', width: 150, title: '课程名', sort: true},
+                    {field: 'class_id', width: 120, title: '教学班ID',sort: true},
+                    {field: 'semester',width: 80, title: '学期', sort: true},
+                    {field: 'year', width: 80, title: '学年', sort: true},
+                    {field: 'credits', width: 80, title: '学分', sort: true},
+                    {field: 'student_id', width: 120, title: '学生ID',sort: true},
+                    {field: 'student_name', width: 120, title: '学生名',sort: true},
+                    {field: 'grade', width: 80, title: '成绩',sort: true,edit:'text'},
+                    {title: '成绩单击可修改', width: 200}
+                ]]
             }, 'data');
 
             return false;
@@ -150,33 +164,34 @@
         table.on('checkbox(currentTableFilter)', function (obj) {
             console.log(obj)
         });
+        table.on('edit(currentTableFilter)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+            console.log(obj.value); //得到修改后的值
+            console.log(obj.field); //当前编辑的字段名
+            console.log(obj.data); //所在行的所有相关数据
+            console.log(obj); //输出obj
+            var result = JSON.stringify(obj.data);
+            $.ajax({
+                type:"POST",
+                dataType: "json",//预期服务器返回的数据类型
+                url: "/professor/correctGrade.json" ,//url
+                data:{"class_id":obj.data.class_id,"student_id":obj.data.student_id,"grade":obj.data.grade},
+                success:function (result) {
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.status === 200) {
+                        layer.msg("成绩修改成功", {time:1000});
+                    }else {
+                        layer.msg(result.msg, {time:2000});
+                    }
+                },
+                error : function() {
+                    layer.msg("网络异常或服务器出错！", {time:2000});
+                }
+            });
 
-        table.on('tool(currentTableFilter)', function (obj) {
-            var result = JSON.stringify(obj.data);//得到对应行的数据
-            if (obj.event === 'ensure') {
+            return false;
 
-                var index = layer.open({
-                    title: '编辑用户',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin:true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: '/page/table/edit.html',
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
-                return false;
-            } else if (obj.event === 'delete') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
-                });
-            }
         });
-
-    });
+    })
 </script>
 
 </body>

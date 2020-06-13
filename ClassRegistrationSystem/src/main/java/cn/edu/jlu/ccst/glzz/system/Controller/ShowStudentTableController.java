@@ -45,4 +45,15 @@ public class ShowStudentTableController {
 
         return jsonUtil.getJsonObject();
     }
+
+
+    @RequestMapping(value="/professor/correctGrade.json",produces="application/json;charset=UTF-8")
+    public Result correctGrade(HttpSession session,int class_id,String student_id,String grade)throws IOException{
+        User user=(User)session.getAttribute("user");
+
+        showStudentTableService.correctGrade(class_id,student_id,grade);
+
+
+        return Result.ok();
+    }
 }

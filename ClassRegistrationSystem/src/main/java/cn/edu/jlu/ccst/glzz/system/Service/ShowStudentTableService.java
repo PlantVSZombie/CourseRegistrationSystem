@@ -2,6 +2,7 @@ package cn.edu.jlu.ccst.glzz.system.Service;
 
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.TakesDao;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.TeachesDao;
+import cn.edu.jlu.ccst.glzz.system.generated.Model.Takes;
 import com.gitee.fastmybatis.core.query.Query;
 import org.springframework.stereotype.Service;
 
@@ -15,29 +16,8 @@ import java.util.Map;
 public class ShowStudentTableService {
     @Resource
     TeachesDao teachesDao;
-
-    /*public List<Map<String,Object>> getStudentTable(String professor_id, int limit, int page, Integer year, String semester,String title,String student_name){
-        Query query=new Query();
-        query.join("natural join course").join("natural join section");
-        query.eq("professor_id",professor_id);
-        query.page(page,limit);
-        if(title!=null&&!title.equals("")){
-            query.like("title",title);
-        }
-        if(year!=null){
-            query.eq("year",year);
-        }
-        if(semester!=null&&!semester.equals("")){
-            query.eq("semester",semester);
-        }
-        if(student_name!=null&&!student_name.equals("")){
-            query.eq("student_name",student_name);
-        }
-        List<String> column = Arrays.asList("course_id","title","class_id","semester","year","credits");
-        List<Map<String,Object>> course_table=teachesDao.listMap(column,query);
-        return course_table;
-    }*/
-
+    @Resource
+    TakesDao takesDao;
 
     public List<Map<String,Object>> getStudentTable(String professor_id, int limit, int page, String course_id,
                                                     String title,Integer class_id,String semester,Integer year,
@@ -70,12 +50,7 @@ public class ShowStudentTableService {
         if(student_name!=null&&!student_name.equals("")){
             query_1.eq("student_name",student_name);
         }
-        /*.eq("course_id",course_id)
-                .eq("title",title)
-                .eq("class_id",class_id)
-                .eq("semester",semester)
-                .eq("year",year)
-                .eq("credits",credits)*/
+
         if(professor_id!=null&&((title!=null&&!title.equals(""))||(year!=null)||(semester!=null&&!semester.equals(""))||
                 (course_id!=null&&!course_id.equals(""))||(class_id!=null)||(credits!=null)||
                 (student_name!=null&&!student_name.equals("")))){
@@ -85,10 +60,20 @@ public class ShowStudentTableService {
             return course_table;
         }
         else {
-            List<String> column = Arrays.asList("course.course_id", "title", "takes.class_id", "semester", "year", "credits");
+            List<String> column = Arrays.asList("distinct course.course_id", "title", "takes.class_id", "semester", "year", "credits");
             List<Map<String, Object>> course_table = teachesDao.listMap(column, query_1);
             return course_table;
         }
     }
+
+    public void correctGrade(Integer class_id,String student_id,String grade){
+        Query query = new Query();
+        query.eq("class_id",class_id);
+        query.eq("student_id",student_id);
+        Takes takes = takesDao.getByQuery(query);
+        takes.setGrade(grade);
+        takesDao.updateByQuery(takes,query);
+    }
+
 
 }
