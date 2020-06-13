@@ -60,6 +60,12 @@
           "target": "_self"
         },
         {
+          "title": "学生信息",
+          "href": "newpage/professor/student_table.html",
+          "icon": "fa fa-file-text",
+          "target": "_self"
+        },
+        {
           "title": "表单示例",
           "href": "",
           "icon": "fa fa-calendar",
