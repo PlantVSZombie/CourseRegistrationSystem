@@ -21,6 +21,19 @@ public class HasSelectedCoursesController {
     @Resource
     HasSelectedCoursesService hasSelectedCoursesService;
 
+    List<Map<String, Object>> zhuList = new ArrayList<>();
+    List<Map<String, Object>> beiList = new ArrayList<>();
+
+    public List<Map<String, Object>> getZhuList(int limit, int page, HttpSession session, String searchParams) throws IOException{
+        getSelectedMajorCourse(limit,page,session,searchParams);
+        return zhuList;
+    }
+
+    public List<Map<String, Object>> getBeiList(int limit, int page, HttpSession session, String searchParams) throws IOException {
+        getSelectedAlternativeCourse(limit,page,session,searchParams);
+        return beiList;
+    }
+
     @RequestMapping(value = "/student/selected_major_courses.json", produces = "application/json;charset=UTF-8")
     public JSONObject getSelectedMajorCourse(int limit, int page, HttpSession session, String searchParams) throws IOException {
         User user = (User) session.getAttribute("user");
@@ -32,12 +45,12 @@ public class HasSelectedCoursesController {
             jsonObject = new JSONObject();
         }
         List<Map<String, Object>> selectCoursesList = hasSelectedCoursesService.getHasSelectedCourses(student.getStudentId(), limit, page, jsonObject.getString("class_name"), jsonObject.getInteger("year"), jsonObject.getString("semester"),1);
-        List<Map<String, Object>> ansList = new ArrayList<>();
+
         //将相同class_id的合并
         for (Map<String, Object> it : selectCoursesList) {
             boolean newone = true;
             //找在不在ansList里
-            for (Map<String, Object> ansit : ansList) {
+            for (Map<String, Object> ansit : zhuList) {
                 if (ansit.get("class_id") == it.get("class_id")) {
                     newone = false;
                     String tem = (String) ansit.get("course_place");
@@ -119,14 +132,14 @@ public class HasSelectedCoursesController {
                 end_time2 = end_time2.substring(0, 5);
                 it.put("course_place", (String) building + ' ' + (String) room_number);
                 it.put("course_time", s_day + ' ' + start_time2 + '-' + end_time2);
-                ansList.add(it);
+                zhuList.add(it);
             }
 
         }
 
         JsonUtil jsonUtil = new JsonUtil(200, "");
-        jsonUtil.put("count", ansList.size());
-        jsonUtil.put("data", ansList);
+        jsonUtil.put("count", zhuList.size());
+        jsonUtil.put("data", zhuList);
         jsonUtil.put("code", 0);
 
         return jsonUtil.getJsonObject();
@@ -142,13 +155,14 @@ public class HasSelectedCoursesController {
         } else {
             jsonObject = new JSONObject();
         }
-        List<Map<String, Object>> selectCoursesList = hasSelectedCoursesService.getHasSelectedCourses(student.getStudentId(), limit, page, jsonObject.getString("class_name"), jsonObject.getInteger("year"), jsonObject.getString("semester"),0);
-        List<Map<String, Object>> ansList = new ArrayList<>();
+        List<Map<String, Object>> selectCoursesList =new ArrayList<>();
+        selectCoursesList = hasSelectedCoursesService.getHasSelectedCourses(student.getStudentId(), limit, page, jsonObject.getString("class_name"), jsonObject.getInteger("year"), jsonObject.getString("semester"),0);
+
         //将相同class_id的合并
         for (Map<String, Object> it : selectCoursesList) {
             boolean newone = true;
             //找在不在ansList里
-            for (Map<String, Object> ansit : ansList) {
+            for (Map<String, Object> ansit : beiList) {
                 if (ansit.get("class_id") == it.get("class_id")) {
                     newone = false;
                     String tem = (String) ansit.get("course_place");
@@ -230,14 +244,14 @@ public class HasSelectedCoursesController {
                 end_time2 = end_time2.substring(0, 5);
                 it.put("course_place", (String) building + ' ' + (String) room_number);
                 it.put("course_time", s_day + ' ' + start_time2 + '-' + end_time2);
-                ansList.add(it);
+                beiList.add(it);
             }
 
         }
 
         JsonUtil jsonUtil = new JsonUtil(200, "");
-        jsonUtil.put("count", ansList.size());
-        jsonUtil.put("data", ansList);
+        jsonUtil.put("count", beiList.size());
+        jsonUtil.put("data", beiList);
         jsonUtil.put("code", 0);
 
         return jsonUtil.getJsonObject();

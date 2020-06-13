@@ -2,6 +2,7 @@ package cn.edu.jlu.ccst.glzz.system.Controller;
 
 import cn.edu.jlu.ccst.glzz.system.Model.User;
 import cn.edu.jlu.ccst.glzz.system.Service.ChooseCoursesService;
+import cn.edu.jlu.ccst.glzz.system.Service.HasSelectedCoursesService;
 import cn.edu.jlu.ccst.glzz.system.Util.JsonUtil;
 import cn.edu.jlu.ccst.glzz.system.generated.Model.Student;
 import com.alibaba.fastjson.JSONObject;
@@ -20,6 +21,10 @@ public class ChooseCoursesController {
 
     @Resource
     ChooseCoursesService chooseCoursesService;
+    @Resource
+    HasSelectedCoursesService hasSelectedCoursesService;
+    @Resource
+    HasSelectedCoursesController hasSelectedCoursesController;
 
     @RequestMapping(value = "/student/select_courses.json",produces="application/json;charset=UTF-8")
     public JSONObject getSelectCourse(int limit, int page, HttpSession session, String searchParams) throws IOException {
@@ -110,6 +115,35 @@ public class ChooseCoursesController {
             }
 
         }
+        List<Map<String, Object>> zhulist = new ArrayList<>();
+        List<Map<String, Object>> beilist = new ArrayList<>();
+        beilist=hasSelectedCoursesController.getBeiList(limit,page,session,searchParams);
+        zhulist=hasSelectedCoursesController.getZhuList(limit,page,session,searchParams);
+
+        for(Map<String,Object> ansit:ansList){
+            Boolean flag=true;
+            for(Map<String,Object> zhuit:zhulist){
+                if(ansit.get("class_id")==zhuit.get("class_id")){
+                    ansit.put("state","zhu");
+                    flag=false;
+                    break;
+                }
+            }
+            if(flag){
+                for(Map<String,Object> beiit:beilist){
+                    if(ansit.get("class_id")==beiit.get("class_id")){
+                        ansit.put("state","bei");
+                        flag=false;
+                        break;
+                    }
+                }
+            }
+            if(flag){
+                ansit.put("state","untaken");
+            }
+        }
+
+
 //        for(Map<String,Object> it:ansList){
 //            String tem=it.get("course_place").toString();
 //            tem+="</pre>";

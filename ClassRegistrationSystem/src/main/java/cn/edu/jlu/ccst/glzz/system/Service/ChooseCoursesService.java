@@ -17,7 +17,7 @@ import java.util.Map;
 public class ChooseCoursesService {
     @Resource
     TeachesDao teachesDao;
-
+    TakesDao takesDao ;
 
     public List<Map<String,Object>> getSelectCourses(String student_id,int limit,int page,String class_name,Integer year,String semester){
         Query query=new Query();
@@ -38,4 +38,6 @@ public class ChooseCoursesService {
 
         return selectCourses;
     }
+
+
 }

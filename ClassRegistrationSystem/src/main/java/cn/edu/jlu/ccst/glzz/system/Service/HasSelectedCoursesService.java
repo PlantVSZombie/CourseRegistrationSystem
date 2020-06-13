@@ -16,7 +16,7 @@ import java.util.Map;
 @Service
 public class HasSelectedCoursesService {
     @Resource
-    TakesDao takesDao;
+    TakesDao takesDao ;
 
 
     public List<Map<String,Object>> getHasSelectedCourses(String student_id,int limit,int page,String class_name,Integer year,String semester,int ismajor){
