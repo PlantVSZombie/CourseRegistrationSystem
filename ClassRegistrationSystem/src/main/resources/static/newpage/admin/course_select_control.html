@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html >
 <head>
     <meta charset="utf-8">
     <title>layui</title>
@@ -16,21 +16,6 @@
 
 
         <form class="layui-form" action="" id="register_form">
-
-
-            <div class="layui-form-item">
-
-
-                <div class="layui-inline">
-                    <label class="layui-form-label">操作类型:</label>
-                    <div class="layui-input-block">
-                        <select lay-verify="required">
-                            <option value="1" selected>学生选课</option>
-                            <option value="2">教授排课</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
 
             <div class="layui-form-item">
                 <div class="layui-inline">
@@ -49,6 +34,17 @@
                         </select>
                     </div>
                 </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">操作类型:</label>
+                    <div class="layui-input-block">
+                        <select lay-verify="required" name="type">
+                            <option value="student" selected>学生选课</option>
+                            <option value="professor">教授排课</option>
+                        </select>
+                    </div>
+                </div>
+
 
             </div>
 
@@ -74,12 +70,14 @@
                 <div class="layui-input-block">
                     <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <!--                    <button type="layui-btn" lay-submit="" >关闭选课</button>-->
                 </div>
             </div>
 
         </form>
 
-
+    </div>
+</div>
 <script src="/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
