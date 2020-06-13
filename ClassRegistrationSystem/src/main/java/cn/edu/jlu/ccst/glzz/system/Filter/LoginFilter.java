@@ -40,7 +40,7 @@ public class LoginFilter implements Filter {
                 filterChain.doFilter(servletRequest,servletResponse);
                 return;
             }
-            System.out.println("拦截:"+request.getRequestURL());
+            System.out.println("登陆拦截:"+request.getRequestURL());
             response.sendRedirect("/newpage/login.html");
         }
     }
