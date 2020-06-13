@@ -72,6 +72,7 @@
             {{# }if(d.state =="zhu") { }}
             <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit layui-btn-disabled" lay-event="addzhu"disabled>加入主选</button>
             <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="addbei">加入备选</button>
+
             {{# }if(d.state =="bei") { }}
             <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="addzhu">加入主选</button>
             <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete layui-btn-disabled" lay-event="addbei"disabled>加入备选</button>
@@ -174,24 +175,53 @@
             var data = obj.data;
             console.log(data);
             if (obj.event === 'addzhu') {
+                $.ajax({
+                    type:"GET",
+                    dataType: "json",//预期服务器返回的数据类型
+                    url: "/student/add_zhu" ,//url
+                    data:{"class_id":data.class_id},
+                    success:function (result) {
+                        console.log(result);//打印服务端返回的数据(调试用)
+                        if (result.status === 200) {
+                            layer.msg("成功加入主选课程", {time:1000},function () {
+                                table.reload("currentTableId", {
+                                    page: {
+                                        curr: 1
+                                    },
+                                }, 'data');
+                            })
+                        }else {
+                            layer.msg(result.msg, {time:2000})
+                        }
+                    },
+                    error : function() {
+                        layer.msg("网络异常或服务器出错！", {time:2000});
+                    }
+                });
 
-                var index = layer.open({
-                    title: '编辑用户',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin:true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: '/newpage/student/table/edit.html',
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
-                return false;
             } else if (obj.event === 'addbei') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
+                $.ajax({
+                    type:"GET",
+                    dataType: "json",//预期服务器返回的数据类型
+                    url: "/student/add_bei" ,//url
+                    data:{"class_id":data.class_id},
+                    success:function (result) {
+                        console.log(result);//打印服务端返回的数据(调试用)
+                        if (result.status === 200) {
+                            layer.msg("成功加入备选课程", {time:1000},function () {
+                                table.reload("currentTableId", {
+                                    page: {
+                                        curr: 1
+                                    },
+                                }, 'data');
+                            })
+                        }else {
+                            layer.msg(result.msg, {time:2000})
+                        }
+                    },
+                    error : function() {
+                        layer.msg("网络异常或服务器出错！", {time:2000});
+                    }
                 });
             }
         });
