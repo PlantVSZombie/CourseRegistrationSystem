@@ -14,15 +14,15 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class ChooseCoursesService {
+public class HasSelectedCoursesService {
     @Resource
-    TeachesDao teachesDao;
+    TakesDao takesDao;
 
 
-    public List<Map<String,Object>> getSelectCourses(String student_id,int limit,int page,String class_name,Integer year,String semester){
+    public List<Map<String,Object>> getHasSelectedCourses(String student_id,int limit,int page,String class_name,Integer year,String semester,int ismajor){
         Query query=new Query();
-        query.join("natural join professor").join("natural join section").join("natural join sec_time_place").join("natural join course").join("natural join classroom").join("natural join time_slot");
-        query.eq("year", CurrentTime.getYear()).eq("semester",CurrentTime.getSemester());
+        query.join("natural join teaches").join("natural join professor").join("natural join section").join("natural join sec_time_place").join("natural join course").join("natural join classroom").join("natural join time_slot");
+        query.eq("year", CurrentTime.getYear()).eq("semester",CurrentTime.getSemester()).eq("ismajor",ismajor);
         query.page(page,limit);
         if(class_name!=null&&!class_name.equals("")){
             query.like("title",class_name);
@@ -33,8 +33,8 @@ public class ChooseCoursesService {
         if(semester!=null&&!semester.equals("")){
             query.eq("semester",semester);
         }
-        List<String> column = Arrays.asList("class_id","course_id","professor_name","title as class_name","credits","course.dept_name","sec_capacity","building","room_number","day","start_time","end_time");
-        List<Map<String,Object>> selectCourses=teachesDao.listMap(column,query);
+        List<String> column = Arrays.asList("class_id","course_id","professor_name","title as class_name","credits","course.dept_name","sec_capacity","building","room_number","day","start_time","end_time","ismajor");
+        List<Map<String,Object>> selectCourses=takesDao.listMap(column,query);
 
         return selectCourses;
     }

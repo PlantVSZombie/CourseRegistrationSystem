@@ -42,6 +42,25 @@
           "target": "_self"
         },
         {
+          "title": "课程选择",
+          "href": "newpage/student/select_courses.html",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
+        },
+        {
+          "title": "已选课程",
+          "href": "newpage/student/view_selected_courses.html",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
+        },
+
+        {
+          "title": "消息站",
+          "href": "newpage/student/messages.html",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
+        },
+        {
           "title": "菜单管理",
           "href": "newpage/student/menu.html",
           "icon": "fa fa-window-maximize",
