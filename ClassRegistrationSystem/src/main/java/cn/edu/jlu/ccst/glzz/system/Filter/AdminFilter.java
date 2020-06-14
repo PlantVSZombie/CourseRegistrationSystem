@@ -28,6 +28,12 @@ public class AdminFilter implements Filter {
         }
         //判断是否有响应权限
         User loginedUser= (User) request.getSession().getAttribute("user");
+        if(loginedUser==null){
+            System.out.println("权限拦截:"+request.getRequestURL());
+            HttpServletResponse response=(HttpServletResponse) servletResponse;
+            response.sendRedirect("/newpage/login.html");
+            return;
+        }
         switch (loginedUser.getUserType()){
             case Professor:
                 if(url.indexOf("/newpage/professor")>0||url.indexOf("/professor/")>0){

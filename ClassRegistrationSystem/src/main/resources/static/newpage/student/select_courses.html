@@ -66,8 +66,17 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">加入主选</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">加入备选</a>
+            {{#  if(d.state =="untaken"){ }}
+            <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit " lay-event="addzhu">加入主选</button>
+            <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="addbei">加入备选</button>
+            {{# }if(d.state =="zhu") { }}
+            <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit layui-btn-disabled" lay-event="addzhu"disabled>加入主选</button>
+            <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="addbei">加入备选</button>
+
+            {{# }if(d.state =="bei") { }}
+            <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="addzhu">加入主选</button>
+            <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete layui-btn-disabled" lay-event="addbei"disabled>加入备选</button>
+            {{#  } }}
         </script>
 
     </div>
@@ -98,7 +107,13 @@
                 {field: 'sec_capacity', width: 100, title: '最大人数',sort: true},
                 {field: 'course_time', width: 150, title: '上课时间',sort: true},
                 {field: 'course_place', width: 100, title: '上课地点',sort: true},
-                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+
+                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center",templet:function (d) {
+                        console.log(d)
+
+
+                    }}
+
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 10,
@@ -130,6 +145,7 @@
          * toolbar监听事件
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
+
             if (obj.event === 'add') {  // 监听添加操作
                 var index = layer.open({
                     title: '添加用户',
@@ -157,25 +173,55 @@
 
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
-            if (obj.event === 'edit') {
+            console.log(data);
+            if (obj.event === 'addzhu') {
+                $.ajax({
+                    type:"GET",
+                    dataType: "json",//预期服务器返回的数据类型
+                    url: "/student/add_zhu" ,//url
+                    data:{"class_id":data.class_id},
+                    success:function (result) {
+                        console.log(result);//打印服务端返回的数据(调试用)
+                        if (result.status === 200) {
+                            layer.msg("成功加入主选课程", {time:1000},function () {
+                                table.reload("currentTableId", {
+                                    page: {
+                                        curr: 1
+                                    },
+                                }, 'data');
+                            })
+                        }else {
+                            layer.msg(result.msg, {time:2000})
+                        }
+                    },
+                    error : function() {
+                        layer.msg("网络异常或服务器出错！", {time:2000});
+                    }
+                });
 
-                var index = layer.open({
-                    title: '编辑用户',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin:true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: '/newpage/student/table/edit.html',
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
-                return false;
-            } else if (obj.event === 'delete') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
+            } else if (obj.event === 'addbei') {
+                $.ajax({
+                    type:"GET",
+                    dataType: "json",//预期服务器返回的数据类型
+                    url: "/student/add_bei" ,//url
+                    data:{"class_id":data.class_id},
+                    success:function (result) {
+                        console.log(result);//打印服务端返回的数据(调试用)
+                        if (result.status === 200) {
+                            layer.msg("成功加入备选课程", {time:1000},function () {
+                                table.reload("currentTableId", {
+                                    page: {
+                                        curr: 1
+                                    },
+                                }, 'data');
+                            })
+                        }else {
+                            layer.msg(result.msg, {time:2000})
+                        }
+                    },
+                    error : function() {
+                        layer.msg("网络异常或服务器出错！", {time:2000});
+                    }
                 });
             }
         });
