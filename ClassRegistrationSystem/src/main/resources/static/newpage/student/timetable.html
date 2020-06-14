@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <style>
+        #coursesTable {
+            padding: 15px 10px;
+        }
+
+        .Courses-head {
+            background-color: #edffff;
+        }
+
+        .Courses-head > div {
+            text-align: center;
+            font-size: 14px;
+            line-height: 28px;
+        }
+
+        .left-hand-TextDom, .Courses-head {
+            background-color: #f2f6f7;
+        }
+
+        .Courses-leftHand {
+            background-color: #f2f6f7;
+            font-size: 9px;
+        }
+
+        .Courses-leftHand .left-hand-index {
+            color: #9c9c9c;
+            margin-bottom: 4px !important;
+        }
+
+        .Courses-leftHand .left-hand-name {
+            color: #666;
+        }
+
+        .Courses-leftHand p {
+            text-align: center;
+            font-weight: 900;
+        }
+
+        .Courses-head > div {
+            border-left: none !important;
+        }
+
+        .Courses-leftHand > div {
+            padding-top: 5px;
+            border-bottom: 1px dashed rgb(219, 219, 219);
+        }
+
+        .Courses-leftHand > div:last-child {
+            border-bottom: none !important;
+        }
+
+        .left-hand-TextDom, .Courses-head {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .Courses-content > ul {
+            border-bottom: 1px dashed rgb(219, 219, 219);
+            box-sizing: border-box;
+        }
+
+        .Courses-content > ul:last-child {
+            border-bottom: none !important;
+        }
+
+        .highlight-week {
+            color: #02a9f5 !important;
+        }
+
+        .Courses-content li {
+            text-align: center;
+            color: #666666;
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+        .Courses-content li span {
+            padding: 6px 2px;
+            box-sizing: border-box;
+            line-height: 18px;
+            border-radius: 4px;
+            white-space: normal;
+            word-break: break-all;
+            cursor: pointer;
+        }
+
+        .grid-active {
+            z-index: 9999;
+        }
+
+        .grid-active span {
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+    <style type="text/css">
+        td,tr{
+            /*       border: 1px solid red; */
+            width: 50px;
+            height: 50px;
+            font-size: 10px;
+            table-layout: fixed;
+            word-break:break-all;
+            vertical-align: top;
+            margin:10px;
+            border:0px;
+            padding: 3px;
+            text-align: center;
+
+        }
+        .one{width: 200px;
+            text-align: center;}
+        .green{
+            background-color: rgb(175,236,53);
+            color: white;
+
+        }
+        .green2{
+            background-color: rgb(89,240,163);
+            color: white;
+
+        }
+        .purple{
+            background-color: rgb(171,145,255);
+            color: white;
+
+        }
+        .red{
+            background-color: rgb(255,147,147);
+            color: white;
+
+        }
+        .white{
+            background-color: rgb(234,239,245);
+            color: black;
+
+        }
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <header>
+            <table align="center">
+                <tr>
+                    <td class="one" style="font-size: 17px">
+<!--                        第三周<br>大二第二学期-->
+                        2020年课程表
+                    </td>
+                </tr>
+            </table>
+        </header>
+        <div id="coursesTable"></div>
+    </div>
+</div>
+
+<script src="/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="/js/Timetables.min.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form
+            , layer = layui.layer,
+            $=layui.jquery
+
+
+        var courses = [];
+        for(let i=0; i<7; i++){
+            courses.push([]);
+        }
+        $.ajax({
+            method:"GET",
+            url:"/student/timetable.json",
+            success:function (result) {
+                console.log(result);//打印服务端返回的数据(调试用)
+                if (result.status === 200) {
+                    for (let i=0; i<result.data.length; i++){
+                        const eachclass = result.data[i];
+                        let d=eachclass.day
+                        let num=eachclass.time_id%100
+
+                        let len=courses[d-1].length
+                        for(let j=0;j<num-len-1;j++){
+                            courses[d-1].push('')
+                        }
+                        courses[d-1].push(eachclass.class_name+'\n@'+eachclass.building+"-"+eachclass.room_number)
+                    }
+                    for(let i=0; i<7; i++){
+                        let num=11-courses[i].length
+                        for (let j=0;j<num;j++){
+                            courses[i].push('');
+                        }
+                    }
+                    console.log(courses)
+                    var week = window.innerWidth > 360 ? ['周一', '周二', '周三', '周四', '周五','周六','周日'] :
+                        ['一', '二', '三', '四', '五'];
+                    var day = new Date().getDay();
+                    var courseType = [
+                        [{index: '1', name: ' 8:00- 8:45'}, 1],
+                        [{index: '2', name: ' 8:55- 9:40'}, 1],
+                        [{index: '3', name: '10:00-10:45'}, 1],
+                        [{index: '4', name: '10:55-11:40'}, 1],
+                        [{index: '5', name: ' 1:30- 2:15'}, 1],
+                        [{index: '6', name: ' 2:15- 3:10'}, 1],
+                        [{index: '7', name: ' 3:30- 4:15'}, 1],
+                        [{index: '8', name: ' 4:25- 5:10'}, 1],
+                        [{index: '9', name: ' 6:30- 7:15'}, 1],
+                        [{index: '10', name:' 7:25- 8:10'}, 1],
+                        [{index: '11', name:' 8:20- 9:05'}, 1],
+                    ];
+                    // 实例化(初始化课表)
+                    var Timetable = new Timetables({
+                        el: '#coursesTable',
+                        timetables: courses,
+                        week: week,
+                        timetableType: courseType,
+                        highlightWeek: day,
+                        gridOnClick: function (e) {
+                            layer.msg(e.name + '  ' + e.week + ', 第' + e.index + '节课, 课长' + e.length + '节');
+                        },
+                        styles: {
+                            Gheight: 70
+                        }
+                    });
+
+                }else {
+                    layer.msg(result.msg, {time:2000})
+                }
+            },
+            error:function () {
+                layer.msg("网络异常或服务器出错！", {time:2000});
+            }
+        })
+
+
+
+
+    });
+</script>
+
+</body>
+</html>

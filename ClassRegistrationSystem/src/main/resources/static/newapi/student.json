@@ -1,7 +1,7 @@
 {
   "homeInfo": {
     "title": "学生首页",
-    "href": "newpage/student/welcome-1.html?t=1"
+    "href": "newpage/student/timetable.html"
   },
   "logoInfo": {
     "title": "学生课程注册",
@@ -10,12 +10,20 @@
   },
   "menuInfo": [
     {
+
       "title": "常规管理",
       "icon": "fa fa-address-book",
       "href": "",
       "target": "_self",
       "child": [
         {
+          "title": "课程表",
+          "href": "newpage/student/timetable.html",
+          "icon": "fa fa-tachometer",
+          "target": "_self"
+        },
+        {
+
           "title": "主页模板",
           "href": "",
           "icon": "fa fa-home",
