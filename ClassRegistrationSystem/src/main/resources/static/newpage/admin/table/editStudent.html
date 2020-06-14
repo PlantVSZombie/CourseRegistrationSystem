@@ -15,26 +15,40 @@
     </style>
 </head>
 <body>
-<div class="layui-form layuimini-form" id="add_student">
+<form class="layui-form " action="" id="editstudent1">
     <div class="layui-form-item">
         <label class="layui-form-label required">姓名</label>
         <div class="layui-input-block">
-            <input type="text" name="student_name" lay-verify="required" lay-reqtext="学生姓名不能为空" placeholder="请输入学生姓名" value="" class="layui-input">
-            <tip>填写自己管理账号的名称。</tip>
+            <input type="text" name="student_name" lay-verify="required" lay-reqtext="学生姓名不能为空" placeholder="请输入学生姓名"  class="layui-input">
         </div>
     </div>
+    <!--    <div class="layui-form-item">-->
+    <!--        <label class="layui-form-label required">学院</label>-->
+    <!--        <div class="layui-input-block">-->
+    <!--            <input type="text" name="dept_name" lay-verify="required" lay-reqtext="学院名称不能为空" placeholder="请输入学院名称"  class="layui-input">-->
+    <!--            <tip>填写自己管理账号的名称。</tip>-->
+    <!--        </div>-->
+    <!--    </div>-->
     <div class="layui-form-item">
-        <label class="layui-form-label required">学院</label>
-        <div class="layui-input-block">
-            <input type="text" name="dept_name" lay-verify="required" lay-reqtext="学院名称不能为空" placeholder="请输入学院名称" value="" class="layui-input">
-            <tip>填写自己管理账号的名称。</tip>
+        <label class="layui-form-label">学院</label>
+        <div class="layui-input-inline">
+            <select name="dept_name" lay-verify="required" >
+                <option value="">直接选择或搜索选择</option>
+                <option value="Biology" selected>Biology</option>
+                <option value="Comp. Sci.">Comp. Sci.</option>
+                <option value="Elec. Eng.">Elec. Eng.</option>
+                <option value="Finance">Finance</option>
+                <option value="History">History</option>
+                <option value="Music">Music</option>
+                <option value="Physics">Physics</option>
+            </select>
         </div>
     </div>
+
     <div class="layui-form-item">
         <label class="layui-form-label required">密码</label>
         <div class="layui-input-block">
-            <input type="text" name="password" lay-verify="required" lay-reqtext="密码不能为空" placeholder="请输入密码" value="" class="layui-input">
-            <tip>填写自己管理账号的名称。</tip>
+            <input type="text" name="password" lay-verify="required" lay-reqtext="密码不能为空" placeholder="请输入密码"  class="layui-input">
         </div>
     </div>
 
@@ -43,7 +57,7 @@
             <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
         </div>
     </div>
-</div>
+</form>
 <script src="/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
     layui.use(['form'], function () {
@@ -64,14 +78,14 @@
                 parent.layer.close(iframeIndex);
 
             });
+            console.log(data.field)
             $.ajax({
                 type:"POST",
                 dataType: "json",//预期服务器返回的数据类型
-                url: "/admin/add_student.json" ,//url
-                data:$(add_student).serialize(),
+                url: "/admin/edit_student.json" ,//url
+                data:$(editstudent1).serialize(),
                 success:function (result) {
 
-                    console.log(result);//打印服务端返回的数据(调试用)
                     if (result.status === 200) {
                         layer.msg("提交成功", {time:2000},function () {
                         })
@@ -80,9 +94,16 @@
                     }
                 },
                 error : function() {
-                    layer.msg("网络异常或服务器出错!!", {time:2000});
+                    // layer.msg("网络异常或服务器出错!!", {time:2000});
                 }
             });
+
+
+
+
+
+
+
 
             return false;
         });

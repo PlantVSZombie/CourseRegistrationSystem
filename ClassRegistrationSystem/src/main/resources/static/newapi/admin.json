@@ -54,14 +54,14 @@
           "target": "_self"
         },
         {
-          "title": "系统设置",
-          "href": "newpage/admin/setting.html",
-          "icon": "fa fa-gears",
+          "title": "教授信息维护",
+          "href": "newpage/admin/professor_information.html",
+          "icon": "fa fa-file-text",
           "target": "_self"
         },
         {
-          "title": "表格示例",
-          "href": "newpage/admin/table.html",
+          "title": "学生信息维护",
+          "href": "newpage/admin/student_information.html",
           "icon": "fa fa-file-text",
           "target": "_self"
         },
@@ -72,8 +72,8 @@
           "target": "_self",
           "child": [
             {
-              "title": "普通表单",
-              "href": "newpage/admin/form.html",
+              "title": "学生信息维护",
+              "href": "newpage/admin/student_information.html",
               "icon": "fa fa-list-alt",
               "target": "_self"
             },
