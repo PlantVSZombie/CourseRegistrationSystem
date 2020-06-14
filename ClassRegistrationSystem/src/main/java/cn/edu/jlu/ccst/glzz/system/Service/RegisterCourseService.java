@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 import com.gitee.fastmybatis.core.query.Query;
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,22 @@ public class RegisterCourseService {
     StudentDao studentDao;
     @Resource
     ProfessorDao professorDao;
+    public void endFlow(String type,String end_date){
+        flowControlDao.updateByType(type,end_date);
+    }
+    public Boolean flowIsEnd(String type){
+        System.out.println(type);
+        String enddate=flowControlDao.getEnddatetimeByType(type);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String curdate=df.format(new Date());
+        Integer i=enddate.compareTo(curdate);
+        System.out.println(i);
+        if(i<0){
+            return Boolean.TRUE;
+        }else{
+            return Boolean.FALSE;
+        }
+    }
 
 
 
