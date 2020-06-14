@@ -122,7 +122,7 @@ public class ChooseProfessorCourseService {
         //System.out.println(professor_ansList.size());
     }
 
-    public void add_professor_course(String professor_id,int class_id){
+    public int add_professor_course(String professor_id,int class_id){
         Query query = new Query();
         //query.eq("professor_id",professor_id);
         query.eq("class_id",class_id);
@@ -146,12 +146,14 @@ public class ChooseProfessorCourseService {
                 teaches.setClassId(class_id);
 
                 teachesDao.save(teaches);
-
+                return 0;
             }
             else{
-                System.out.println("将选课程与已选课程时间冲突");
+                //System.out.println("将选课程与已选课程时间冲突");
+                return -1;
             }
         }
+        return -2;
         /*else
         {
             int ans=teachesDao.updateByQuery(tea,query);

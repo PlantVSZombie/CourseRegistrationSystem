@@ -68,8 +68,7 @@ public class ShowStudentTableService {
 
     public void correctGrade(Integer sec_id,String student_id,String grade){
         Query query = new Query();
-        query.join(" natural join section ");
-        query.eq("sec_id",sec_id);
+        query.eq("class_id",sec_id);
         query.eq("student_id",student_id);
         Takes takes = takesDao.getByQuery(query);
         takes.setGrade(grade);
