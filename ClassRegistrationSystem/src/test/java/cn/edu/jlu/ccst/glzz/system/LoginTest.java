@@ -17,7 +17,7 @@ public class LoginTest {
         given()
                 .log().all()
                 .queryParam("userid","00128")
-                .queryParam("password","12345678")
+                .queryParam("password","1234567")
                 .queryParam("usertype","student")
         .when()
                 .post("/login")

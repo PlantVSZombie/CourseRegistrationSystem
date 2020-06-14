@@ -74,8 +74,8 @@ public class ChooseProfessorCourseController {
     public Result add_professor_course(HttpSession session, int class_id){
         User user=(User)session.getAttribute("user");
         Professor professor=(Professor)user.getPerson();
-        chooseProfessorCourseService.add_professor_course(professor.getProfessorId(),class_id);
-        return Result.ok();
+        String result=chooseProfessorCourseService.add_professor_course(professor.getProfessorId(),class_id);
+        return Result.ok(result);
 
     }
 
