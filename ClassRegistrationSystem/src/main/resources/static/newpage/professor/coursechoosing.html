@@ -196,7 +196,7 @@
                     success:function (result) {
                         console.log(result);//打印服务端返回的数据(调试用)
                         if (result.status === 200) {
-                            layer.msg("选课成功", {time:1000},function () {
+                            layer.msg(result.data, {time:1000},function () {
                                 table.reload("currentTableId", {
                                     page: {
                                         curr: 1
