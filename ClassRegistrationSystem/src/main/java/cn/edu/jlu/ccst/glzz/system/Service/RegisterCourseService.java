@@ -5,6 +5,7 @@ import cn.edu.jlu.ccst.glzz.system.generated.DAO.ProfessorDao;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.StudentDao;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.TakesDao;
 import org.apache.ibatis.annotations.Result;
+import cn.edu.jlu.ccst.glzz.system.generated.Model.FlowControl;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 import com.gitee.fastmybatis.core.query.Query;
@@ -23,35 +24,27 @@ public class RegisterCourseService {
     StudentDao studentDao;
     @Resource
     ProfessorDao professorDao;
-    @Resource
-    TakesDao takesDao;
-
-//    public String getGroup(){
-////        System.out.println(takesDao.getGroup());
-//        Query query=new Query();
-//        query.sql("select count(*) as num,class_id from takes GROUP BY takes");
-//        List<String> column = Arrays.asList("class_id","num");
-//        List<Map<String,Object>> control_flow=flowControlDao.listMap(column,query);
-//        System.out.println(control_flow);
-//        return null;
-//    }
-
 
     public void endFlow(String type,String end_date){
         flowControlDao.updateByType(type,end_date);
     }
     public Boolean flowIsEnd(String type){
         System.out.println(type);
-        String enddate=flowControlDao.getEnddatetimeByType(type);
+        Query query=new Query();
+        query.eq("type",type).addSort("end_datetime");
+        List<FlowControl> flowControls=flowControlDao.list(query);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String curdate=df.format(new Date());
-        Integer i=enddate.compareTo(curdate);
+        int i=flowControls.get(flowControls.size()-1).getEndDatetime().compareTo(new Date());
         System.out.println(i);
         if(i<0){
             return Boolean.TRUE;
         }else{
             return Boolean.FALSE;
         }
+    }
+
+    public FlowControl getFlowControl(String type){
+         return flowControlDao.getByQuery(new Query().eq("type",type));
     }
 
 
@@ -85,13 +78,13 @@ public class RegisterCourseService {
             query.eq("dept_name",dept_name);
         }
 
-        query.join("natural join (select student_id,sum(ifnull(cost,20)) as cost from takes natural join section natural join course group by student_id) t2");
+        query.join("left join student_cost t2 on t.student_id=t2.student_id");
         return query;
     }
     public List<Map<String,Object>> getStudentInfo(String student_id,String student_name,String dept_name,int limit,int page){
         Query query=getStudentInfoQuery(student_id,student_name,dept_name);
         query.page(page,limit);
-        List<String> column = Arrays.asList("student_id","student_name","dept_name","cost");
+        List<String> column = Arrays.asList("t.student_id","student_name","dept_name","ifnull(cost,0) as cost");
         List<Map<String,Object>> studentinfo=studentDao.listMap(column,query);
         return studentinfo;
     }

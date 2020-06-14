@@ -87,7 +87,7 @@
                 {type: "checkbox", width: 50},
                 {field: 'course_id', width: 120, title: '课程ID',sort: true},
                 {field: 'title', width: 150, title: '课程名', sort: true},
-                {field: 'sec_id', width: 120, title: '教学班ID',sort: true},
+                {field: 'class_id', width: 120, title: '教学班ID',sort: true},
                 {field: 'semester',width: 80, title: '学期', sort: true},
                 {field: 'year', width: 80, title: '学年', sort: true},
                 {field: 'credits', width: 80, title: '学分', sort: true},
@@ -147,7 +147,7 @@
                     {type: "checkbox", width: 50},
                     {field: 'course_id', width: 120, title: '课程ID',sort: true},
                     {field: 'title', width: 150, title: '课程名', sort: true},
-                    {field: 'sec_id', width: 120, title: '教学班ID',sort: true},
+                    {field: 'class_id', width: 120, title: '教学班ID',sort: true},
                     {field: 'semester',width: 80, title: '学期', sort: true},
                     {field: 'year', width: 80, title: '学年', sort: true},
                     {field: 'credits', width: 80, title: '学分', sort: true},
@@ -175,7 +175,7 @@
                 type:"POST",
                 dataType: "json",//预期服务器返回的数据类型
                 url: "/professor/correctGrade.json" ,//url
-                data:{"sec_id":obj.data.sec_id,"student_id":obj.data.student_id,"grade":obj.data.grade},
+                data:{"class_id":obj.data.class_id,"student_id":obj.data.student_id,"grade":obj.data.grade},
                 success:function (result) {
                     console.log(result);//打印服务端返回的数据(调试用)
                     if (result.status === 200) {

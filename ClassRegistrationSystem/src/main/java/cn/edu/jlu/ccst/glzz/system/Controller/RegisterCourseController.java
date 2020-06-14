@@ -21,6 +21,19 @@ public class RegisterCourseController {
     @Resource
     RegisterCourseService registerCourseService;
 
+    @RequestMapping(value = "/student/flowstate",produces="application/json;charset=UTF-8")
+    public Result getStudentFlowState()  {
+        boolean isend=registerCourseService.flowIsEnd("student");
+        return Result.ok(isend);
+    }
+
+    @RequestMapping(value = "/professor/flowstate",produces="application/json;charset=UTF-8")
+    public Result getProfessorFlowState()  {
+        boolean isend=registerCourseService.flowIsEnd("professor");
+        return Result.ok(isend);
+    }
+
+
     @RequestMapping(value = "/admin/courseControl.json",produces="application/json;charset=UTF-8")
     public Result saveFlow(HttpSession session,Integer year,String semester,String type,String start_date,String end_date) throws IOException {
 //        System.out.println(start_date);
@@ -31,7 +44,7 @@ public class RegisterCourseController {
 
 
     @RequestMapping(value = "/admin/endup.json",produces="application/json;charset=UTF-8")
-    public void endFlow(HttpSession session,Integer year,String semester,String type,String start_date,String end_date) throws IOException {
+    public Result endFlow(HttpSession session,Integer year,String semester,String type,String start_date,String end_date) throws IOException {
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String date=df.format(new Date());
@@ -39,7 +52,7 @@ public class RegisterCourseController {
 //        System.out.println(registerCourseService.flowIsEnd("student"));
 //        System.out.println(registerCourseService.flowIsEnd("professor"));
 
-
+        return Result.ok();
 
     }
 

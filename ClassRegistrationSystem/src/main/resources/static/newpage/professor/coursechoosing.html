@@ -82,6 +82,25 @@
             form = layui.form,
             table = layui.table;
 
+        $.ajax({
+            type:"GET",
+            dataType: "json",//预期服务器返回的数据类型
+            url: "/professor/flowstate" ,//url
+            success:function (result) {
+                console.log(result);//打印服务端返回的数据(调试用)
+                if (result.status === 200) {
+                    if(result.data === true){
+                        window.location = '/newpage/professor/sorry.html';
+                    }
+                }else {
+                    layer.msg(result.msg, {time:2000})
+                }
+            },
+            error : function() {
+                layer.msg("网络异常或服务器出错！", {time:2000});
+            }
+        });
+
         table.render({
             elem: '#currentTableId',
             url: '/professor/professor_choose_course.json',
