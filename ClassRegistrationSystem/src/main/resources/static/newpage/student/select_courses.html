@@ -30,25 +30,25 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户姓名</label>
+                            <label class="layui-form-label">课程ID</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="username" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户性别</label>
+                            <label class="layui-form-label">课程名</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="sex" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户城市</label>
+                            <label class="layui-form-label">教授</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="city" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户职业</label>
+                            <label class="layui-form-label">开课专业</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="classify" autocomplete="off" class="layui-input">
                             </div>
@@ -61,7 +61,12 @@
             </div>
         </fieldset>
 
-
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 批量加入主选 </button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="add"> 批量加入备选 </button>
+            </div>
+        </script>
 
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
@@ -69,13 +74,15 @@
             {{#  if(d.state =="untaken"){ }}
             <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit " lay-event="addzhu">加入主选</button>
             <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="addbei">加入备选</button>
+            <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete layui-btn-disabled" lay-event="delete"disabled>取消选课</button>
             {{# }if(d.state =="zhu") { }}
             <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit layui-btn-disabled" lay-event="addzhu"disabled>加入主选</button>
             <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="addbei">加入备选</button>
-
+            <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">取消选课</button>
             {{# }if(d.state =="bei") { }}
             <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="addzhu">加入主选</button>
             <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete layui-btn-disabled" lay-event="addbei"disabled>加入备选</button>
+            <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">取消选课</button>
             {{#  } }}
         </script>
 
@@ -243,6 +250,34 @@
                     error : function() {
                         layer.msg("网络异常或服务器出错！", {time:2000});
                     }
+                });
+            }else if(obj.event === 'delete'){
+                layer.confirm('是否确定退选该课程', function (index) {
+                    $.ajax({
+                        type:"GET",
+                        dataType: "json",//预期服务器返回的数据类型
+                        url: "/student/delete_course.json" ,//url
+                        data:{"class_id":data.class_id},
+                        success:function (result) {
+                            console.log(result);//打印服务端返回的数据(调试用)
+                            if (result.status === 200) {
+                                layer.msg("退选成功", {time:1000},function () {
+                                    table.reload("currentTableId", {
+                                        page: {
+                                            curr: 1
+                                        },
+                                    }, 'data');
+                                })
+                            }else {
+                                layer.msg(result.msg, {time:2000})
+                            }
+                        },
+                        error : function() {
+                            layer.msg("网络异常或服务器出错！", {time:2000});
+                        }
+                    });
+                    // obj.del();
+                    // layer.close(index);
                 });
             }
         });
