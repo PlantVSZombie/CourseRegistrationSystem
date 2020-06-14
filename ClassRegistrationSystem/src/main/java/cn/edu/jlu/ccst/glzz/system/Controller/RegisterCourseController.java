@@ -20,6 +20,19 @@ public class RegisterCourseController {
     @Resource
     RegisterCourseService registerCourseService;
 
+    @RequestMapping(value = "/student/flowstate",produces="application/json;charset=UTF-8")
+    public Result getStudentFlowState()  {
+        boolean isend=registerCourseService.flowIsEnd("student");
+        return Result.ok(isend);
+    }
+
+    @RequestMapping(value = "/professor/flowstate",produces="application/json;charset=UTF-8")
+    public Result getProfessorFlowState()  {
+        boolean isend=registerCourseService.flowIsEnd("professor");
+        return Result.ok(isend);
+    }
+
+
     @RequestMapping(value = "/admin/courseControl.json",produces="application/json;charset=UTF-8")
     public Result saveFlow(HttpSession session,Integer year,String semester,String type,String start_date,String end_date) throws IOException {
 //        System.out.println(start_date);
