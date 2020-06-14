@@ -173,17 +173,17 @@
 
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
-            console.log(data);
+            // console.log(data);
             if (obj.event === 'addzhu') {
                 $.ajax({
                     type:"GET",
                     dataType: "json",//预期服务器返回的数据类型
                     url: "/student/add_zhu" ,//url
-                    data:{"class_id":data.class_id},
+                    data:{"class_id":data.class_id,"sec_capacity":data.sec_capacity,"course_id":data.course_id},
                     success:function (result) {
                         console.log(result);//打印服务端返回的数据(调试用)
                         if (result.status === 200) {
-                            layer.msg("成功加入主选课程", {time:1000},function () {
+                            layer.msg(result.data, {time:1000},function () {
                                 table.reload("currentTableId", {
                                     page: {
                                         curr: 1
@@ -204,11 +204,11 @@
                     type:"GET",
                     dataType: "json",//预期服务器返回的数据类型
                     url: "/student/add_bei" ,//url
-                    data:{"class_id":data.class_id},
+                    data:{"class_id":data.class_id,"sec_capacity":data.sec_capacity,"course_id":data.course_id},
                     success:function (result) {
                         console.log(result);//打印服务端返回的数据(调试用)
                         if (result.status === 200) {
-                            layer.msg("成功加入备选课程", {time:1000},function () {
+                            layer.msg(result.data, {time:1000},function () {
                                 table.reload("currentTableId", {
                                     page: {
                                         curr: 1
