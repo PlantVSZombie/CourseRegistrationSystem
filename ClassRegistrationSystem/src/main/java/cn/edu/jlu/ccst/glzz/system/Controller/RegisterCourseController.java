@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.management.Query;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -92,6 +93,8 @@ public class RegisterCourseController {
 
     @RequestMapping(value = "/admin/information.json",produces="application/json;charset=UTF-8")
     public JSONObject getStudentInfo(int limit,int page,String searchParams){
+        registerCourseService.getGroup();
+
         System.out.println(searchParams);
         JSONObject jsonObject;
         if(searchParams!=null){

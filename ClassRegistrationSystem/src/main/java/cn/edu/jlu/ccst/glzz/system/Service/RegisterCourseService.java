@@ -3,6 +3,8 @@ package cn.edu.jlu.ccst.glzz.system.Service;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.FlowControlDao;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.ProfessorDao;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.StudentDao;
+import cn.edu.jlu.ccst.glzz.system.generated.DAO.TakesDao;
+import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 import com.gitee.fastmybatis.core.query.Query;
@@ -21,6 +23,20 @@ public class RegisterCourseService {
     StudentDao studentDao;
     @Resource
     ProfessorDao professorDao;
+    @Resource
+    TakesDao takesDao;
+
+//    public String getGroup(){
+////        System.out.println(takesDao.getGroup());
+//        Query query=new Query();
+//        query.sql("select count(*) as num,class_id from takes GROUP BY takes");
+//        List<String> column = Arrays.asList("class_id","num");
+//        List<Map<String,Object>> control_flow=flowControlDao.listMap(column,query);
+//        System.out.println(control_flow);
+//        return null;
+//    }
+
+
     public void endFlow(String type,String end_date){
         flowControlDao.updateByType(type,end_date);
     }
