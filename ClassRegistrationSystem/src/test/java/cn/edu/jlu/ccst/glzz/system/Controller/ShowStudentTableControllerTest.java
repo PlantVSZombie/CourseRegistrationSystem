@@ -40,4 +40,29 @@ class ShowStudentTableControllerTest {
                 .log().all()
         .body("status",equalTo(200));
     }
+    @Test
+    void correctGrade() {
+        ValidatableResponse myresponse =given()
+                .log().all()
+                .queryParam("userid","2211223")
+                .queryParam("password","12345678")
+                .queryParam("usertype","professor")
+                .when()
+                .post("/login")
+                .then()
+                .log().all()
+                .body("status",equalTo(200));
+        Map responseCookies = myresponse.extract().cookies();
+
+        given()
+                .log().all()
+                .cookies(responseCookies)
+                .param("limit",15)
+                .param("page",1)
+                .when()
+                .post("/professor/student_table.json")
+                .then()
+                .log().all()
+                .body("status",equalTo(200));
+    }
 }
