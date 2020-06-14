@@ -3,6 +3,7 @@ package cn.edu.jlu.ccst.glzz.system.Service;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.FlowControlDao;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.ProfessorDao;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.StudentDao;
+import cn.edu.jlu.ccst.glzz.system.generated.Model.FlowControl;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 import com.gitee.fastmybatis.core.query.Query;
@@ -26,16 +27,21 @@ public class RegisterCourseService {
     }
     public Boolean flowIsEnd(String type){
         System.out.println(type);
-        String enddate=flowControlDao.getEnddatetimeByType(type);
+        Query query=new Query();
+        query.eq("type",type).addSort("end_datetime");
+        List<FlowControl> flowControls=flowControlDao.list(query);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String curdate=df.format(new Date());
-        Integer i=enddate.compareTo(curdate);
+        int i=flowControls.get(flowControls.size()-1).getEndDatetime().compareTo(new Date());
         System.out.println(i);
         if(i<0){
             return Boolean.TRUE;
         }else{
             return Boolean.FALSE;
         }
+    }
+
+    public FlowControl getFlowControl(String type){
+         return flowControlDao.getByQuery(new Query().eq("type",type));
     }
 
 
