@@ -39,7 +39,7 @@ public class ChooseProfessorCourseController {
 
         }
         List<Map<String,Object>> professor_access_course=chooseProfessorCourseService.getProfessor_accessCourse(professor.getProfessorId(),
-                limit, page, CurrentTime.getSemester(),Integer.valueOf(CurrentTime.getYear()));           //教授选课目录
+                limit, page, CurrentTime.getSemester(), CurrentTime.getYear());           //教授选课目录
 
 
         List<Map<String, Object>> chosen_list = new ArrayList<>();
@@ -79,5 +79,12 @@ public class ChooseProfessorCourseController {
 
     }
 
+    @RequestMapping(value = "/professor/cancel_professor_course", produces = "application/json;charset=UTF-8")
+    public Result deleteCourse(HttpSession session, int class_id){
+        User user=(User)session.getAttribute("user");
+        Professor professor=(Professor) user.getPerson();
+        chooseProfessorCourseService.delete(professor.getProfessorId(),class_id);
+        return Result.ok("删除成功");
+    }
 
 }

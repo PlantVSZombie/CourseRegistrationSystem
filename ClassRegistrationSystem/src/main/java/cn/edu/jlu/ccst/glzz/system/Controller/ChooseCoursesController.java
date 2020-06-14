@@ -5,6 +5,7 @@ import cn.edu.jlu.ccst.glzz.system.Service.ChooseCoursesService;
 import cn.edu.jlu.ccst.glzz.system.Service.HasSelectedCoursesService;
 import cn.edu.jlu.ccst.glzz.system.Util.JsonUtil;
 import cn.edu.jlu.ccst.glzz.system.Util.Result;
+import cn.edu.jlu.ccst.glzz.system.generated.Model.Professor;
 import cn.edu.jlu.ccst.glzz.system.generated.Model.Student;
 import cn.edu.jlu.ccst.glzz.system.generated.Model.Takes;
 import com.alibaba.fastjson.JSONObject;
@@ -149,6 +150,7 @@ public class ChooseCoursesController {
         return Result.ok("成功加入备选课程");
 
     }
+
 
 
 }

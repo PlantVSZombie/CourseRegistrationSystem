@@ -44,7 +44,7 @@ public class ShowProfessorChosenCourseService {
             //找是否在ansList里
             for(Map<String,Object> ansit:professor_ansList)
             {
-                if(ansit.get("section.class_id")==it.get("section.class_id")){
+                if(ansit.get("class_id")==it.get("class_id")){
                     newone=false;
                     String tem=(String)ansit.get("course_place");
                     tem+="<br>";

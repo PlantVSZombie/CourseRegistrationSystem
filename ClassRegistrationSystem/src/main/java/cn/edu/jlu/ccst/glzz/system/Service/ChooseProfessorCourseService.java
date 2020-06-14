@@ -41,7 +41,7 @@ public class ChooseProfessorCourseService {
             //找在不在ansList里
             for(Map<String,Object> ansit:ansList)
             {
-                if(ansit.get("section.class_id")==it.get("section.class_id")){
+                if(ansit.get("class_id")==it.get("class_id")){
                     newone=false;
                     String tem=(String)ansit.get("course_place");
                     tem+="<br>";
@@ -159,6 +159,10 @@ public class ChooseProfessorCourseService {
         }*/
     }
 
-
+    public void delete(String student_id,int class_id){
+        Query query=new Query();
+        query.eq("professor_id",student_id).eq("class_id",class_id);
+        teachesDao.deleteByQuery(query);
+    }
 
 }

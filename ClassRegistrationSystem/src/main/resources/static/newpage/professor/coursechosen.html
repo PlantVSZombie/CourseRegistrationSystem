@@ -24,58 +24,11 @@
 <div class="layuimini-container">
     <div class="layuimini-main">
 
-        <fieldset class="table-search-fieldset">
-            <legend>搜索课程</legend>
-            <div style="margin: 10px 10px 10px 10px">
-                <form class="layui-form layui-form-pane" action="">
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户姓名</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户性别</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户城市</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="city" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户职业</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="classify" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </fieldset>
-
-
 
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
-            {{#  if(d.state =="untaken"){ }}
-            <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit " lay-event="add_professor_course">加入选课</button>
-            {{# }if(d.state =="zhu") { }}
-            <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit layui-btn-disabled" lay-event="addzhu"disabled>加入主选</button>
-            <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="addbei">加入备选</button>
-
-            {{# }if(d.state =="bei") { }}
-            <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="addzhu">加入主选</button>
-            <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete layui-btn-disabled" lay-event="addbei"disabled>加入备选</button>
-            {{#  } }}
+            <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit " lay-event="cancel_professor_course">取消选课</button>
         </script>
 
     </div>
@@ -97,7 +50,6 @@
                 icon: 'layui-icon-tips'
             }],
             cols: [[
-                {type: "checkbox", width: 50},
                 {field: 'course_id', width: 100, title: '课程ID', sort: true},
                 {field: 'title', width: 150, title: '课程名',sort: true},
                 {field: 'sec_id', width: 100, title: '教学班ID',sort: true},
@@ -120,69 +72,21 @@
             skin: 'line'
         });
 
-        // 监听搜索操作
-        form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            });
 
-            //执行搜索重载
-            table.reload('currentTableId', {
-                page: {
-                    curr: 1
-                }
-                , where: {
-                    searchParams: result
-                }
-            }, 'data');
-
-            return false;
-        });
-
-        /**
-         * toolbar监听事件
-         */
-        table.on('toolbar(currentTableFilter)', function (obj) {
-
-            if (obj.event === 'add') {  // 监听添加操作
-                var index = layer.open({
-                    title: '添加用户',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin:true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: '/newpage/student/table/add.html',
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
-            } else if (obj.event === 'delete') {  // 监听删除操作
-                var checkStatus = table.checkStatus('currentTableId')
-                    , data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
-            }
-        });
-
-        //监听表格复选框选择
-        table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
-        });
 
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
             console.log(data);
-            if (obj.event === 'add_professor_course') {
+            if (obj.event === 'cancel_professor_course') {
                 $.ajax({
                     type:"GET",
                     dataType: "json",//预期服务器返回的数据类型
-                    url: "/professor/add_professor_course" ,//url
+                    url: "/professor/cancel_professor_course" ,//url
                     data:{"class_id":data.class_id},
                     success:function (result) {
                         console.log(result);//打印服务端返回的数据(调试用)
                         if (result.status === 200) {
-                            layer.msg("选课成功", {time:1000},function () {
+                            layer.msg("取消成功", {time:1000},function () {
                                 table.reload("currentTableId", {
                                     page: {
                                         curr: 1
