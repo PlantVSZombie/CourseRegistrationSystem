@@ -4,6 +4,7 @@ import cn.edu.jlu.ccst.glzz.system.Model.User;
 import cn.edu.jlu.ccst.glzz.system.Service.ChooseCoursesService;
 import cn.edu.jlu.ccst.glzz.system.Service.HasSelectedCoursesService;
 import cn.edu.jlu.ccst.glzz.system.Util.JsonUtil;
+import cn.edu.jlu.ccst.glzz.system.Util.Result;
 import cn.edu.jlu.ccst.glzz.system.generated.Model.Student;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,5 +75,11 @@ public class HasSelectedCoursesController {
         return jsonUtil.getJsonObject();
     }
 
-
+    @RequestMapping(value = "/student/delete_course.json", produces = "application/json;charset=UTF-8")
+    public Result deleteCourse(HttpSession session, int class_id){
+        User user=(User)session.getAttribute("user");
+        Student student=(Student)user.getPerson();
+        hasSelectedCoursesService.delete(student.getStudentId(),class_id);
+        return Result.ok("删除成功");
+    }
 }

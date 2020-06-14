@@ -3,11 +3,13 @@ package cn.edu.jlu.ccst.glzz.system.Service;
 import cn.edu.jlu.ccst.glzz.system.Util.CurrentTime;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.*;
 import cn.edu.jlu.ccst.glzz.system.generated.Model.Prereq;
+import cn.edu.jlu.ccst.glzz.system.generated.Model.SecTimePlace;
 import cn.edu.jlu.ccst.glzz.system.generated.Model.Takes;
 import com.gitee.fastmybatis.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -21,6 +23,8 @@ public class ChooseCoursesService {
     PrereqDao prereqDao;
     @Resource
     CourseDao courseDao;
+    @Resource
+    SecTimePlaceDao secTimePlaceDao;
 
     public List<Map<String,Object>> getSelectCourses(String student_id,int limit,int page,String class_name,Integer year,String semester){
         Query query=new Query();
@@ -36,7 +40,7 @@ public class ChooseCoursesService {
         if(semester!=null&&!semester.equals("")){
             query.eq("semester",semester);
         }
-        List<String> column = Arrays.asList("class_id","course_id","professor_name","title as class_name","credits","course.dept_name","sec_capacity","building","room_number","day","start_time","end_time");
+        List<String> column = Arrays.asList("class_id","course_id","professor_name","title as class_name","credits","course.dept_name","sec_capacity","building","room_number","day","start_time","end_time","time_id");
         List<Map<String,Object>> selectCoursesList=teachesDao.listMap(column,query);
         List<Map<String,Object>> ansList=new ArrayList<>();
         //将相同class_id的合并
@@ -78,6 +82,7 @@ public class ChooseCoursesService {
                     end_time2=end_time2.substring(0,5);
                     timetem+=s_day+' '+start_time2+'-'+end_time2;
                     ansit.put("course_time",timetem);
+                    ((HashSet<Integer>)ansit.get("time_id")).add((int) (it.get("time_id")));
                     break;
                 }
             }
@@ -87,6 +92,9 @@ public class ChooseCoursesService {
                 Object end_time=it.remove("end_time");
                 Object building=it.remove("building");
                 Object room_number=it.remove("room_number");
+                Object time_id=it.remove("time_id");
+                it.put("time_id",new HashSet<Integer>());
+                ((HashSet<Integer>)it.get("time_id")).add((int)time_id);
                 int i_day=(int)day;
                 String s_day=null;
                 switch (i_day){
@@ -173,9 +181,40 @@ public class ChooseCoursesService {
         return unsatisfiedTitleList;
     }
 //返回时间冲突的课程title
-//    public String checkTimePriblem(String student_id,int class_id){
-//
-//    }
+    public String checkTimePriblem(String student_id,int class_id,List<Map<String, Object>> zhulist){
+        HashSet<String> ans=new HashSet<String>();
+        Query query=new Query();
+        query.eq("class_id",class_id);
+        List<SecTimePlace> tem= secTimePlaceDao.list(query);
+        for(SecTimePlace it:tem){
+            for(Map<String,Object> zhuit:zhulist){
+                if(((HashSet<Integer>)(zhuit.get("time_id"))).contains(it.getTimeId())){
+                    ans.add(zhuit.get("class_name").toString());
+                }
+            }
+
+        }
+        String toreturn="";
+        int time=0;
+        for(String it:ans){
+            if(time==0) {
+                toreturn += it;
+                time++;
+            }
+            else{
+                toreturn+=","+it;
+            }
+        }
+        return toreturn;
+
+    }
+
+    public Takes findCourse(String student_id, int class_id){
+        Query query=new Query();
+        query.eq("student_id",student_id).eq("class_id",class_id);
+        Takes tem=takesDao.getByQuery(query);
+        return tem;
+    }
 
     public void addCourse(String student_id,int class_id,int ismajor){
         Query query=new Query();
@@ -197,5 +236,8 @@ public class ChooseCoursesService {
             System.out.println(ans);
         }
     }
+
+
+
 
 }

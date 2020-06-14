@@ -130,4 +130,10 @@ public class HasSelectedCoursesService {
         }
         return zhuList;
     }
+
+    public void delete(String student_id,int class_id){
+        Query query=new Query();
+        query.eq("student_id",student_id).eq("class_id",class_id);
+        takesDao.deleteByQuery(query);
+    }
 }

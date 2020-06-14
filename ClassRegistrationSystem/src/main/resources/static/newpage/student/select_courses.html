@@ -173,8 +173,11 @@
 
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
-            // console.log(data);
+            console.log(data.time_id);
+            console.log(typeof data.time_id);
+            console.log(typeof data.class_id);
             if (obj.event === 'addzhu') {
+
                 $.ajax({
                     type:"GET",
                     dataType: "json",//预期服务器返回的数据类型
