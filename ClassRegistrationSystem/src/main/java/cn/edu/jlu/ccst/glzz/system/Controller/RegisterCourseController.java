@@ -49,6 +49,8 @@ public class RegisterCourseController {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String date=df.format(new Date());
         registerCourseService.endFlow(type,date);
+        registerCourseService.deleteUnQuaClass();
+        registerCourseService.selectBeiXuan();
 //        System.out.println(registerCourseService.flowIsEnd("student"));
 //        System.out.println(registerCourseService.flowIsEnd("professor"));
 
