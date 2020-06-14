@@ -25,7 +25,7 @@
     <div class="layuimini-main">
 
         <fieldset class="table-search-fieldset">
-            <legend>搜索信息</legend>
+            <legend>搜索课程</legend>
             <div style="margin: 10px 10px 10px 10px">
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
@@ -67,8 +67,7 @@
 
         <script type="text/html" id="currentTableBar">
             {{#  if(d.state =="untaken"){ }}
-            <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit " lay-event="addzhu">加入主选</button>
-            <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="addbei">加入备选</button>
+            <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit " lay-event="add_professor_course">加入选课</button>
             {{# }if(d.state =="zhu") { }}
             <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit layui-btn-disabled" lay-event="addzhu"disabled>加入主选</button>
             <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="addbei">加入备选</button>
@@ -90,7 +89,7 @@
 
         table.render({
             elem: '#currentTableId',
-            url: '/student/select_courses.json',
+            url: '/professor/professor_choose_course.json',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -100,18 +99,18 @@
             cols: [[
                 {type: "checkbox", width: 50},
                 {field: 'course_id', width: 100, title: '课程ID', sort: true},
-                {field: 'class_name', width: 150, title: '课程名',sort: true},
-                {field: 'professor_name', width: 100, title: '教授',sort: true},
+                {field: 'title', width: 150, title: '课程名',sort: true},
+                {field: 'sec_id', width: 100, title: '教学班ID',sort: true},
+                {field: 'semester', width: 100, title: '学期',sort: true},
+                {field: 'year', width: 100, title: '学年',sort: true},
                 {field: 'credits', width: 100, title: '学分',sort: true},
-                {field: 'dept_name', width: 100, title: '开课专业',sort: true},
-                {field: 'sec_capacity', width: 100, title: '最大人数',sort: true},
+                {field: 'dept_name', width: 100, title: '所属院系',sort: true},
+                {field: 'cost', width: 100, title: '课时',sort: true},
                 {field: 'course_time', width: 150, title: '上课时间',sort: true},
                 {field: 'course_place', width: 100, title: '上课地点',sort: true},
 
-                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center",templet:function (d) {
+                {title: '操作', minWidth: 50, toolbar: '#currentTableBar', align: "center",templet:function (d) {
                         console.log(d)
-
-
                     }}
 
             ]],
@@ -173,20 +172,17 @@
 
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
-            console.log(data.time_id);
-            console.log(typeof data.time_id);
-            console.log(typeof data.class_id);
-            if (obj.event === 'addzhu') {
-
+            console.log(data);
+            if (obj.event === 'add_professor_course') {
                 $.ajax({
                     type:"GET",
                     dataType: "json",//预期服务器返回的数据类型
-                    url: "/student/add_zhu" ,//url
-                    data:{"class_id":data.class_id,"sec_capacity":data.sec_capacity,"course_id":data.course_id},
+                    url: "/professor/add_professor_course" ,//url
+                    data:{"class_id":data.class_id},
                     success:function (result) {
                         console.log(result);//打印服务端返回的数据(调试用)
                         if (result.status === 200) {
-                            layer.msg(result.data, {time:1000},function () {
+                            layer.msg("选课成功", {time:1000},function () {
                                 table.reload("currentTableId", {
                                     page: {
                                         curr: 1
@@ -202,30 +198,6 @@
                     }
                 });
 
-            } else if (obj.event === 'addbei') {
-                $.ajax({
-                    type:"GET",
-                    dataType: "json",//预期服务器返回的数据类型
-                    url: "/student/add_bei" ,//url
-                    data:{"class_id":data.class_id,"sec_capacity":data.sec_capacity,"course_id":data.course_id},
-                    success:function (result) {
-                        console.log(result);//打印服务端返回的数据(调试用)
-                        if (result.status === 200) {
-                            layer.msg(result.data, {time:1000},function () {
-                                table.reload("currentTableId", {
-                                    page: {
-                                        curr: 1
-                                    },
-                                }, 'data');
-                            })
-                        }else {
-                            layer.msg(result.msg, {time:2000})
-                        }
-                    },
-                    error : function() {
-                        layer.msg("网络异常或服务器出错！", {time:2000});
-                    }
-                });
             }
         });
 

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">学生姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="student_name" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">课程名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="title" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">学期</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="semester" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">学年</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="year" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+
+            </div>
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+
+
+
+        <script type="text/html" id="currentTableBar">
+            <div class="layui-input-inline">
+                <input type="text" name="newGrade" autocomplete="off" class="layui-input" lay-size="sm">
+            </div>
+            <button type="button" class="layui-btn layui-btn-sm" id="grade-submit-btn" lay-event="ensure">确认</button>
+        </script>
+
+
+
+    </div>
+</div>
+<script src="/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        table.render({
+            elem: '#currentTableId',
+            url: '/professor/student_table.json',
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', 'print'],
+            cols: [[
+                {type: "checkbox", width: 50},
+                {field: 'course_id', width: 120, title: '课程ID',sort: true},
+                {field: 'title', width: 150, title: '课程名', sort: true},
+                {field: 'sec_id', width: 120, title: '教学班ID',sort: true},
+                {field: 'semester',width: 80, title: '学期', sort: true},
+                {field: 'year', width: 80, title: '学年', sort: true},
+                {field: 'credits', width: 80, title: '学分', sort: true},
+                {title: '双击查看该课程学生信息', width: 200}
+                /*{field: 'student_id', width: 120, title: '学生ID',sort: true},
+                {field: 'student_name', width: 120, title: '学生名',sort: true},
+                {field: 'grade', width: 80, title: '成绩',sort: true},
+                {title: '修改/提交成绩', minWidth: 60, toolbar: '#currentTableBar', align: "center"}*/
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 15,
+            page: true,
+            skin: 'line'
+        });
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            var result = JSON.stringify(data.field);
+            /*layer.alert(result, {
+                title: '最终的搜索信息'
+            });*/
+
+            //执行搜索重载
+            table.reload('currentTableId', {
+                page: {
+                    curr: 1
+                }
+                , where: {
+                    searchParams: result
+                },
+
+            }, 'data');
+
+            return false;
+        });
+
+        /**
+         * toolbar监听事件
+         */
+
+        table.on('rowDouble(currentTableFilter)', function(obj){
+            //obj 同上
+            console.log(obj.data) //得到当前行数据
+            var result = JSON.stringify(obj.data);
+            console.log(result)
+            var new_result = result.substr(1,result.length-2);
+            console.log(new_result)
+            table.reload('currentTableId', {
+                page: {
+                    curr: 1
+                }
+                , where: {
+                    searchParams: result
+                },
+                title:"学生成绩",
+                cols: [[
+                    {type: "checkbox", width: 50},
+                    {field: 'course_id', width: 120, title: '课程ID',sort: true},
+                    {field: 'title', width: 150, title: '课程名', sort: true},
+                    {field: 'sec_id', width: 120, title: '教学班ID',sort: true},
+                    {field: 'semester',width: 80, title: '学期', sort: true},
+                    {field: 'year', width: 80, title: '学年', sort: true},
+                    {field: 'credits', width: 80, title: '学分', sort: true},
+                    {field: 'student_id', width: 120, title: '学生ID',sort: true},
+                    {field: 'student_name', width: 120, title: '学生名',sort: true},
+                    {field: 'grade', width: 80, title: '成绩',sort: true,edit:'text'},
+                    {title: '单击成绩可修改', width: 200}
+                ]]
+            }, 'data');
+
+            return false;
+
+        });
+        //监听表格复选框选择
+        table.on('checkbox(currentTableFilter)', function (obj) {
+            console.log(obj)
+        });
+        table.on('edit(currentTableFilter)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+            console.log(obj.value); //得到修改后的值
+            console.log(obj.field); //当前编辑的字段名
+            console.log(obj.data); //所在行的所有相关数据
+            console.log(obj); //输出obj
+            var result = JSON.stringify(obj.data);
+            $.ajax({
+                type:"POST",
+                dataType: "json",//预期服务器返回的数据类型
+                url: "/professor/correctGrade.json" ,//url
+                data:{"sec_id":obj.data.sec_id,"student_id":obj.data.student_id,"grade":obj.data.grade},
+                success:function (result) {
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.status === 200) {
+                        layer.msg("成绩修改成功", {time:1000});
+                    }else {
+                        layer.msg(result.msg, {time:2000});
+                    }
+                },
+                error : function() {
+                    layer.msg("网络异常或服务器出错！", {time:2000});
+                }
+            });
+
+            return false;
+
+        });
+    })
+</script>
+
+</body>
+</html>

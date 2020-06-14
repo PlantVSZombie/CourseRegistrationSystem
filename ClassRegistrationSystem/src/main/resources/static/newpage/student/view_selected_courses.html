@@ -72,9 +72,14 @@
 
         <table class="layui-hide" id="currentAlternativeTableId" lay-filter="currentTableFilter"></table>
 
-        <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+        <script type="text/html" id="zhuTableBar">
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="setBei">设为备选</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除课程</a>
+        </script>
+
+        <script type="text/html" id="beiTableBar">
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="setZhu">设为主选</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除课程</a>
         </script>
 
     </div>
@@ -105,7 +110,7 @@
                 {field: 'sec_capacity', width: 100, title: '最大人数',sort: true},
                 {field: 'course_time', width: 150, title: '上课时间',sort: true},
                 {field: 'course_place', width: 100, title: '上课地点',sort: true},
-                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+                {title: '操作', minWidth: 150, toolbar: '#zhuTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,
@@ -132,7 +137,7 @@
                 {field: 'sec_capacity', width: 100, title: '最大人数',sort: true},
                 {field: 'course_time', width: 150, title: '上课时间',sort: true},
                 {field: 'course_place', width: 100, title: '上课地点',sort: true},
-                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+                {title: '操作', minWidth: 150, toolbar: '#beiTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,
@@ -191,23 +196,92 @@
 
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
-            if (obj.event === 'edit') {
+            if (obj.event === 'setBei') {
+                $.ajax({
+                    type:"GET",
+                    dataType: "json",//预期服务器返回的数据类型
+                    url: "/student/add_bei" ,//url
+                    data:{"class_id":data.class_id,"sec_capacity":data.sec_capacity,"course_id":data.course_id},
+                    success:function (result) {
+                        console.log(result);//打印服务端返回的数据(调试用)
+                        if (result.status === 200) {
+                            layer.msg(result.data, {time:1000},function () {
 
-                var index = layer.open({
-                    title: '编辑用户',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin:true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: '/newpage/student/table/edit.html',
+                                table.reload("currentMajorTableId", {
+                                    page: {
+                                        curr: 1
+                                    },
+                                }, 'data');
+                                table.reload("currentAlternativeTableId", {
+                                    page: {
+                                        curr: 1
+                                    },
+                                }, 'data');
+                            })
+                        }else {
+                            layer.msg(result.msg, {time:2000})
+                        }
+                    },
+                    error : function() {
+                        layer.msg("网络异常或服务器出错！", {time:2000});
+                    }
                 });
-                $(window).on("resize", function () {
-                    layer.full(index);
+
+            } else if(obj.event === 'setZhu'){
+                $.ajax({
+                    type:"GET",
+                    dataType: "json",//预期服务器返回的数据类型
+                    url: "/student/add_zhu" ,//url
+                    data:{"class_id":data.class_id,"sec_capacity":data.sec_capacity,"course_id":data.course_id},
+                    success:function (result) {
+                        console.log(result);//打印服务端返回的数据(调试用)
+                        if (result.status === 200) {
+                            layer.msg(result.data, {time:1000},function () {
+                                table.reload("currentMajorTableId", {
+                                    page: {
+                                        curr: 1
+                                    },
+                                }, 'data');
+                                table.reload("currentAlternativeTableId", {
+                                    page: {
+                                        curr: 1
+                                    },
+                                }, 'data');
+                            })
+                        }else {
+                            layer.msg(result.msg, {time:2000})
+                        }
+                    },
+                    error : function() {
+                        layer.msg("网络异常或服务器出错！", {time:2000});
+                    }
                 });
-                return false;
-            } else if (obj.event === 'delete') {
-                layer.confirm('真的删除行么', function (index) {
+            }
+            else if (obj.event === 'delete') {
+                layer.confirm('是否确定删除该课程', function (index) {
+                    $.ajax({
+                        type:"GET",
+                        dataType: "json",//预期服务器返回的数据类型
+                        url: "/student/delete_course.json" ,//url
+                        data:{"class_id":data.class_id},
+                        success:function (result) {
+                            console.log(result);//打印服务端返回的数据(调试用)
+                            if (result.status === 200) {
+                                layer.msg(result.data, {time:1000},function () {
+                                    table.reload("currentAlternativeTableId", {
+                                        page: {
+                                            curr: 1
+                                        },
+                                    }, 'data');
+                                })
+                            }else {
+                                layer.msg(result.msg, {time:2000})
+                            }
+                        },
+                        error : function() {
+                            layer.msg("网络异常或服务器出错！", {time:2000});
+                        }
+                    });
                     obj.del();
                     layer.close(index);
                 });
