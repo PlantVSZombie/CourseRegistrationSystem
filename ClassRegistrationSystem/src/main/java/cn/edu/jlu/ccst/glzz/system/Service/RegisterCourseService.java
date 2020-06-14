@@ -69,13 +69,13 @@ public class RegisterCourseService {
             query.eq("dept_name",dept_name);
         }
 
-
+        query.join("natural join (select student_id,sum(ifnull(cost,20)) as cost from takes natural join section natural join course group by student_id) t2");
         return query;
     }
     public List<Map<String,Object>> getStudentInfo(String student_id,String student_name,String dept_name,int limit,int page){
         Query query=getStudentInfoQuery(student_id,student_name,dept_name);
         query.page(page,limit);
-        List<String> column = Arrays.asList("student_id","student_name","dept_name");
+        List<String> column = Arrays.asList("student_id","student_name","dept_name","cost");
         List<Map<String,Object>> studentinfo=studentDao.listMap(column,query);
         return studentinfo;
     }
