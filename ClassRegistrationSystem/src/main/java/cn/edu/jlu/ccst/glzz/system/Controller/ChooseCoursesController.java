@@ -84,20 +84,42 @@ public class ChooseCoursesController {
         return jsonUtil.getJsonObject();
 
     }
+
+
+
     @RequestMapping(value = "/student/add_zhu",produces="application/json;charset=UTF-8")
-    public Result addZhuCourses(HttpSession session, int class_id){
+    public Result addZhuCourses(HttpSession session, int class_id,int sec_capacity,String course_id){
         User user=(User)session.getAttribute("user");
         Student student=(Student)user.getPerson();
+        int curmember=chooseCoursesService.countMember(class_id);
+        if(curmember>=sec_capacity){
+            return Result.ok("课程人数已满");
+        }
+        String unsatisfiedCourses=chooseCoursesService.checkPre(student.getStudentId(),course_id);
+        if(!unsatisfiedCourses.equals("")){
+            return Result.ok("未满足如下前导课的要求:"+unsatisfiedCourses);
+        }
+        //判断时间冲突
+
         chooseCoursesService.addCourse(student.getStudentId(),class_id,1);
-        return Result.ok();
+        return Result.ok("成功加入主选课程");
 
     }
     @RequestMapping(value = "/student/add_bei",produces="application/json;charset=UTF-8")
-    public Result addBeiCourses(HttpSession session, int class_id){
+    public Result addBeiCourses(HttpSession session, int class_id,int sec_capacity,String course_id){
         User user=(User)session.getAttribute("user");
         Student student=(Student)user.getPerson();
+        int curmember=chooseCoursesService.countMember(class_id);
+        if(curmember>=sec_capacity){
+            return Result.ok("课程人数已满");
+        }
+        String unsatisfiedCourses=chooseCoursesService.checkPre(student.getStudentId(),course_id);
+        if(!unsatisfiedCourses.equals("")){
+            return Result.ok("未满足如下前导课的要求:"+unsatisfiedCourses);
+        }
+
         chooseCoursesService.addCourse(student.getStudentId(),class_id,0);
-        return Result.ok();
+        return Result.ok("成功加入备选课程");
 
     }
 }

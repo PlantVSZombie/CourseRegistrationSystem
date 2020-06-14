@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class HasSelectedCoursesService {
@@ -34,7 +31,7 @@ public class HasSelectedCoursesService {
         if(semester!=null&&!semester.equals("")){
             query.eq("semester",semester);
         }
-        List<String> column = Arrays.asList("class_id","course_id","professor_name","title as class_name","credits","course.dept_name","sec_capacity","building","room_number","day","start_time","end_time","ismajor");
+        List<String> column = Arrays.asList("class_id","course_id","professor_name","title as class_name","credits","course.dept_name","sec_capacity","building","room_number","day","start_time","end_time","ismajor","time_id");
         List<Map<String,Object>> selectCoursesList=takesDao.listMap(column,query);
         //将相同class_id的合并
         List<Map<String, Object>> zhuList = new ArrayList<>();
@@ -82,6 +79,7 @@ public class HasSelectedCoursesService {
                     end_time2 = end_time2.substring(0, 5);
                     timetem += s_day + ' ' + start_time2 + '-' + end_time2;
                     ansit.put("course_time", timetem);
+                    ((HashSet<Integer>)ansit.get("time_id")).add((int)(it.get("time_id")));
                     break;
                 }
             }
@@ -91,6 +89,9 @@ public class HasSelectedCoursesService {
                 Object end_time = it.remove("end_time");
                 Object building = it.remove("building");
                 Object room_number = it.remove("room_number");
+                Object time_id=it.remove("time_id");
+                it.put("time_id",new HashSet<Integer>());
+                ((HashSet<Integer>)it.get("time_id")).add((int)time_id);
                 int i_day = (int) day;
                 String s_day = null;
                 switch (i_day) {

@@ -1,19 +1,15 @@
 package cn.edu.jlu.ccst.glzz.system.Service;
 
 import cn.edu.jlu.ccst.glzz.system.Util.CurrentTime;
-import cn.edu.jlu.ccst.glzz.system.generated.DAO.SectionDao;
-import cn.edu.jlu.ccst.glzz.system.generated.DAO.TakesDao;
-import cn.edu.jlu.ccst.glzz.system.generated.DAO.TeachesDao;
+import cn.edu.jlu.ccst.glzz.system.generated.DAO.*;
+import cn.edu.jlu.ccst.glzz.system.generated.Model.Prereq;
 import cn.edu.jlu.ccst.glzz.system.generated.Model.Takes;
 import com.gitee.fastmybatis.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ChooseCoursesService {
@@ -21,6 +17,10 @@ public class ChooseCoursesService {
     TeachesDao teachesDao;
     @Resource
     TakesDao takesDao ;
+    @Resource
+    PrereqDao prereqDao;
+    @Resource
+    CourseDao courseDao;
 
     public List<Map<String,Object>> getSelectCourses(String student_id,int limit,int page,String class_name,Integer year,String semester){
         Query query=new Query();
@@ -119,7 +119,63 @@ public class ChooseCoursesService {
         return ansList;
     }
 
+    public int countMember(int class_id){
+        Query query=new Query();
+        query.eq("class_id",class_id).eq("ismajor",1);
+        //System.out.println(takesDao.list(query));
+        return takesDao.list(query).size();
 
+    }
+//返回未满足的先修课
+    public String checkPre(String student_id, String course_id){
+        List<Prereq> ansList=new ArrayList<>();
+        List<String> preidList=new ArrayList<>();
+        List<String> unsatisfiedList=new ArrayList<>();
+        String unsatisfiedTitleList = "";
+        Query aquery=new Query();
+        aquery.eq("course_id",course_id);
+        ansList=prereqDao.list(aquery);
+        for(Prereq it:ansList){
+            preidList.add(it.getPrereqId());
+        }
+        System.out.println(preidList.size());
+        for(String it:preidList) {
+            Query bquery = new Query();
+            bquery.join("natural join section");
+            bquery.eq("student_id",student_id).eq("course_id",it);
+            List<Takes> takesList=takesDao.list(bquery);
+            boolean flag=false;
+            for(Takes takesit:takesList){
+                if(takesit.getStatus().equals("scored")){
+                    flag=true;
+                    break;
+                }
+            }
+            if(flag==false){
+                unsatisfiedList.add(it);
+            }
+        }
+        int time=0;
+        for(String it:unsatisfiedList){
+
+            Query cquery=new Query();
+            cquery.eq("course_id",it);
+            if(time==0){
+                unsatisfiedTitleList+=courseDao.getByQuery(cquery).getTitle();
+                time++;
+            }
+            else {
+                unsatisfiedTitleList+=","+courseDao.getByQuery(cquery).getTitle();
+            }
+        }
+
+
+        return unsatisfiedTitleList;
+    }
+//返回时间冲突的课程title
+//    public String checkTimePriblem(String student_id,int class_id){
+//
+//    }
 
     public void addCourse(String student_id,int class_id,int ismajor){
         Query query=new Query();
