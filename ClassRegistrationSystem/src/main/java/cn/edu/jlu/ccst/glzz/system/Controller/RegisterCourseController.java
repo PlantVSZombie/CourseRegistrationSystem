@@ -93,7 +93,7 @@ public class RegisterCourseController {
 
     @RequestMapping(value = "/admin/information.json",produces="application/json;charset=UTF-8")
     public JSONObject getStudentInfo(int limit,int page,String searchParams){
-        registerCourseService.getGroup();
+
 
         System.out.println(searchParams);
         JSONObject jsonObject;
