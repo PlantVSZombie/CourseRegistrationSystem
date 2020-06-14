@@ -20,5 +20,10 @@ class MessageServiceTest {
     @Test
     void sendMessage() {
         messageService.sendMessage("00128", UserType.Student,"myfirstMessage");
+        messageService.sendMessage("00128", UserType.Student,"myfirstMessage");
+        messageService.sendMessage("00128", UserType.Student,"myfirstMessage");
+        messageService.sendMessage("00128", UserType.Student,"myfirstMessage");
+        messageService.sendMessage("00128", UserType.Student,"myfirstMessage");
+
     }
 }

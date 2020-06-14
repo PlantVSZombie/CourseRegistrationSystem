@@ -37,7 +37,7 @@ public class GradeController {
 
 
         JsonUtil jsonUtil=new JsonUtil(200,"");
-        jsonUtil.put("count",grades.size());
+        jsonUtil.put("count",gradeService.getGradeCount(student.getStudentId(),jsonObject.getString("class_name"),jsonObject.getInteger("year"),jsonObject.getString("semester")));
         jsonUtil.put("data",grades);
         jsonUtil.put("code",0);
 
