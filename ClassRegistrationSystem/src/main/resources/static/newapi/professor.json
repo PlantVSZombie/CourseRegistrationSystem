@@ -72,6 +72,12 @@
           "target": "_self"
         },
         {
+          "title": "已选课程",
+          "href": "newpage/professor/coursechosen.html",
+          "icon": "fa fa-file-text",
+          "target": "_self"
+        },
+        {
           "title": "学生信息",
           "href": "newpage/professor/student_table.html",
           "icon": "fa fa-file-text",

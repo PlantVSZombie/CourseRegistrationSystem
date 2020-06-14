@@ -1,9 +1,8 @@
 package cn.edu.jlu.ccst.glzz.system.Service;
 
 import cn.edu.jlu.ccst.glzz.system.Util.Result;
-import cn.edu.jlu.ccst.glzz.system.generated.DAO.ProfessorDao;
-import cn.edu.jlu.ccst.glzz.system.generated.DAO.TakesDao;
-import cn.edu.jlu.ccst.glzz.system.generated.DAO.TeachesDao;
+import cn.edu.jlu.ccst.glzz.system.generated.DAO.*;
+import cn.edu.jlu.ccst.glzz.system.generated.Model.SecTimePlace;
 import cn.edu.jlu.ccst.glzz.system.generated.Model.Takes;
 import cn.edu.jlu.ccst.glzz.system.generated.Model.Teaches;
 import com.gitee.fastmybatis.core.query.Query;
@@ -21,6 +20,8 @@ public class ChooseProfessorCourseService {
     TeachesDao teachesDao;
     @Resource
     ProfessorDao professorDao;
+    @Resource
+    SecTimePlaceDao secTimePlaceDao;
 
     public List<Map<String,Object>> getProfessor_accessCourse(String professor_id, int limit, int page,String semester,Integer year){
         Query query_1=new Query();
@@ -124,12 +125,26 @@ public class ChooseProfessorCourseService {
         //query.page(page,limit);
 
         //List<String> column = Arrays.asList("class_id");
-        Teaches tea = teachesDao.getByQuery(query);
+        Teaches tea = teachesDao.getByQuery(query);     //判断该课程是否已被其他老师选择
         if(tea == null){
-            Teaches teaches = new Teaches();
-            teaches.setProfessorId(professor_id);
-            teaches.setClassId(class_id);
-            teachesDao.save(teaches);
+            Query query2 = new Query();
+            query2.eq("class_id",class_id);
+            SecTimePlace secTimePlace = secTimePlaceDao.getByQuery(query2);
+            Integer the_class_time = secTimePlace.getTimeId();    //得到将选课程时间
+            Query query3 = new Query();
+            query3.join(" natural join teaches ");
+            query3.eq("professor_id",professor_id);
+            query3.eq("time_id",the_class_time);
+            SecTimePlace secTimePlace1 = secTimePlaceDao.getByQuery(query3);
+            if(secTimePlace1 == null){            //判读该课程是否与已选课程时间冲突s
+                Teaches teaches = new Teaches();
+                teaches.setProfessorId(professor_id);
+                teaches.setClassId(class_id);
+                teachesDao.save(teaches);
+            }
+            else{
+                System.out.println("将选课程与已选课程时间冲突");
+            }
         }
         else
         {
