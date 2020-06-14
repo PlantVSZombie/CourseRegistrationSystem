@@ -30,7 +30,7 @@ public class RegisterCourseController {
 
 
     @RequestMapping(value = "/admin/endup.json",produces="application/json;charset=UTF-8")
-    public void endFlow(HttpSession session,Integer year,String semester,String type,String start_date,String end_date) throws IOException {
+    public Result endFlow(HttpSession session,Integer year,String semester,String type,String start_date,String end_date) throws IOException {
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String date=df.format(new Date());
@@ -38,7 +38,7 @@ public class RegisterCourseController {
 //        System.out.println(registerCourseService.flowIsEnd("student"));
 //        System.out.println(registerCourseService.flowIsEnd("professor"));
 
-
+        return Result.ok();
 
     }
 
