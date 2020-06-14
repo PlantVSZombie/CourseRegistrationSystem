@@ -90,6 +90,30 @@ public class MessageService {
     }
 
 
+    public  long getMessageCount(User user){
+        Query query=new Query();
+
+        switch (user.getUserType()){
+            case Student:
+                Student student=(Student)user.getPerson();
+                query.eq("user_id",student.getStudentId());
+                query.eq("type","student");
+                break;
+            case Admin:
+                Admin admin=(Admin) user.getPerson();
+                query.eq("user_id",admin.getAdminId());
+                query.eq("type","admin");
+                break;
+
+            case Professor:
+                Professor professor=(Professor) user.getPerson();
+                query.eq("user_id",professor.getProfessorId());
+                query.eq("type","professor");
+                break;
+
+        }
+        return messageDao.getCount(query);
+    }
     public List<Message> getMessages(User user,int limit,int page){
         Query query=new Query();
 

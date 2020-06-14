@@ -22,7 +22,8 @@ public class TimeTableService {
         query.join("natural join section").join("natural join course").join("natural join sec_time_place");
         query.join("natural join classroom").join("natural join time_slot");
         query.eq("student_id",student_id);
-        List<String> column = Arrays.asList("title as class_name","time_id","start_time","end_time","building","room_number");
+        query.addSort("time_id");
+        List<String> column = Arrays.asList("title as class_name","time_id","start_time","end_time","building","room_number","day");
         List<Map<String,Object>> timetable=takesDao.listMap(column,query);
         return timetable;
     }
