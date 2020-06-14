@@ -33,3 +33,6 @@
 + 文档 http://layuimini.99php.cn/docs/
 + layui 文档 https://www.layui.com/doc/
 + layui 示例 https://www.layui.com/demo/
+
+6. 课程表
++ https://github.com/Hzy0913/Timetable
