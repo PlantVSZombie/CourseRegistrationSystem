@@ -68,14 +68,58 @@
 
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                    <button class="layui-btn" lay-submit="" lay-filter="demo1">开启选课</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                     <!--                    <button type="layui-btn" lay-submit="" >关闭选课</button>-->
                 </div>
             </div>
 
         </form>
+        <form class="layui-form" action="" id="endform">
 
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">学年</label>
+                    <div class="layui-input-inline">
+                        <input type="number" name="year" lay-verify="required|year" autocomplete="off" placeholder="请输入学年" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">学期:</label>
+                    <div class="layui-input-block">
+                        <select lay-verify="required" name="semester">
+                            <option value="Spring" selected>第一学期</option>
+                            <option value="Fall">第二学期</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">操作类型:</label>
+                    <div class="layui-input-block">
+                        <select lay-verify="required" name="type">
+                            <option value="student" selected>学生选课</option>
+                            <option value="professor">教授排课</option>
+                        </select>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="demo2">结束选课</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+                    <!--                    <button type="layui-btn" lay-submit="" >关闭选课</button>-->
+                </div>
+            </div>
+
+        </form>
     </div>
 </div>
 <script src="/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
@@ -131,6 +175,32 @@
                 dataType: "json",//预期服务器返回的数据类型
                 url: "/admin/courseControl.json" ,//url
                 data:$(register_form).serialize(),
+                success:function (result) {
+
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.status === 200) {
+                        layer.msg("提交成功", {time:2000},function () {
+                        })
+                    }else {
+                        layer.msg(result.msg, {time:2000})
+                    }
+                },
+                error : function() {
+                    layer.msg("网络异常或服务器出错!!", {time:2000});
+                }
+            });
+            return false;
+        });
+        //监听提交
+        form.on('submit(demo2)', function (data) {
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            })
+            $.ajax({
+                type:"POST",
+                dataType: "json",//预期服务器返回的数据类型
+                url: "/admin/endup.json" ,//url
+                data:$(endform).serialize(),
                 success:function (result) {
 
                     console.log(result);//打印服务端返回的数据(调试用)

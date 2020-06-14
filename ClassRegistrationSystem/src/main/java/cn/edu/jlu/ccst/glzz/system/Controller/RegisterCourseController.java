@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 @RestController
@@ -20,19 +22,39 @@ public class RegisterCourseController {
 
     @RequestMapping(value = "/admin/courseControl.json",produces="application/json;charset=UTF-8")
     public Result saveFlow(HttpSession session,Integer year,String semester,String type,String start_date,String end_date) throws IOException {
+//        System.out.println(start_date);
         List<Map<String,Object>> flow= registerCourseService.saveFlow(year,semester,type,start_date,end_date);
         System.out.println(flow);
         return Result.ok();
     }
+
+
+    @RequestMapping(value = "/admin/endup.json",produces="application/json;charset=UTF-8")
+    public void endFlow(HttpSession session,Integer year,String semester,String type,String start_date,String end_date) throws IOException {
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String date=df.format(new Date());
+        registerCourseService.endFlow(type,date);
+//        System.out.println(registerCourseService.flowIsEnd("student"));
+//        System.out.println(registerCourseService.flowIsEnd("professor"));
+
+
+
+    }
+
+
     @RequestMapping(value="/admin/add_student.json",produces="application/json;charset=UTF-8")
     public void addStudent(HttpSession session,String student_name,String dept_name,String password){
         registerCourseService.addStudent(student_name,dept_name,password);
 
     }
+
+
     @RequestMapping(value="/admin/add_professor.json",produces="application/json;charset=UTF-8")
     public void addProfessor(HttpSession session,String professor_name,String dept_name,String password){
         registerCourseService.addProfessor(professor_name,dept_name,password);
     }
+
 
     @RequestMapping(value="/admin/edit_student.json",produces="application/json;charset=UTF-8")
     public void editStudent(HttpSession session,String student_id,String student_name,String dept_name,String password){
@@ -42,6 +64,8 @@ public class RegisterCourseController {
             registerCourseService.editStudent(editting_id,student_name,dept_name,password);
         }
     }
+
+
     @RequestMapping(value="/admin/edit_professor.json",produces="application/json;charset=UTF-8")
     public void editProfessor(HttpSession session,String professor_id,String professor_name,String dept_name,String password){
 //        System.out.println(professor_id);
@@ -51,10 +75,14 @@ public class RegisterCourseController {
             registerCourseService.editProfessor(editting_id,professor_name,dept_name,password);
         }
     }
+
+
     @RequestMapping(value="/admin/delete_student.json",produces="application/json;charset=UTF-8")
     public void deleteStudent(HttpSession session,String student_id){
         registerCourseService.deleteStudent(student_id);
     }
+
+
     @RequestMapping(value="/admin/delete_professor.json",produces="application/json;charset=UTF-8")
     public void deleteProfessor(HttpSession session,String professor_id){
         registerCourseService.deleteProfessor(professor_id);
@@ -84,6 +112,9 @@ public class RegisterCourseController {
         System.out.println(jsonObject);
         return jsonUtil.getJsonObject();
     }
+
+
+
     @RequestMapping(value = "/admin/professor_information.json",produces="application/json;charset=UTF-8")
     public JSONObject getProfessorInfo(int limit,int page,String searchParams){
         System.out.println(searchParams);

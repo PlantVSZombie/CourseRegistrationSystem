@@ -19,4 +19,10 @@ public interface FlowControlDao extends CrudMapper<FlowControl, Integer> {
     int insert(@Param("flow_id") int flow_id,@Param("type") String type,@Param("flow_name") String flow_name,@Param("start_datetime") String start_datetime,@Param("end_datetime") String end_datetime);
     @Select("select max(flow_id) from flow_control")
     int getMax();
+    @Update("update flow_control set end_datetime = #{end_datetime} where type = #{type}")
+    int updateByType(@Param("type") String type , @Param("end_datetime") String end_datetime);
+
+    @Select("select end_datetime from flow_control where type = #{type}")
+    String getEnddatetimeByType(@Param("type") String type);
+
 }
