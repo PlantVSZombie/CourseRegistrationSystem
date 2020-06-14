@@ -1,7 +1,9 @@
 package cn.edu.jlu.ccst.glzz.system.Controller;
 
 import cn.edu.jlu.ccst.glzz.system.Model.User;
+import cn.edu.jlu.ccst.glzz.system.Model.UserType;
 import cn.edu.jlu.ccst.glzz.system.Service.GradeService;
+import cn.edu.jlu.ccst.glzz.system.Service.MessageService;
 import cn.edu.jlu.ccst.glzz.system.Service.ShowStudentTableService;
 import cn.edu.jlu.ccst.glzz.system.Util.JsonUtil;
 import cn.edu.jlu.ccst.glzz.system.Util.Result;
@@ -22,6 +24,8 @@ public class ShowStudentTableController {
 
     @Resource
     ShowStudentTableService showStudentTableService;
+    @Resource
+    MessageService messageService;
 
     @RequestMapping(value="/professor/student_table.json",produces="application/json;charset=UTF-8")
     public JSONObject getStudentTable(int limit, int page, HttpSession session, String searchParams)throws IOException {
@@ -52,7 +56,7 @@ public class ShowStudentTableController {
         User user=(User)session.getAttribute("user");
 
         showStudentTableService.correctGrade(class_id,student_id,grade);
-
+        messageService.sendMessage(student_id, UserType.Student,class_id+" 成绩已经发布");
 
         return Result.ok();
     }
