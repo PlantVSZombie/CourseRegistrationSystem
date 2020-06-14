@@ -16,18 +16,18 @@
         <fieldset class="table-search-fieldset">
             <legend>搜索信息</legend>
             <div style="margin: 10px 10px 10px 10px">
-                <form class="layui-form layui-form-pane" action="" id="search_student">
+                <form class="layui-form layui-form-pane" action="" id="search_professor">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">学生ID</label>
+                            <label class="layui-form-label">教授ID</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="student_id" autocomplete="off" class="layui-input">
+                                <input type="text" name="professor_id" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">姓名</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="student_name" autocomplete="off" class="layui-input">
+                                <input type="text" name="professor_name" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -36,24 +36,24 @@
                                 <input type="text" name="dept_name" autocomplete="off" class="layui-input">
                             </div>
                         </div>
-<!--                        <div class="layui-inline">-->
-<!--                            <label class="layui-form-label">用户性别</label>-->
-<!--                            <div class="layui-input-inline">-->
-<!--                                <input type="text" name="sex" autocomplete="off" class="layui-input">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="layui-inline">-->
-<!--                            <label class="layui-form-label">用户城市</label>-->
-<!--                            <div class="layui-input-inline">-->
-<!--                                <input type="text" name="city" autocomplete="off" class="layui-input">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="layui-inline">-->
-<!--                            <label class="layui-form-label">用户职业</label>-->
-<!--                            <div class="layui-input-inline">-->
-<!--                                <input type="text" name="classify" autocomplete="off" class="layui-input">-->
-<!--                            </div>-->
-<!--                        </div>-->
+                        <!--                        <div class="layui-inline">-->
+                        <!--                            <label class="layui-form-label">用户性别</label>-->
+                        <!--                            <div class="layui-input-inline">-->
+                        <!--                                <input type="text" name="sex" autocomplete="off" class="layui-input">-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="layui-inline">-->
+                        <!--                            <label class="layui-form-label">用户城市</label>-->
+                        <!--                            <div class="layui-input-inline">-->
+                        <!--                                <input type="text" name="city" autocomplete="off" class="layui-input">-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="layui-inline">-->
+                        <!--                            <label class="layui-form-label">用户职业</label>-->
+                        <!--                            <div class="layui-input-inline">-->
+                        <!--                                <input type="text" name="classify" autocomplete="off" class="layui-input">-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
                         <div class="layui-inline">
                             <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
                         </div>
@@ -65,7 +65,7 @@
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
-<!--                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>-->
+                <!--                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>-->
             </div>
         </script>
 
@@ -87,7 +87,7 @@
 
         table.render({
             elem: '#currentTableId',
-            url: '/admin/information.json',
+            url: '/admin/professor_information.json',
             // url: '/api/table.json',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
@@ -97,8 +97,8 @@
             }],
             cols: [[
                 {type: "checkbox", width: 50},
-                {field: 'student_id', width: 150, title: '学生ID', sort: true},
-                {field: 'student_name', width: 150, title: '姓名'},
+                {field: 'professor_id', width: 150, title: '教授ID', sort: true},
+                {field: 'professor_name', width: 150, title: '姓名'},
                 {field: 'dept_name', width: 150, title: '学院', sort: true},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
@@ -118,8 +118,8 @@
             $.ajax({
                 type:"POST",
                 dataType: "json",//预期服务器返回的数据类型
-                url: "/admin/information.json" ,//url
-                data:$(search_student).serialize(),
+                url: "/admin/professor_information.json" ,//url
+                data:$(search_professor).serialize(),
                 success:function (result) {
 
                     // console.log(result);//打印服务端返回的数据(调试用)
@@ -159,7 +159,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/newpage/admin/table/addStudent.html',
+                    content: '/newpage/admin/table/addProfessor.html',
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -170,11 +170,6 @@
                 layer.alert(JSON.stringify(data));
             }
         });
-
-        //监听表格复选框选择
-        // table.on('checkbox(currentTableFilter)', function (obj) {
-        //     console.log(obj)
-        // });
 
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
@@ -187,7 +182,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/newpage/admin/table/editStudent.html',
+                    content: '/newpage/admin/table/editProfessor.html',
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -195,7 +190,7 @@
                 $.ajax({
                     type:"POST",
                     dataType: "json",//预期服务器返回的数据类型
-                    url: "/admin/edit_student.json" ,//url
+                    url: "/admin/edit_professor.json" ,//url
                     data:obj.data,
                     success:function (result) {
 
@@ -220,7 +215,7 @@
                 $.ajax({
                     type:"POST",
                     dataType: "json",//预期服务器返回的数据类型
-                    url: "/admin/delete_student.json" ,//url
+                    url: "/admin/delete_professor.json" ,//url
                     data:obj.data,
                     success:function (result) {
 
