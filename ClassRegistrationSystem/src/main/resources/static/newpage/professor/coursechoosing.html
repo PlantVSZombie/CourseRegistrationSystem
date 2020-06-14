@@ -67,14 +67,9 @@
 
         <script type="text/html" id="currentTableBar">
             {{#  if(d.state =="untaken"){ }}
-            <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit " lay-event="add_professor_course">加入选课</button>
-            {{# }if(d.state =="zhu") { }}
-            <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit layui-btn-disabled" lay-event="addzhu"disabled>加入主选</button>
-            <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="addbei">加入备选</button>
-
-            {{# }if(d.state =="bei") { }}
-            <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="addzhu">加入主选</button>
-            <button class="layui-btn layui-btn-xs layui-btn-danger data-count-delete layui-btn-disabled" lay-event="addbei"disabled>加入备选</button>
+            <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit " lay-event="add_professor_course">选择课程</button>
+            {{# }if(d.state =="chosen") { }}
+            <button class="layui-btn layui-btn-normal layui-btn-xs data-count-edit layui-btn-disabled" lay-event="add_professor_course"disabled>选择课程</button>
             {{#  } }}
         </script>
 

@@ -9,10 +9,7 @@ import com.gitee.fastmybatis.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ChooseProfessorCourseService {
@@ -37,12 +34,12 @@ public class ChooseProfessorCourseService {
                 "cost","building","room_number","day","start_time","end_time");
         List<Map<String,Object>> professor_access_course=professorDao.listMap(column,query_1);
 
-        List<Map<String,Object>> professor_ansList=new ArrayList<>();
+        List<Map<String,Object>> ansList=new ArrayList<>();
         //将相同class_id的合并
         for(Map<String,Object> it:professor_access_course){
             boolean newone=true;
-            //找是否在ansList里
-            for(Map<String,Object> ansit:professor_ansList)
+            //找在不在ansList里
+            for(Map<String,Object> ansit:ansList)
             {
                 if(ansit.get("section.class_id")==it.get("section.class_id")){
                     newone=false;
@@ -77,6 +74,7 @@ public class ChooseProfessorCourseService {
                     end_time2=end_time2.substring(0,5);
                     timetem+=s_day+' '+start_time2+'-'+end_time2;
                     ansit.put("course_time",timetem);
+                    //((HashSet<Integer>)ansit.get("time_id")).add((int) (it.get("time_id")));
                     break;
                 }
             }
@@ -86,6 +84,9 @@ public class ChooseProfessorCourseService {
                 Object end_time=it.remove("end_time");
                 Object building=it.remove("building");
                 Object room_number=it.remove("room_number");
+                Object time_id=it.remove("time_id");
+                it.put("time_id",new HashSet<Integer>());
+               // ((HashSet<Integer>)it.get("time_id")).add((int)time_id);
                 int i_day=(int)day;
                 String s_day=null;
                 switch (i_day){
@@ -111,11 +112,14 @@ public class ChooseProfessorCourseService {
                 end_time2=end_time2.substring(0,5);
                 it.put("course_place",(String)building+' '+(String)room_number);
                 it.put("course_time",s_day+' '+start_time2+'-'+end_time2);
-                professor_ansList.add(it);
+                ansList.add(it);
             }
 
         }
-        return professor_ansList;
+        return ansList;
+
+
+        //System.out.println(professor_ansList.size());
     }
 
     public void add_professor_course(String professor_id,int class_id){
@@ -136,21 +140,23 @@ public class ChooseProfessorCourseService {
             query3.eq("professor_id",professor_id);
             query3.eq("time_id",the_class_time);
             SecTimePlace secTimePlace1 = secTimePlaceDao.getByQuery(query3);
-            if(secTimePlace1 == null){            //判读该课程是否与已选课程时间冲突s
+            if(secTimePlace1 == null){            //判读该课程是否与已选课程时间冲突
                 Teaches teaches = new Teaches();
                 teaches.setProfessorId(professor_id);
                 teaches.setClassId(class_id);
+
                 teachesDao.save(teaches);
+
             }
             else{
                 System.out.println("将选课程与已选课程时间冲突");
             }
         }
-        else
+        /*else
         {
             int ans=teachesDao.updateByQuery(tea,query);
             System.out.println(ans);
-        }
+        }*/
     }
 
 
