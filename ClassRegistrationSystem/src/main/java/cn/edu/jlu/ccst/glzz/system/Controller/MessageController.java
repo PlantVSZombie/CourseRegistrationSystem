@@ -24,7 +24,7 @@ public class MessageController {
         List<Message> messages=messageService.getMessages(user,limit,page);
 
         JsonUtil jsonUtil=new JsonUtil(200,"");
-        jsonUtil.put("count",messages.size());
+        jsonUtil.put("count",messageService.getMessageCount(user));
         jsonUtil.put("data",messages);
         jsonUtil.put("code",0);
 
