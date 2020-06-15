@@ -1,29 +1,74 @@
 package cn.edu.jlu.ccst.glzz.system.Service;
 
+import cn.edu.jlu.ccst.glzz.system.Model.UserType;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.FlowControlDao;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.ProfessorDao;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.StudentDao;
+import cn.edu.jlu.ccst.glzz.system.generated.DAO.TakesDao;
+import org.apache.ibatis.annotations.Result;
 import cn.edu.jlu.ccst.glzz.system.generated.Model.FlowControl;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 import com.gitee.fastmybatis.core.query.Query;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class RegisterCourseService {
+    @Resource
+    MessageService messageService;
     @Resource
     FlowControlDao flowControlDao;
     @Resource
     StudentDao studentDao;
     @Resource
     ProfessorDao professorDao;
+    @Resource
+    TakesDao takesDao ;
+    public void selectBeiXuan(){
+        List<Map<String,Object>> StudentNumList=takesDao.getStudentNumList();
+        for(int i=0;i<StudentNumList.size();i++){
+            Integer num=Integer.parseInt(String.valueOf(StudentNumList.get(i).get("num")));
+            if(num<4){
+                takesDao.addBeiXuan(StudentNumList.get(i).get("student_id").toString());
+            }
+        }
+
+    }
+    public void deleteUnQuaClass(){
+        List<String> deleteList=new ArrayList<>();
+        List<Map<String,Object>> course_group=takesDao.getGroup();
+        for(int i=0;i<course_group.size();i++){
+
+            Integer num=Integer.parseInt(String.valueOf(course_group.get(i).get("num")));
+            if(num<3){
+                deleteList.add(course_group.get(i).get("class_id").toString());
+            }
+        }
+        System.out.println(deleteList);
+        for(int i=0;i<deleteList.size();i++){
+            String class_id=deleteList.get(i);
+            List<String> stuList=takesDao.getdeletedStudent(class_id);
+            for(int j=0;j<stuList.size();j++){
+                String s_id=stuList.get(i);
+                messageService.sendMessage(s_id, UserType.Student,"你的课程class_id:"+class_id+"已被取消");
+
+            }
+
+
+            takesDao.deleteTakesItem(class_id);
+
+        }
+    }
+
+
+
+
+
     public void endFlow(String type,String end_date){
         flowControlDao.updateByType(type,end_date);
+
     }
     public Boolean flowIsEnd(String type){
         System.out.println(type);
@@ -79,6 +124,7 @@ public class RegisterCourseService {
         return query;
     }
     public List<Map<String,Object>> getStudentInfo(String student_id,String student_name,String dept_name,int limit,int page){
+
         Query query=getStudentInfoQuery(student_id,student_name,dept_name);
         query.page(page,limit);
         List<String> column = Arrays.asList("t.student_id","student_name","dept_name","ifnull(cost,0) as cost");

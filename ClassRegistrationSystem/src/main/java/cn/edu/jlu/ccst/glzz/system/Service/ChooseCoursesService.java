@@ -26,6 +26,7 @@ public class ChooseCoursesService {
     @Resource
     SecTimePlaceDao secTimePlaceDao;
 
+
     public List<Map<String,Object>> getSelectCourses(String student_id,int limit,int page,String class_name,Integer year,String semester){
         Query query=new Query();
         query.join("natural join professor").join("natural join section").join("natural join sec_time_place").join("natural join course").join("natural join classroom").join("natural join time_slot");

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.management.Query;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -48,6 +49,8 @@ public class RegisterCourseController {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String date=df.format(new Date());
         registerCourseService.endFlow(type,date);
+        registerCourseService.deleteUnQuaClass();
+        registerCourseService.selectBeiXuan();
 //        System.out.println(registerCourseService.flowIsEnd("student"));
 //        System.out.println(registerCourseService.flowIsEnd("professor"));
 
@@ -105,6 +108,8 @@ public class RegisterCourseController {
 
     @RequestMapping(value = "/admin/information.json",produces="application/json;charset=UTF-8")
     public JSONObject getStudentInfo(int limit,int page,String searchParams){
+
+
         System.out.println(searchParams);
         JSONObject jsonObject;
         if(searchParams!=null){
