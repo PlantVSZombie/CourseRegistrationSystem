@@ -45,8 +45,8 @@ public class ChooseCoursesController {
 
         List<Map<String, Object>> zhulist = new ArrayList<>();
         List<Map<String, Object>> beilist = new ArrayList<>();
-        beilist=hasSelectedCoursesController.getBeiList(limit,page,session,searchParams);
-        zhulist=hasSelectedCoursesController.getZhuList(limit,page,session,searchParams);
+        beilist=hasSelectedCoursesController.getBeiList(1000,page,session,searchParams);
+        zhulist=hasSelectedCoursesController.getZhuList(1000,page,session,searchParams);
 
         for(Map<String,Object> ansit:ansList){
             Boolean flag=true;
