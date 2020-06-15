@@ -45,8 +45,8 @@ public class ChooseCoursesController {
 
         List<Map<String, Object>> zhulist = new ArrayList<>();
         List<Map<String, Object>> beilist = new ArrayList<>();
-        beilist=hasSelectedCoursesController.getBeiList(1000,page,session,searchParams);
-        zhulist=hasSelectedCoursesController.getZhuList(1000,page,session,searchParams);
+        beilist=hasSelectedCoursesService.getBeiList(1000,page,session,searchParams);
+        zhulist=hasSelectedCoursesService.getZhuList(1000,page,session,searchParams);
 
         for(Map<String,Object> ansit:ansList){
             Boolean flag=true;
@@ -97,7 +97,7 @@ public class ChooseCoursesController {
         Student student=(Student)user.getPerson();
         int curmember=chooseCoursesService.countMember(class_id);
         //
-        List<Map<String, Object>> zhulist=hasSelectedCoursesController.getZhuList(10,1,session,null);
+        List<Map<String, Object>> zhulist=hasSelectedCoursesService.getZhuList(10,1,session,null);
         if(zhulist.size()>=4){
             return Result.ok("添加失败，主选课程最多选择4门!");
         }
@@ -132,7 +132,7 @@ public class ChooseCoursesController {
         User user=(User)session.getAttribute("user");
         Student student=(Student)user.getPerson();
         int curmember=chooseCoursesService.countMember(class_id);
-        List<Map<String, Object>> beilist=hasSelectedCoursesController.getBeiList(10,1,session,null);
+        List<Map<String, Object>> beilist=hasSelectedCoursesService.getBeiList(10,1,session,null);
         if(beilist.size()>=2){
             return Result.ok("添加失败,备选课程最多选择2门!");
         }

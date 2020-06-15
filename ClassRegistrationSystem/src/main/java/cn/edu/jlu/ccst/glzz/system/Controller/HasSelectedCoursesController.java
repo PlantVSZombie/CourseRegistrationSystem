@@ -24,36 +24,11 @@ public class HasSelectedCoursesController {
 
 
 
-    public List<Map<String, Object>> getZhuList(int limit, int page, HttpSession session, String searchParams) throws IOException{
-        User user = (User) session.getAttribute("user");
-        Student student = (Student) user.getPerson();
-        JSONObject jsonObject;
-        if (searchParams != null) {
-            jsonObject = JSONObject.parseObject(searchParams);
-        } else {
-            jsonObject = new JSONObject();
-        }
-        return hasSelectedCoursesService.getHasSelectedCourses(student.getStudentId(), limit, page, jsonObject.getString("class_name"), jsonObject.getInteger("year"), jsonObject.getString("semester"),1);
-
-
-    }
-
-    public List<Map<String, Object>> getBeiList(int limit, int page, HttpSession session, String searchParams) throws IOException {
-        User user = (User) session.getAttribute("user");
-        Student student = (Student) user.getPerson();
-        JSONObject jsonObject;
-        if (searchParams != null) {
-            jsonObject = JSONObject.parseObject(searchParams);
-        } else {
-            jsonObject = new JSONObject();
-        }
-        return hasSelectedCoursesService.getHasSelectedCourses(student.getStudentId(), limit, page, jsonObject.getString("class_name"), jsonObject.getInteger("year"), jsonObject.getString("semester"),0);
-    }
 
     @RequestMapping(value = "/student/selected_major_courses.json", produces = "application/json;charset=UTF-8")
     public JSONObject getSelectedMajorCourse(int limit, int page, HttpSession session, String searchParams) throws IOException {
 
-        List<Map<String, Object>> zhuList = getZhuList(limit,page,session,searchParams);
+        List<Map<String, Object>> zhuList = hasSelectedCoursesService.getZhuList(limit,page,session,searchParams);
 
         JsonUtil jsonUtil = new JsonUtil(200, "");
         jsonUtil.put("count", zhuList.size());
@@ -66,7 +41,7 @@ public class HasSelectedCoursesController {
     @RequestMapping(value = "/student/selected_alternative_courses.json", produces = "application/json;charset=UTF-8")
     public JSONObject getSelectedAlternativeCourse(int limit, int page, HttpSession session, String searchParams) throws IOException {
 
-        List<Map<String, Object>> beiList =  getBeiList(limit,page,session,searchParams);
+        List<Map<String, Object>> beiList =  hasSelectedCoursesService.getBeiList(limit,page,session,searchParams);
         JsonUtil jsonUtil = new JsonUtil(200, "");
         jsonUtil.put("count", beiList.size());
         jsonUtil.put("data", beiList);

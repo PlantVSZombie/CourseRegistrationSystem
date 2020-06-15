@@ -1,13 +1,18 @@
 package cn.edu.jlu.ccst.glzz.system.Service;
 
+import cn.edu.jlu.ccst.glzz.system.Model.User;
 import cn.edu.jlu.ccst.glzz.system.Util.CurrentTime;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.SectionDao;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.TakesDao;
 import cn.edu.jlu.ccst.glzz.system.generated.DAO.TeachesDao;
+import cn.edu.jlu.ccst.glzz.system.generated.Model.Student;
+import com.alibaba.fastjson.JSONObject;
 import com.gitee.fastmybatis.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -22,6 +27,7 @@ public class HasSelectedCoursesService {
         query.join("natural join teaches").join("natural join professor").join("natural join section").join("natural join sec_time_place").join("natural join course").join("natural join classroom").join("natural join time_slot");
         query.eq("year", CurrentTime.getYear()).eq("semester",CurrentTime.getSemester()).eq("ismajor",ismajor);
         query.page(page,limit);
+        query.eq("student_id",student_id);
         if(class_name!=null&&!class_name.equals("")){
             query.like("title",class_name);
         }
@@ -135,5 +141,33 @@ public class HasSelectedCoursesService {
         Query query=new Query();
         query.eq("student_id",student_id).eq("class_id",class_id);
         takesDao.deleteByQuery(query);
+    }
+
+
+
+    public List<Map<String, Object>> getZhuList(int limit, int page, HttpSession session, String searchParams) throws IOException {
+        User user = (User) session.getAttribute("user");
+        Student student = (Student) user.getPerson();
+        JSONObject jsonObject;
+        if (searchParams != null) {
+            jsonObject = JSONObject.parseObject(searchParams);
+        } else {
+            jsonObject = new JSONObject();
+        }
+        return getHasSelectedCourses(student.getStudentId(), limit, page, jsonObject.getString("class_name"), jsonObject.getInteger("year"), jsonObject.getString("semester"),1);
+
+
+    }
+
+    public List<Map<String, Object>> getBeiList(int limit, int page, HttpSession session, String searchParams) throws IOException {
+        User user = (User) session.getAttribute("user");
+        Student student = (Student) user.getPerson();
+        JSONObject jsonObject;
+        if (searchParams != null) {
+            jsonObject = JSONObject.parseObject(searchParams);
+        } else {
+            jsonObject = new JSONObject();
+        }
+        return getHasSelectedCourses(student.getStudentId(), limit, page, jsonObject.getString("class_name"), jsonObject.getInteger("year"), jsonObject.getString("semester"),0);
     }
 }
